@@ -1,0 +1,21 @@
+{
+	"Rates": [{
+			"name": "Slalom",
+			"amount": "1.00",
+			"created":"2018-05-10 22:10:00",
+			"updated":""
+		},
+		{
+			"name": "Slalom+",
+			"amount": "1.10",
+			"created":"2018-05-10 22:10:00",
+			"updated":""
+		},
+		{
+			"name": "Figure",
+			"amount": "0.50",
+			"created":"2018-05-10 22:10:00",
+			"updated":""
+		}
+	]
+}

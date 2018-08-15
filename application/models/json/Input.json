@@ -1,0 +1,103 @@
+{
+	"id": {
+		"type": "hidden",
+		"list": true,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "INT",
+			"constraint": "11",
+			"unsigned": true,
+			"auto_increment": true
+		}
+	},
+	"billing_date": {
+		"type": "date",
+		"list": true,
+		"search": false,
+		"rules": "trim|required",
+		"since": 1,
+		"values": {
+			"05": "Mai",
+			"06": "Juin",
+			"07": "Juillet",
+			"08": "Août",
+			"09": "Septembre",
+			"10": "Octobre",
+			"11": "Novembre"
+		},
+		"dbforge": {
+			"type": "DATE"
+		}
+	},	
+	"user": {
+		"type": "select_database",
+		"list": true,
+		"search": false,
+		"rules": "trim|required",
+		"since": 2,
+		"values": "distinct(users,id:name)",
+		"dbforge": {
+			"type": "INT",
+			"constraint": "5"
+		}
+	},
+	"rates": {
+		"type": "select_database",
+		"list": true,
+		"search": false,
+		"rules": "trim|required",
+		"since": 2,
+		"values": "distinct(rates,amount:name)",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "10"
+		}
+	},
+	"duration": {
+		"type": "input",
+		"list": true,
+		"search": false,
+		"rules": "trim|required",
+		"since": 2,
+		"values": "distinct(rates,name:amount)",
+		"dbforge": {
+			"type": "INT",
+			"constraint": "10"
+		}
+	},	
+	"created": {
+		"type": "created",
+		"list": false,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "DATETIME",
+			"null": true
+		}
+	},
+	"updated": {
+		"type": "updated",
+		"list": false,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "DATETIME",
+			"null": true
+		}
+	},
+	"close": {
+		"type": "checkbox",
+		"list": false,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "INT",
+			"constraint": "5"
+		}
+	}
+}
