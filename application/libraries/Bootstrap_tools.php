@@ -9,18 +9,19 @@ Class Bootstrap_tools{
 	public function __construct(){
 		$this->CI =& get_instance();
 		$this->_SetHead('assets/js/jquery-3.3.1.min.js','js');
-		$this->_SetHead('assets/js/bootstrap.bundle.js','js');
+		$this->_SetHead('assets/vendor/bootstrap/js/bootstrap.bundle.js','js');
 
-		$this->_SetHead('assets/css/bootstrap.min.css','css');
-		$this->_SetHead('assets/css/open-iconic-bootstrap.css','css');
+		$this->_SetHead('assets/vendor/bootstrap/css/bootstrap.min.css','css');
+		$this->_SetHead('assets/vendor/open-iconic/css/open-iconic-bootstrap.css','css');
 		$this->_SetHead('assets/css/app.css','css');
 		
 		/* plugins */
 		$this->_SetHead('assets/plugins/js/bootstrap-datepicker.js','js');
 		$this->_SetHead('assets/plugins/css/datepicker.css','css');		
 		
-		$this->_SetHead('assets/plugins/js/toggle_menu.js','js');
-		$this->_SetHead('assets/plugins/js/confirm.js','js');
+		/* UI TOOLS */
+		$this->_SetHead('assets/js/toggle_menu.js','js');
+		$this->_SetHead('assets/js/confirm.js','js');
 		
 	}
 	
@@ -97,7 +98,7 @@ Class Bootstrap_tools{
 	}
 	
 	public function input_date($name,$value){
-		$this->_SetHead('assets/plugins/js/datepicker_start.js','js');
+		$this->_SetHead('assets/js/datepicker_start.js','js');
 		
 		if (!$value OR $value == '0000-00-00'){
 			$value = date('Y-m-d');

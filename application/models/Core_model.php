@@ -13,7 +13,7 @@ class Core_model extends CI_Model {
 	protected $filter = array();//filter for model
 	protected $per_page = 20;
 	protected $_debug = FALSE;
-	protected $page = 0;
+	protected $page = 1;
 	protected $nb = null;
 	protected $_debug_array = array();
 	protected $like = array();
@@ -166,11 +166,14 @@ class Core_model extends CI_Model {
 
     public function get(){
 		if (is_array($this->filter) AND count($this->filter)){
+			$this->db->group_start();
 			foreach($this->filter AS $key => $value){
 				$this->db->where($key , $value);
 			}
+			$this->db->group_end();
 		} 
 		if ($this->global_search){
+			$this->db->group_start();
 			foreach($this->autorized_fields_search AS $key => $value){
 				if (!$key AND is_array($this->filter) AND count($this->filter)){
 					$this->db->like($value , $this->global_search);
@@ -178,13 +181,16 @@ class Core_model extends CI_Model {
 					$this->db->or_like($value , $this->global_search);
 				}
 			}
+			$this->db->group_end();
 		} 				
 		if ($this->per_page){
 			$this->db->limit( $this->per_page , $this->page);
 		}
-		$datas = $this->db->select( ($this->autorized_fields ? implode(',',$this->autorized_fields) : '*' ) )
-						   ->order_by($this->order, $this->direction )
-						   ->get($this->table)
+
+		
+        $datas = $this->db->select( ($this->autorized_fields ? implode(',',$this->autorized_fields) : '*' ) )
+                           ->order_by($this->order, $this->direction )
+                           ->get($this->table)
 						   ->result();
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;

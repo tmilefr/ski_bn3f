@@ -18,8 +18,6 @@ class MY_Controller extends CI_Controller {
 	protected $_controller_name 	= null;
 	protected $view_inprogress 		= null;
 	protected $data_view 			= array();
-	protected $app_name				= 'FACTURATION BN3F';
-	protected $slogan 				= 'Facturation SKI BN3F';
 	protected $title 				= '';
 	protected $_rules				= null;
 	protected $_autorize			= array();
@@ -40,7 +38,11 @@ class MY_Controller extends CI_Controller {
 		$this->load->library('Render_object');
 		$this->load->library('bootstrap_tools');
 		$this->lang->load('traduction');
+		
+		$this->config->load('app');
 	}
+	
+	
 	
 	public function LoadJsonData($json,$model,$path){
 		$this->load->model($model);
@@ -54,8 +56,8 @@ class MY_Controller extends CI_Controller {
 	function init(){
 		$this->process_url();
 		
-		$this->data_view['app_name'] 	= $this->app_name;
-		$this->data_view['slogan'] 		= $this->slogan;
+		$this->data_view['app_name'] 	= $this->config->item('app_name'); 
+		$this->data_view['slogan'] 		= $this->config->item('slogan'); 
 		$this->data_view['title'] 		= $this->title;
 		
 		$this->data_view['footer_line'] = '';	
