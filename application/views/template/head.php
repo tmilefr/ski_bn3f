@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="oi oi-cog"></span></a>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="<?php echo base_url('Rates_controller/list');?>"><?php echo Lang('Rates');?></a>
+						<a class="dropdown-item" href="<?php echo base_url('Import_controller/list');?>"><?php echo Lang('Import');?></a>
 						<a class="dropdown-item" href="#"><?php echo Lang('Parameter');?></a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#AboutModal"><?php echo Lang('About');?></a>

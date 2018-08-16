@@ -76,8 +76,8 @@ Class Render_object{
 	
 	function RenderFormElement($field){
 		$value = null;
-		if ($value === set_value($field)){ //in first, POST data
-			
+		if ($value = set_value($field)){ //in first, POST data
+
 		} else {
 			if (isset($this->dba_data)){ // try to check database
 				$value = $this->dba_data->{$field};
@@ -88,6 +88,9 @@ Class Render_object{
 			default:
 			case 'input':
 				echo $this->CI->bootstrap_tools->input_text($field, $field, $value);
+			break;
+			case 'typeahead':
+				echo $this->CI->bootstrap_tools->input_typeahead($field, $value);
 			break;
 			case 'password':
 				echo $this->CI->bootstrap_tools->password_text($field, $field, $value);

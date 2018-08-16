@@ -174,6 +174,7 @@ class MY_Controller extends CI_Controller {
 	}
 	
 	public function add(){
+		$this->render_object->_set('form_mod', 'add');
 		$this->edit();
 	}
 	
@@ -192,15 +193,12 @@ class MY_Controller extends CI_Controller {
 	
 	public function edit($id = 0)
 	{		
-		$this->render_object->_set('form_mod', 'add');
 		$this->data_view['id'] = '';
-		//on form submit
 		if (!$id){
-			if ($this->input->post('id')){
+			if ($this->input->post('id') ){
 				$id = $this->input->post('id');
 			}
-		}		
-		
+		}
 		if ($id){
 			$this->render_object->_set('id',		$id);
 			$this->{$this->_model_name}->_set('key_value',$id);
@@ -208,7 +206,7 @@ class MY_Controller extends CI_Controller {
 			$this->render_object->_set('dba_data',$dba_data);
 			$this->render_object->_set('form_mod', 'edit');
 			$this->data_view['id'] = $id;
-		}
+		}		
 		//$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]');
 		if ($this->form_validation->run() === FALSE){
 
@@ -228,9 +226,7 @@ class MY_Controller extends CI_Controller {
 				$datas['id'] = $this->{$this->_model_name}->post($datas);
 			}
 			redirect($this->_get('_rules')['list']->url);
-		}			
-
-		
+		}
 		$this->_set('view_inprogress',$this->_edit_view);
 		$this->render_view();
 	}

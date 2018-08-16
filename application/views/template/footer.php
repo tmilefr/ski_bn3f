@@ -8,9 +8,9 @@
 					<li class="nav-item">
 						
 					</li>
-					<li class="nav-item">
+					<?php /* //TODO : perpage<li class="nav-item">
 						<?php echo ((isset($this->pagination)) ? $this->pagination->create_perpage():'');?>
-					</li>
+					</li> */ ?>
 					<li class="nav-item">
 					<?php echo $footer_line;?>
 					</li> 

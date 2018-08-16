@@ -10,6 +10,7 @@ echo form_error('postalcode', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('town', '<div class="alert alert-danger">', '</div>');
 echo form_error('country', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('type', 	'<div class="alert alert-danger">', '</div>');
+echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
 ?>
 <div class="form-row">
 	<div class="form-group col-md-6">
@@ -20,12 +21,18 @@ echo form_error('type', 	'<div class="alert alert-danger">', '</div>');
 	</div>
 	<div class="form-group col-md-6">
 		<?php 
-			echo $this->render_object->label('adress');
-			echo $this->render_object->RenderFormElement('adress');
+			echo $this->render_object->label('email');
+			echo $this->render_object->RenderFormElement('email');
 		?>
 	</div>
 </div>
 <div class="form-row">
+	<div class="form-group col-md-6">
+		<?php 
+			echo $this->render_object->label('adress');
+			echo $this->render_object->RenderFormElement('adress');
+		?>
+	</div>	
 	<div class="form-group col-md-6">
 		<?php 
 			echo $this->render_object->label('postalcode');

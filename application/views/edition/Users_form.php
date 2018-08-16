@@ -5,8 +5,6 @@ echo form_open('Users_controller/'.$this->render_object->_get('form_mod'), array
 
 echo form_error('name', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('surname', 	'<div class="alert alert-danger">', '</div>');
-echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
-echo form_error('password', '<div class="alert alert-danger">', '</div>');
 echo form_error('section', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('family', 	'<div class="alert alert-danger">', '</div>');
 ?>
@@ -24,33 +22,22 @@ echo form_error('family', 	'<div class="alert alert-danger">', '</div>');
 		?>
 	</div>
 	<div class="form-group col-md-4">
+
+	</div>
+</div>
+<div class="form-row">
+	<div class="form-group col-md-6">
 		<?php 
 			echo $this->render_object->label('family');
 			echo $this->render_object->RenderFormElement('family');
 		?>
 	</div>
-</div>
-<div class="form-row">
-	<div class="form-group col-md-6">
-		<?php 
-			echo $this->render_object->label('email');
-			echo $this->render_object->RenderFormElement('email');
-		?>
-	</div>
-	<div class="form-group col-md-6">
-		<?php 
-			echo $this->render_object->label('password');
-			echo $this->render_object->RenderFormElement('password'); 
-		?>
-	</div>
-</div>
-<div class="form-row">
 	<div class="form-group col-md-6">
 		<?php 
 			echo $this->render_object->label('section');
 			echo $this->render_object->RenderFormElement('section'); 
 		?>
-	</div>
+	</div>	
 </div>
 <button type="submit" class="btn btn-primary"><?php echo $this->render_object->_get('_ui_rules')[$this->render_object->_get('form_mod')]->name;?></button>
 <?php

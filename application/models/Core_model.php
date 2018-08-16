@@ -31,8 +31,15 @@ class Core_model extends CI_Model {
 
 	public function distinct($table,$id,$value){
 		try{
+			if (strpos($value,'@')){
+				$fields = 'CONCAT('.str_replace('@','," ",',$value).') AS ';
+				$as = ' '.str_replace('@','_',$value);
+			} else {
+				$fields = $value;
+				$as = $value;
+			}
 			$this->db->distinct();
-			return $this->db->select("$id,$value")->get($table)->result();
+			return $this->db->select("$id,$fields $as")->order_by("$as", 'asc' )->get($table)->result();
 		} catch (Exception $e) {
 			//echo 'Exception reçue : ',  $e->getMessage(), "\n";
 		}
@@ -60,10 +67,14 @@ class Core_model extends CI_Model {
 				break;
 				case 'select_database':
 				  $datas_select = array();
-				  preg_match('/(\w+)\((\w+)\,(\w+)\:(\w+)\)/', $defs->values, $param);
+				  preg_match('/(\w+)\((\w+)\,(\w+)\:(.*)\)/', $defs->values, $param);
 				  if (method_exists($this,$param[1])){
 					  $datas = $this->{$param[1]}($param[2],$param[3],$param[4]);
 				  } 
+				 
+				  if (strpos($param[4],'@')){
+					$param[4] = str_replace('@','_',$param[4]);
+				  }			  
 				  foreach($datas AS $data){
 					$datas_select[$data->{$param[3]}] = $data->{$param[4]};
 				  }

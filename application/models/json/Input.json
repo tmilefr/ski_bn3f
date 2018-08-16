@@ -37,7 +37,7 @@
 		"search": false,
 		"rules": "trim|required",
 		"since": 2,
-		"values": "distinct(users,id:name)",
+		"values": "distinct(users,id:name@surname)",
 		"dbforge": {
 			"type": "INT",
 			"constraint": "5"

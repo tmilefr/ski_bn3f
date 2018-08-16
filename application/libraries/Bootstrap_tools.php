@@ -104,12 +104,18 @@ Class Bootstrap_tools{
 			$value = date('Y-m-d');
 		}
 		
-		echo '<div class="input-group">
+		return '<div class="input-group">
 				  <input autocomplete="off" class="form-control datepicker" name="'.$name.'" id="input'.$name.'" value="'.$value.'" type="text">
 				  <div class="input-group-append">
 					 <span class="input-group-text"><span class="oi oi-calendar"></span></span>
 				  </div>
 			  </div>';
+	}
+	
+	public function input_typeahead($name,$value){
+		$this->_SetHead('assets/plugins/js/bootstrap3-typeahead.js','js');
+		
+		return '<input id="input'.$name.'" name="'.$name.'" class="typeahead form-control" value="'.$value.'">';
 	}
 	
 	
