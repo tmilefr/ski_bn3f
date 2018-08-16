@@ -63,7 +63,7 @@ echo form_close();
   </div>
 </div>
 <?php if (isset($datas)){ ?>
-	<h3><?php echo Lang('LAST_5_INPUTS');?></h3>
+	<h3><?php echo Lang('LAST_INPUTS');?></h3>
 	<table class="table table-striped table-sm">
 	  <thead>
 		<tr>			

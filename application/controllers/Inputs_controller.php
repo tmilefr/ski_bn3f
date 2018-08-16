@@ -54,27 +54,32 @@ class Inputs_controller extends MY_Controller {
 		}	
 		/* GET 5 last input */
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
-		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_last(5, 'id', 'desc' );
+		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_last(500, 'id', 'desc' );
 				
 		$this->_set('view_inprogress','edition/Input_form_add');
 		$this->render_view();
 	}
 	
 	function list(){
-		$this->_set('view_inprogress','unique/calendar_view');
-		$prefs = array();
-		$prefs['start_day'] = 'monday';
-		$prefs['show_next_prev'] = TRUE;
-		$prefs['next_prev_url'] = base_url('Inputs_controller/list');
-		$prefs['template'] = array(
-        'table_open'           => '<table class="calendar">',
-        'cal_cell_start'       => '<td class="day">',
-        'cal_cell_start_today' => '<td class="today">'
-		);
+		$config = array();
+		$config['per_page'] 	= '10';
+		$config['base_url'] 	= $this->config->item('base_url').$this->_controller_name.'/list/page/';
+		$config['total_rows'] 	= $this->{$this->_model_name}->get_pagination();
+		$this->pagination->initialize($config);	
 		
-		$this->load->library('calendar', $prefs);
-
-
+		$this->{$this->_model_name}->_set('global_search'	, $this->session->userdata($this->set_ref_field('global_search')));
+		$this->{$this->_model_name}->_set('order'			, $this->session->userdata($this->set_ref_field('order')));
+		$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
+		$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));
+		$this->{$this->_model_name}->_set('per_page'		, $config['per_page']);
+		$this->{$this->_model_name}->_set('page'			, $this->session->userdata($this->set_ref_field('page')));
+		
+		//GET DATAS
+		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
+		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_group_by();
+		
+		
+		$this->_set('view_inprogress','unique/list_view_input');
 		$this->render_view();
 	}
 
