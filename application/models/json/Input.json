@@ -49,7 +49,7 @@
 		"search": false,
 		"rules": "trim|required",
 		"since": 2,
-		"values": "distinct(rates,amount:name)",
+		"values": "distinct(rates,id:name)",
 		"dbforge": {
 			"type": "VARCHAR",
 			"constraint": "10"
@@ -90,6 +90,17 @@
 		}
 	},
 	"close": {
+		"type": "checkbox",
+		"list": false,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "INT",
+			"constraint": "5"
+		}
+	},
+	"billed": {
 		"type": "checkbox",
 		"list": false,
 		"search": false,

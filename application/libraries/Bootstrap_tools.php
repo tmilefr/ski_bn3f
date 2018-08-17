@@ -14,6 +14,7 @@ Class Bootstrap_tools{
 		$this->_SetHead('assets/vendor/bootstrap/css/bootstrap.min.css','css');
 		$this->_SetHead('assets/vendor/open-iconic/css/open-iconic-bootstrap.css','css');
 		$this->_SetHead('assets/css/app.css','css');
+		$this->_SetHead('assets/css/callouts.css','css');
 		
 		/* plugins */
 		$this->_SetHead('assets/plugins/js/bootstrap-datepicker.js','js');
@@ -56,7 +57,7 @@ Class Bootstrap_tools{
 	}
 	
 	
-	public function render_dropdown($field,$values, $url){
+	public function render_dropdown($field,$values, $url, $null_value = ''){
 		$string_render_dropdown = '';
 		if (is_array($values) AND count($values)){
 			$string_render_dropdown .= '<ul class="navbar-nav mr-auto">
@@ -66,6 +67,7 @@ Class Bootstrap_tools{
 					$string_render_dropdown .= '<a class="dropdown-item" href="'.$url.'/filter/'.$field.'/filter_value/'.$key.'">'.$this->CI->lang->line($value).'</a>';
 				}
 				$string_render_dropdown .= '<a class="dropdown-item" href="'.$url.'/filter/'.$field.'/filter_value/all">'.$this->CI->lang->line('All').'</a>';
+				$string_render_dropdown .= '<a class="dropdown-item" href="'.$url.'/filter/'.$field.'/filter_value/'.$null_value.'">'.$this->CI->lang->line('N/A').'</a>';
 			$string_render_dropdown .= '</div></ul>';
 		}
 		return $string_render_dropdown;
@@ -92,8 +94,6 @@ Class Bootstrap_tools{
 	}
 	
 	public function input_checkbox($field, $value){
-		
-		
 		return form_checkbox($field, 1 , $value , ' class="form-check-input" id="input'.$field.'" ');
 	}
 	

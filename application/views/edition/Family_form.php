@@ -9,7 +9,6 @@ echo form_error('adress', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('postalcode', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('town', '<div class="alert alert-danger">', '</div>');
 echo form_error('country', 	'<div class="alert alert-danger">', '</div>');
-echo form_error('type', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
 ?>
 <div class="form-row">
@@ -53,12 +52,6 @@ echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
 			echo $this->render_object->RenderFormElement('country'); 
 		?>
 	</div>
-	<div class="form-group col-md-6">
-		<?php 
-			echo $this->render_object->label('type');
-			echo $this->render_object->RenderFormElement('type'); 
-		?>
-	</div>	
 </div>
 <button type="submit" class="btn btn-primary"><?php echo $this->render_object->_get('_ui_rules')[$this->render_object->_get('form_mod')]->name;?></button>
 <?php

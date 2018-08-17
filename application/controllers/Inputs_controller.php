@@ -61,23 +61,13 @@ class Inputs_controller extends MY_Controller {
 	}
 	
 	function list(){
-		$config = array();
-		$config['per_page'] 	= '10';
-		$config['base_url'] 	= $this->config->item('base_url').$this->_controller_name.'/list/page/';
-		$config['total_rows'] 	= $this->{$this->_model_name}->get_pagination();
-		$this->pagination->initialize($config);	
-		
-		$this->{$this->_model_name}->_set('global_search'	, $this->session->userdata($this->set_ref_field('global_search')));
-		$this->{$this->_model_name}->_set('order'			, $this->session->userdata($this->set_ref_field('order')));
-		$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
-		$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));
-		$this->{$this->_model_name}->_set('per_page'		, $config['per_page']);
-		$this->{$this->_model_name}->_set('page'			, $this->session->userdata($this->set_ref_field('page')));
-		
-		//GET DATAS
-		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
-		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_group_by();
-		
+		$datas = array();
+		for($year = date('Y');$year >= 2016 ; $year--){
+			$this->data_view['years'][$year] = $year;
+		}
+			/*for($month = 01; $month < 13; $month++){
+				$datas[$year][$month] = $this->{$this->_model_name}->get_group_by($month,$year);
+			}*/
 		
 		$this->_set('view_inprogress','unique/list_view_input');
 		$this->render_view();

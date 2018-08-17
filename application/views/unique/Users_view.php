@@ -11,9 +11,10 @@
 		</h5>
 		<p class="card-text">
 			<?php 
-				echo $this->bootstrap_tools->label('section').' : '.$this->render_object->RenderElement('section').'<br/>'; 
-				echo $this->bootstrap_tools->label('type').' : '.$this->render_object->RenderElement('type').'<br/>'; 
-			?>
+				echo $this->render_object->label('section').' : '.$this->render_object->RenderElement('section').'<br/>'; 
+				echo $this->render_object->RenderElement('adress').'<br/>';
+				echo $this->render_object->RenderElement('postalcode').' '.$this->render_object->RenderElement('town').' '.$this->render_object->RenderElement('country') ; 
+			?>				
 		</p>
 		<?php
 			echo $this->render_object->render_element_menu();

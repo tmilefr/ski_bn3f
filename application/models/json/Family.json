@@ -83,21 +83,6 @@
 			"type": "VARCHAR",
 			"constraint": "255"
 		}
-	},
-	"type": {
-		"type": "select",
-		"list": true,
-		"search": false,
-		"rules": null,
-		"since": 1,
-		"values": {
-			"1": "famille",
-			"2": "individuelle"
-		},
-		"dbforge": {
-			"type": "INT",
-			"constraint": "5"
-		}
 	},	
 	"created": {
 		"type": "created",

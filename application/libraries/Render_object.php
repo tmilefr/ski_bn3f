@@ -48,16 +48,20 @@ Class Render_object{
 	public function render_link($field){
 		$filter 	= $this->CI->session->userdata($this->CI->set_ref_field('filter'));
 		$direction 	= $this->CI->session->userdata($this->CI->set_ref_field('direction'));
-		
+		if ( $this->_model->_get('defs')[$field]->dbforge->type == 'INT'){
+			$null_value = 0;
+		} else {
+			$null_value = '';
+		}
 		$add_string =  '';
 		if (isset($filter[$field])){
-			$add_string = '<span class="badge badge-success">'.$this->_model->_get('defs')[$field]->values[$filter[$field]].'</span>';
+			$add_string = '<span class="badge badge-success">'.((isset($this->_model->_get('defs')[$field]->values[$filter[$field]])) ? $this->_model->_get('defs')[$field]->values[$filter[$field]]:$filter[$field]).'</span>';
 		}
 		$string_render_link = '<div class="btn-group">';
 		
 		$string_render_link .= $this->CI->bootstrap_tools->render_head_link($field, $direction, $this->CI->_get('_rules')['list']->url, $add_string);
 		if (isset($this->_model->_get('defs')[$field]->values)){
-			$string_render_link .= $this->CI->bootstrap_tools->render_dropdown($field, $this->_model->_get('defs')[$field]->values, $this->CI->_get('_rules')['list']->url );
+			$string_render_link .= $this->CI->bootstrap_tools->render_dropdown($field, $this->_model->_get('defs')[$field]->values, $this->CI->_get('_rules')['list']->url, $null_value );
 		}
 		$string_render_link .= '</div>';
 		return $string_render_link;
@@ -145,7 +149,7 @@ Class Render_object{
 				if (isset($this->_model->_get('defs')[$field]->values[$value]))
 					return $this->_model->_get('defs')[$field]->values[$value];
 				else
-					return 'indef';
+					return 'N/A';
 			
 			break;
 		}

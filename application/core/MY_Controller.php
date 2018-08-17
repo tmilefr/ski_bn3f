@@ -23,6 +23,7 @@ class MY_Controller extends CI_Controller {
 	protected $_autorize			= array();
 	protected $json = null;
 	protected $json_path = APPPATH.'models/json/';
+	protected $per_page	= 10;
 					
 	/**
 	 * Generic Constructor
@@ -233,24 +234,23 @@ class MY_Controller extends CI_Controller {
 
 	public function list()
 	{
-		
-		$config = array();
-		$config['per_page'] 	= '10';
-		$config['base_url'] 	= $this->config->item('base_url').$this->_controller_name.'/list/page/';
-		$config['total_rows'] 	= $this->{$this->_model_name}->get_pagination();
-		$this->pagination->initialize($config);	
-		
 		$this->{$this->_model_name}->_set('global_search'	, $this->session->userdata($this->set_ref_field('global_search')));
 		$this->{$this->_model_name}->_set('order'			, $this->session->userdata($this->set_ref_field('order')));
 		$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
 		$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));
-		$this->{$this->_model_name}->_set('per_page'		, $config['per_page']);
+		$this->{$this->_model_name}->_set('per_page'		, $this->per_page);
 		$this->{$this->_model_name}->_set('page'			, $this->session->userdata($this->set_ref_field('page')));
 		
 		//GET DATAS
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
 		$this->data_view['datas'] 	= $this->{$this->_model_name}->get();
 		
+		$config = array();
+		$config['per_page'] 	= $this->per_page;
+		$config['base_url'] 	= $this->config->item('base_url').$this->_controller_name.'/list/page/';
+		$config['total_rows'] 	= $this->{$this->_model_name}->get_pagination();
+		$this->pagination->initialize($config);	
+
 		
 		$this->_set('view_inprogress','unique/list_view');
 		$this->render_view();

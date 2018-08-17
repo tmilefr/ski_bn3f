@@ -21,10 +21,11 @@ class Users_controller extends MY_Controller {
 		
 		
 		$this->title .= $this->lang->line($this->_controller_name);
-		
-		$this->_set('_debug', TRUE);
-		
 		$this->init();
+
+		$this->_set('_debug', TRUE);
+		$this->Users_model->_set('_debug', TRUE);
+
 	}
 
 }

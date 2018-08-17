@@ -119,32 +119,6 @@ class Core_model extends CI_Model {
 		return $datas;
 	}
 	
-	public function get_pagination(){
-		if (!$this->nb){
-			if (is_array($this->filter) AND count($this->filter)){
-				foreach($this->filter AS $key => $value){
-					$this->db->where($key , $value);
-				}
-			} 	
-			if ($this->global_search){
-				foreach($this->autorized_fields_search AS $key => $value){
-					if (!$key AND is_array($this->filter) AND count($this->filter)){
-						$this->db->like($value , $this->global_search);
-					} else {
-						$this->db->or_like($value , $this->global_search);
-					}
-				}
-			} 				
-			$datas = $this->db->select($this->key)
-                           ->order_by($this->order, $this->direction )
-                           ->get($this->table);
-			$this->nb = $datas->num_rows();
-			$this->_debug_array[] = $this->db->last_query();
-		}
-		return $this->nb;
-	}	
-	
-	
 	public function get_distinct($field){
 		$this->db->distinct();
 		$datas = $this->db->select("$key,$field")->get($this->table)->result();
@@ -175,7 +149,7 @@ class Core_model extends CI_Model {
 		$this->_debug_array[] = $this->db->last_query();
 	}
 
-    public function get(){
+	function _set_filter(){
 		if (is_array($this->filter) AND count($this->filter)){
 			$this->db->group_start();
 			foreach($this->filter AS $key => $value){
@@ -183,6 +157,9 @@ class Core_model extends CI_Model {
 			}
 			$this->db->group_end();
 		} 
+	}
+
+	function _set_search(){
 		if ($this->global_search){
 			$this->db->group_start();
 			foreach($this->autorized_fields_search AS $key => $value){
@@ -193,18 +170,31 @@ class Core_model extends CI_Model {
 				}
 			}
 			$this->db->group_end();
-		} 				
+		} 	
+	}
+
+
+	public function get_pagination(){
+		if (!$this->nb){
+			$this->_set_filter();
+			$this->_set_search();
+			$this->nb = $this->db->select( $this->key )->get($this->table)->num_rows();
+		} 
+		return $this->nb;
+	}	
+	
+
+    public function get(){
+		$this->_set_filter();
+		$this->_set_search();		  		
 		if ($this->per_page){
 			$this->db->limit( $this->per_page , $this->page);
 		}
-
-		
         $datas = $this->db->select( ($this->autorized_fields ? implode(',',$this->autorized_fields) : '*' ) )
                            ->order_by($this->order, $this->direction )
-                           ->get($this->table)
-						   ->result();
+                           ->get($this->table);
 		$this->_debug_array[] = $this->db->last_query();
-		return $datas;
+		return $datas->result();
     }
 
 	public function put()

@@ -28,13 +28,22 @@ class Import_controller extends MY_Controller {
 	public function list()
 	{
 		
-		$this->data_view['content'] = $this->Mapper();
+		$this->data_view['content'] = $this->ImportInputs();
 		
 		$this->_set('view_inprogress','unique/import_view');
 		$this->render_view();
 	}
 	
-	function Mapper(){
+	function ImportInputs(){
+		$this->GenericSql_model->exec('TRUNCATE inputs');
+		$sql = 'INSERT INTO inputs (billing_date, user, rates,duration,billed)
+		SELECT T.Date,U.id,T.TarifID,T.Duree ,T.Edite FROM ski_bn3f.tours AS T LEFT JOIN users AS U ON T.MembreID = U.oldid WHERE YEAR(date) > 2015';
+		return $this->GenericSql_model->exec($sql);
+	}
+	
+	
+	
+	function ImportUsers(){
 		$sql = 'INSERT INTO users (name, surname, oldid)
 				SELECT Nom, Prenom, ID
 				FROM Membres';
