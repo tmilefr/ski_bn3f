@@ -51,28 +51,25 @@ class Migration_setup extends CI_Migration {
 		  
         
         public function up()
-        {		
-			//always init DBA
-			$this->down();
-			
+        {			
 			/* ex : Family table */
 			$this->dbforge->add_field( $this->_get_json('Family.json') );
 			$this->dbforge->add_key('id', TRUE);
 			$this->dbforge->create_table('family');    
 			/* Feeders  */
-			$this->LoadData('Family_data.json','Family_model','Family');		
+			//$this->LoadData('Family_data.json','Family_model','Family');		
 
 			$this->dbforge->add_field( $this->_get_json('Users.json') );
 			$this->dbforge->add_key('id', TRUE);
 			$this->dbforge->create_table('users');  
 			/* Feeders  */
-			$this->LoadData('Users_data.json','Users_model','Users');
+			//$this->LoadData('Users_data.json','Users_model','Users');
 			
 			$this->dbforge->add_field( $this->_get_json('Rates.json') );
 			$this->dbforge->add_key('id', TRUE);
 			$this->dbforge->create_table('rates');  
 			/* Feeders  */
-			$this->LoadData('Rates_data.json','Rates_model','Rates');			
+			//$this->LoadData('Rates_data.json','Rates_model','Rates');			
 			
 			
 			$this->dbforge->add_field( $this->_get_json('input.json') );

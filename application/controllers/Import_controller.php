@@ -12,8 +12,17 @@ class Import_controller extends MY_Controller {
 		$this->init();
 		$this->load->model('GenericSql_model');
 		$this->data_path = str_replace('application/','data/',APPPATH);
-		
+		$this->load->helper('directory');
 	}
+	
+	public function LoadData($json,$model,$path){
+		$this->load->model($model);
+		$json = file_get_contents($this->json_path.$json);
+		$json = json_decode($json);
+		foreach($json->{$path} AS $family){
+			$this->{$model}->post($family);
+		}
+	}	 
 	
 	function MsSql2Mysql($string){
 		$pattern = '@(.*)VALUES(.*)@i';
@@ -28,7 +37,8 @@ class Import_controller extends MY_Controller {
 	public function list()
 	{
 		
-		$this->data_view['content'] = $this->ImportInputs();
+		$this->data_view['files']  = directory_map($this->data_path,1);
+		$this->data_view['process'] = ['SyncTours','ImportUsers','ImportRates','ImportUsers','ImportFamily'];
 		
 		$this->_set('view_inprogress','unique/import_view');
 		$this->render_view();
