@@ -4,31 +4,59 @@
 
 <div class="container-fluid">
 	
-	<?php echo $this->bootstrap_tools->input_select('year', $years , date('Y')); ?>
-	
-	<table class="table table-striped table-sm">
-	  <thead>
-		<tr>			
-			<th scope="col"><?php echo Lang('Year');?></th>
-			<th scope="col" colspan="12"><?php echo Lang('Month');?></th>
-		 </tr>
-	  </thead>
-	  <tbody>
-	<?php 
-	
-	foreach($datas AS $year => $data){
-		foreach($data AS $month => $obj){
-			echo '<tr>';
-			if ($month == 1)
-			echo '<td rowspan="12">'.$year.'</td>';
-			echo '<td>'.$month.'</td>';
-			echo '<td>'.((is_object($obj)) ? $obj->NB:'').'</td>';
-			echo '</tr>';
-		}
-	}
-	?>
-	</tbody>
-	</table>
+	<?php //echo $this->bootstrap_tools->input_select('year', $years , date('Y')); ?>
+
+	<div class="row">
+	  <div class="col-md-10"><canvas id="canvas"></canvas></div>
+	</div>
 </div>
+<script>
+	var barChartData = {
+		labels : ["<?php echo implode('","', $stats['month']);?>"],
+		datasets : [
+		<?php
+		foreach($stats['line'] AS $year=>$datas){
+			echo '
+			{
+				label: \''.$year.'\',
+				backgroundColor: "'.$stats['color'][$year].'",
+				borderColor: "'.$stats['color'][$year].'",
+				borderWidth: 1,
+				data : ['.implode(',',$datas).']
+			},';
+		}
+		?>
+		],
+		options: {
+			legend: {
+				display: true,
+				labels: {
+					fontColor: 'rgb(255, 99, 132)'
+				}
+			}
+        }
+	};
+
+	window.onload = function() {
+		var ctx = document.getElementById('canvas').getContext('2d');
+		window.myBar = new Chart(ctx, {
+			type: 'bar',
+			data: barChartData,
+			options: {
+				responsive: true,
+				legend: {
+					position: 'top',
+				},
+				title: {
+					display: true,
+					text: 'Consomation Minutes par Année'
+				}
+			}
+		});
+
+	};	
+
+	
+</script>
 
 
