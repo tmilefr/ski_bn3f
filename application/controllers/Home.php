@@ -6,56 +6,67 @@ class Home extends MY_Controller {
 	
 	public function __construct(){
 		parent::__construct();
+		$this->load->library('Stats_object');
+		$this->_model_name 		= 'Input_model';	   //DataModel
 		$this->_controller_name = 'Home';  //controller name for routing
 		$this->title = '';
-		$this->data_view['content'] = '<h1> Stats </h1>
-		<div class="row">
-    <div class="col-sm">
-    
-		<div class="card" style="width: 18rem;">
-		  <div class="card-body">
-			<h5 class="card-title"> Nombre d\'heure de bateau </h5>
-			<p class="card-text">
-				Juin : 15h </br>
-				Juillet : 11h </br>
-				Aout : 15h </br>
-			</p>
-		  </div>
-		</div>
-		
-			</div>
-		<div class="col-sm">
-		<div class="card" style="width: 18rem;">
-		  <div class="card-body">
-			<h5 class="card-title">Top Ten membre Juin</h5>
-			<p class="card-text">
-				Membre 2 : 15h </br>
-				Membre 3 : 11h </br>
-				Membre 12 : 15h </br>
-			</p>
-		  </div>
-		</div>
-	</div>
-		<div class="col-sm">
-		<div class="card" style="width: 18rem;">
-		  <div class="card-body">
-			<h5 class="card-title">Top Ten membre Juillet</h5>
-			<p class="card-text">
-				Membre 2 : 15h </br>
-				Membre 3 : 11h </br>
-				Membre 12 : 15h </br>
-			</p>
-		  </div>
-		</div>
-		
-  </div>
-</div>		
-		';
+		$this->data_view['content'] = '';
 		$this->init();
+		
+		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
 	}
 
 	public function index()
 	{
+		
+		for($year = date('Y');$year >= 2016 ; $year--){
+			$this->data_view['years'][$year] = $year;
+		}		
+		$this->{$this->_model_name}->_set('group_by',['MONTH(billing_date)','YEAR(billing_date)']);
+		$datas = $this->{$this->_model_name}->get_group_by();
+
+		$tmp   = array();
+		$stats = array();
+		foreach($datas AS $key=>$obj){
+			$stats['month'][$obj->MONTH] = $obj->MONTH;
+			$stats['year'][$obj->YEAR] = $obj->YEAR;
+			@$tmp[$obj->YEAR][$obj->MONTH] = $obj;
+		}
+		ksort($stats['month']);
+		ksort($stats['year']);	
+		
+		foreach($stats['year'] AS $year){
+			foreach($stats['month'] AS $month){
+				if (isset($tmp[$year][$month])){
+					$stats['line'][$year][$month] = $tmp[$year][$month]->SUM;
+					@$stats['global'][$year] += $tmp[$year][$month]->SUM;
+				} else {
+					$stats['line'][$year][$month] = 0;
+				}
+			}
+		}
+	
+		$stats['color']['2018'] = '#ff9933';
+		$stats['color']['2017'] = '#0099ff';
+		$stats['color']['2016'] = '#009933';
+		$this->data_view['stats'] = $stats;
+
+		$this->data_view['TOP'][2018] = $this->Input_model->get_stats_user(null,2018,null);
+		$this->data_view['TOP'][2017] = $this->Input_model->get_stats_user(null,2017,null);
+		$this->data_view['TOP'][2016] = $this->Input_model->get_stats_user(null,2016,null);
+			
+		$datas = $this->Input_model->get_minutes_year();
+		//echo '<pre><code>'.print_r($datas , 1).'</code></pre>';
+		
+		$tmp = array();
+		foreach($datas AS $data){
+			$tmp['years'][$data->YEAR] = $data->YEAR;
+			$tmp['datas'][$data->YEAR] = $data->HOUR_TOUR;
+		}
+		ksort($tmp['years']);
+		ksort($tmp['datas']);
+		$this->data_view['BOAT'] = $tmp;
+	
 		$this->_set('view_inprogress','home_page');
 		$this->render_view();
 	}

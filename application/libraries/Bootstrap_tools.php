@@ -44,6 +44,30 @@ Class Bootstrap_tools{
 		}
 	}
 	
+	public function render_table($head = [],$datas , $table_style = '', $limit = 0){
+		$table = '<table class="table '.$table_style.'">';
+		if (count($head)){
+			$table .= '<head><tr>';
+			foreach($head AS $scope=>$name){
+				$table .= '<th scope="'.$scope.'">'.$this->CI->lang->line($name).'</th>';
+			}
+			$table .= '</tr></head>';
+		}
+		if (count($datas)){
+			foreach($datas AS $lign=>$data){
+				if (($limit AND $lign < $limit) OR !$limit){
+					$table .= '<tr>';
+					foreach($head AS $scope=>$name){
+						$table .= '<td>'.$data->$name.'</td>';
+					}
+					$table .= '</tr>';
+				}
+			}
+		}
+		$table .= '</table>';
+		return $table;
+	}
+	
 	public function _set($field,$value){
 		$this->$field = $value;
 	}

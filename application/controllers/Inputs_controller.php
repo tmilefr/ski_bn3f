@@ -28,11 +28,9 @@ class Inputs_controller extends MY_Controller {
 
 	public function add()
 	{		
+		$datas = array();
 		$this->data_view['id'] = '';
 		$this->render_object->_set('form_mod', 'add');
-		
-
-
 		
 		if ($this->form_validation->run() === FALSE){
 
@@ -52,50 +50,21 @@ class Inputs_controller extends MY_Controller {
 				$this->{$this->_model_name}->post($datas);
 			}
 		}	
-		/* GET 5 last input */
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
-		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_last(500, 'id', 'desc' );
-				
+		if ($this->session->userdata('month_in_progress')){
+			$datas = $this->{$this->_model_name}->get_last(500, 'id', 'desc' );
+		}
+		$this->data_view['datas'] = $datas;
 		$this->_set('view_inprogress','edition/Input_form_add');
 		$this->render_view();
 	}
 	
-	function list(){
-		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
-		for($year = date('Y');$year >= 2016 ; $year--){
-			$this->data_view['years'][$year] = $year;
-		}		
-		$datas = $this->{$this->_model_name}->get_group_by();
+	/*function list(){
 
-		$tmp   = array();
-		$stats = array();
-		foreach($datas AS $key=>$obj){
-			$stats['month'][$obj->MONTH] = $obj->MONTH;
-			$stats['year'][$obj->YEAR] = $obj->YEAR;
-			@$tmp[$obj->YEAR][$obj->MONTH] = $obj;
-		}
-		ksort($stats['month']);
-		ksort($stats['year']);	
-		
-		foreach($stats['year'] AS $year){
-			foreach($stats['month'] AS $month){
-				if (isset($tmp[$year][$month])){
-					$stats['line'][$year][$month] = $tmp[$year][$month]->SUM;
-				} else {
-					$stats['line'][$year][$month] = 0;
-				}
-			}
-		}
-	
-		$stats['color']['2018'] = '#ff9933';
-		$stats['color']['2017'] = '#0099ff';
-		$stats['color']['2016'] = '#009933';
-		
-		$this->data_view['stats'] = $stats;
 		
 		$this->_set('view_inprogress','unique/list_view_input');
 		$this->render_view();
-	}
+	}*/
 
 
 }

@@ -7,7 +7,7 @@ class Input_model extends Core_model{
 	
 	function __construct(){
 		parent::__construct();
-		$this->_set('_debug', TRUE);
+		$this->_set('_debug', FALSE);
 		
 		$this->_set('table'	, 'inputs');
 		$this->_set('key'	, 'id');
@@ -37,12 +37,50 @@ class Input_model extends Core_model{
 
 		$datas = $this->db->select('MONTH(billing_date) AS MONTH,YEAR(billing_date) AS YEAR,SUM(duration) AS SUM, count(*) AS NB')
 					   ->order_by($this->order, $this->direction )
-					   ->group_by('MONTH(billing_date),YEAR(billing_date)')
+					   ->group_by(implode(',',$this->group_by))
 					   ->get($this->table)
 					   ->result();
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;
 	}
+
+	function get_stats_user($month = null ,$year = null, $user = null){
+		if ($month)
+			$this->db->where('MONTH(billing_date)',$month);
+		if ($year)
+			$this->db->where('YEAR(billing_date)',$year);
+		if ($user)
+			$this->db->where('user',$user);
+		$this->db->where('duration > 0 ', null);
+		$datas = $this->db->select('YEAR(billing_date) AS YEAR,SUM(duration) AS SUM_TOUR, count(*) AS NB_TOUR, CONCAT(users.name," ",users.surname) AS UserName, ROUND(SUM(duration) / count(*),2) AS MOY_TOUR')
+					  ->order_by('YEAR','DESC')
+					  ->order_by('SUM_TOUR','DESC')
+					  ->order_by('user','DESC')
+				      ->group_by('user,YEAR(billing_date)')
+					  ->join('users','inputs.user=users.id','LEFT')
+					  ->get($this->table)					  
+					  ->result();
+		$this->_debug_array[] = $this->db->last_query();
+		return $datas;	
+	}
+	
+	function get_minutes_year($year = null, $user = null){
+		if ($year)
+			$this->db->where('YEAR(billing_date)',$year);
+		if ($user)
+			$this->db->where('user',$user);			
+		$this->db->where('duration > 0 ', null);
+		$datas = $this->db->select('YEAR(billing_date) AS YEAR,SUM(duration) AS SUM_TOUR,SUM(duration)/60 AS HOUR_TOUR')
+					  ->order_by('YEAR','DESC')
+					  ->order_by('SUM_TOUR','DESC')
+				      ->group_by('YEAR(billing_date)')
+					  ->get($this->table)					  
+					  ->result();
+		$this->_debug_array[] = $this->db->last_query();
+		return $datas;			
+	}
+
+
 
 }
 ?>

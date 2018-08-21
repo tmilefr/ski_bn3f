@@ -1,4 +1,3 @@
-	
 <div class="card" >
   <div class="card-body">
 
@@ -19,26 +18,26 @@ echo $this->render_object->RenderFormElement('updated');
 <div class="form-row">
 	<div class="form-group col-md-2">
 		<?php 
-			echo $this->bootstrap_tools->label('billing_date');
+			echo $this->render_object->label('billing_date');
 			echo $this->render_object->RenderFormElement('billing_date'); 
 		?>
 	</div>
 	<div class="form-group col-md-2">
 		<?php 
-			echo $this->bootstrap_tools->label('user');
+			echo $this->render_object->label('user');
 			echo $this->render_object->RenderFormElement('user');
 		?>
 	</div>
 
 	<div class="form-group col-md-2">
 		<?php 
-			echo $this->bootstrap_tools->label('rates');
+			echo $this->render_object->label('rates');
 			echo $this->render_object->RenderFormElement('rates');
 		?>
 	</div>
 	<div class="form-group col-md-2">
 		<?php 
-			echo $this->bootstrap_tools->label('duration');
+			echo $this->render_object->label('duration');
 			echo $this->render_object->RenderFormElement('duration'); 
 		?>
 	</div>
@@ -63,7 +62,7 @@ echo form_close();
   </div>
 </div>
 <?php if (isset($datas)){ ?>
-	<h3><?php echo Lang('LAST_INPUTS');?></h3>
+	<h3><?php echo Lang('INPUTS_IN_MONTH');?></h3>
 	<table class="table table-striped table-sm">
 	  <thead>
 		<tr>			
