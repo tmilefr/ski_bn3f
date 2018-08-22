@@ -10,20 +10,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="col-sm">
 			<canvas id="canvas_boat"></canvas>
 		</div>
-	</div>
-	<div class="row">
-		<?php foreach($TOP AS $year=>$tours){ ?>
 		<div class="col-sm">
-			<div class="card">
-			  <div class="card-header">
-				<?php echo LANG('DATAS_TOP_USERS_'.$year);?>
-			  </div>
-			  <div class="card-body">
-				<?php echo $this->bootstrap_tools->render_table(['UserName','NB_TOUR','SUM_TOUR','MOY_TOUR'] , $tours, 'table-striped table-sm', 5);?>
-			  </div>
+			<div class="accordion" id="accordionTopUser">
+			<?php foreach($TOP AS $year=>$tours){ ?>
+				<div class="card">
+					<div class="card-header" id="heading<?php echo $year;?>">
+						<h5 class="mb-0">
+						<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse<?php echo $year;?>" aria-expanded="true" aria-controls="collapse<?php echo $year;?>">
+							<?php echo LANG('DATAS_TOP_USERS_'.$year);?>
+						</button>
+						</h5>
+					</div>
+					<div id="collapse<?php echo $year;?>" class="collapse <?php echo (($year == date('Y')) ? 'show':'');?>" aria-labelledby="heading<?php echo $year;?>" data-parent="#accordionTopUser">
+					<div class="card-body">
+						<?php echo $this->bootstrap_tools->render_table(['UserName','NB_TOUR','SUM_TOUR','MOY_TOUR'] , $tours, 'table-striped table-sm', 5);?>
+					</div>
+				</div>
+			<?php } ?>
 			</div>
 		</div>
-		<?php } ?>
 	</div>
 </div>
 <script>
@@ -72,7 +77,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			responsive: true,
 			title: {
 				display: true,
-				text: 'Chart.js Line Chart'
+				text: "<?php echo Lang('BOAT_MINUTES');?>"
 			},
 			tooltips: {
 				mode: 'index',
@@ -87,14 +92,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					display: true,
 					scaleLabel: {
 						display: true,
-						labelString: 'Année'
+						labelString: "<?php echo Lang('Years');?>"
 					}
 				}],
 				yAxes: [{
 					display: true,
 					scaleLabel: {
 						display: true,
-						labelString: 'Value'
+						labelString: "<?php echo Lang('Hours');?>"
 					}
 				}]
 			}

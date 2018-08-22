@@ -27,5 +27,13 @@ class Users_controller extends MY_Controller {
 		$this->Users_model->_set('_debug', TRUE);
 
 	}
+	
+	function view($id){
+		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
+		$this->load->model('Input_model');
+		$this->data_view['stats'] = $this->Input_model->get_stats_user_month( null , null ,$id);
+		
+		parent::view($id);
+	}
 
 }

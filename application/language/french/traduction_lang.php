@@ -43,6 +43,18 @@ $lang['duration'] = 'Durée';
 $lang['close'] = 'Pour un amis proche';
 $lang['LAST_5_INPUTS'] = 'Les 5 derniers enregistrements';
 
+/* HOME */
+$lang['Years'] = 'Années';
+$lang['Hours'] = 'Heures';
+$lang['BOAT_MINUTES'] = 'Heure bateau';
+$lang['DATAS_TOP_USERS_2018'] = 'Top Conso 2018';
+$lang['DATAS_TOP_USERS_2017'] = 'Top Conso 2017';
+$lang['DATAS_TOP_USERS_2016'] = 'Top Conso 2016';
+
+$lang['UserName'] = 'Membre';
+$lang['NB_TOUR']  = 'Tours';
+$lang['SUM_TOUR'] = 'Minutes';
+$lang['MOY_TOUR'] = 'Moyenne';
 
 $lang['About'] = 'A propos';
 

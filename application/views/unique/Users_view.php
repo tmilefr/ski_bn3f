@@ -14,11 +14,78 @@
 				echo $this->render_object->label('section').' : '.$this->render_object->RenderElement('section').'<br/>'; 
 				echo $this->render_object->RenderElement('adress').'<br/>';
 				echo $this->render_object->RenderElement('postalcode').' '.$this->render_object->RenderElement('town').' '.$this->render_object->RenderElement('country') ; 
-			?>				
+			
+			//echo '<pre><code>'.print_r($stats , 1).'</code></pre>';
+			?>	
+			
+						
 		</p>
 		<?php
 			echo $this->render_object->render_element_menu();
 		?>
+		
+		<div class="row">
+			<div class="col-sm">
+				<canvas id="canvas_min"></canvas>
+			</div>
+			<div class="col-sm">
+				
+			</div>
+		</div>
 	  </div>
 	</div>	
 </div>
+
+
+
+<script>
+	<?php 
+	$ref = $data = '';
+	foreach($stats['2018'] AS $month=>$values){
+		$ref .= '"'.implode('","', array_keys($stats['2018'][$month])).'",';
+		$data .= implode(',',$values);
+	}
+	?>	
+	var barChartData = {
+		labels : [<?php echo $ref;?>],
+		datasets : [
+		<?php
+			echo '
+			{
+				label: \'2018\',
+				backgroundColor: "#'.$this->bootstrap_tools->random_color().'",
+				borderColor: "#'.$this->bootstrap_tools->random_color().'",
+				borderWidth: 1,
+				data : ['.$data.']
+			}';
+		?>
+		],
+		options: {
+			legend: {
+				display: true,
+				labels: {
+					fontColor: 'rgb(255, 99, 132)'
+				}
+			}
+        }
+	};
+	
+	window.onload = function() {
+		var ctx = document.getElementById('canvas_min').getContext('2d');
+		window.myBar = new Chart(ctx, {
+			type: 'bar',
+			data: barChartData,
+			options: {
+				responsive: true,
+				legend: {
+					position: 'top',
+				},
+				title: {
+					display: true,
+					text: 'Consomation Minutes dans l\'année'
+				}
+			}
+		});
+	};		
+	
+</script>
