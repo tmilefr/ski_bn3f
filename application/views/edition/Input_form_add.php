@@ -1,3 +1,16 @@
+<?php
+echo form_open(base_url('Inputs_controller/filter_set'), ['class' => '', 'id' => 'filter_set'] , ['id'=>$id,'from'=>$this->render_object->_get('form_mod')] );
+
+echo '<div class="form-row"><div class="form-group col-md-2">';
+echo $this->bootstrap_tools->render_dropdown('month_in_progress', [4=>'avril',5=>'mai',6=>'juin',7=>'juillet',8=>'aout',9=>'septembre',10=>'octobre',11=>'novembre'],'');
+echo '<div class="form-group col-md-2">
+		<button type="submit" class="btn btn-primary">'.Lang('VALID').'</button>
+	</div>
+</div>';
+
+echo form_close();
+
+?>
 <div class="card" >
   <div class="card-body">
 

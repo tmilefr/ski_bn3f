@@ -189,8 +189,7 @@ class MY_Controller extends CI_Controller {
 		$this->_set('view_inprogress',$this->_list_view);
 		$this->render_view();		
 		
-	}
-	
+	}	
 	
 	public function edit($id = 0)
 	{		

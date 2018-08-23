@@ -6,7 +6,6 @@ class Home extends MY_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('Stats_object');
 		$this->_model_name 		= 'Input_model';	   //DataModel
 		$this->_controller_name = 'Home';  //controller name for routing
 		$this->title = '';
@@ -67,7 +66,7 @@ class Home extends MY_Controller {
 		ksort($tmp['datas']);
 		$this->data_view['BOAT'] = $tmp;
 	
-		$this->_set('view_inprogress','home_page');
+		$this->_set('view_inprogress','unique/home_page');
 		$this->render_view();
 	}
 }

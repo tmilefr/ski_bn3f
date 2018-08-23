@@ -51,10 +51,19 @@ class Inputs_controller extends MY_Controller {
 			}
 		}	
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
+		$this->data_view['month_in_progress'] = date('m');
 		if ($this->session->userdata('month_in_progress')){
-			$datas = $this->{$this->_model_name}->get_last(500, 'id', 'desc' );
-		}
-		$this->data_view['datas'] = $datas;
+			//$datas = $this->{$this->_model_name}->get_last(500, 'id', 'desc' );
+			$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
+			$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));
+			//GET DATAS
+			$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
+			$this->data_view['datas'] 	= $this->{$this->_model_name}->get();			
+			
+		}	
+
+		
+		
 		$this->_set('view_inprogress','edition/Input_form_add');
 		$this->render_view();
 	}

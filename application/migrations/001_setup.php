@@ -72,7 +72,7 @@ class Migration_setup extends CI_Migration {
 			//$this->LoadData('Rates_data.json','Rates_model','Rates');			
 			
 			
-			$this->dbforge->add_field( $this->_get_json('input.json') );
+			$this->dbforge->add_field( $this->_get_json('Input.json') );
 			$this->dbforge->add_key('id', TRUE);
 			$this->dbforge->create_table('inputs');  	
 			
