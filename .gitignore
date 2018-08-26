@@ -2,3 +2,5 @@
 application/config/config\.php
 
 application/logs/
+
+application/config/database\.php

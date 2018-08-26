@@ -28,6 +28,20 @@ class Input_model extends Core_model{
 		return $datas;
 	}
 
+	public function get_from($month = null, $year = null){
+		if ($month)
+			$this->db->where('MONTH(billing_date)',$month);
+		if ($year)
+			$this->db->where('YEAR(billing_date)',$year);
+
+		$datas = $this->db->select(($this->autorized_fields ? implode(',',$this->autorized_fields) : '*' ))
+					   ->order_by($this->order, $this->direction )
+					   ->get($this->table)
+					   ->result();
+		$this->_debug_array[] = $this->db->last_query();
+		return $datas;
+	}
+
 	public function get_group_by($month = null ,$year = null){
 		
 		if ($month)

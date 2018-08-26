@@ -26,10 +26,17 @@ class Inputs_controller extends MY_Controller {
 		$this->init();
 	}
 
+	public function filter_set(){
+		$this->session->set_userdata( $this->set_ref_field('month_in_progress') , $this->input->post('month_in_progress') );
+		redirect('Inputs_controller/add');
+	}
+
 	public function add()
 	{		
 		$datas = array();
 		$this->data_view['id'] = '';
+		$this->data_view['month_in_progress'] = $this->session->userdata( $this->set_ref_field('month_in_progress') );	
+		$this->data_view['last_date'] = date('Y-m-d');	
 		$this->render_object->_set('form_mod', 'add');
 		
 		if ($this->form_validation->run() === FALSE){
@@ -48,17 +55,18 @@ class Inputs_controller extends MY_Controller {
 				} 
 			} else if ($this->input->post('form_mod') == 'add'){
 				$this->{$this->_model_name}->post($datas);
+				
+				$this->data_view['last_date'] = $datas['billing_date'];
 			}
 		}	
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
-		$this->data_view['month_in_progress'] = date('m');
-		if ($this->session->userdata('month_in_progress')){
-			//$datas = $this->{$this->_model_name}->get_last(500, 'id', 'desc' );
-			$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
-			$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));
+		//$this->data_view['month_in_progress'] = date('m');
+		if ($this->data_view['month_in_progress']){
+			$this->{$this->_model_name}->_set('order'			, 'billing_date,id');
+			$this->{$this->_model_name}->_set('direction'		, 'DESC');	
 			//GET DATAS
 			$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
-			$this->data_view['datas'] 	= $this->{$this->_model_name}->get();			
+			$this->data_view['datas'] 	= $this->{$this->_model_name}->get_from($this->data_view['month_in_progress'],date('Y'));			
 			
 		}	
 
