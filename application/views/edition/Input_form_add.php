@@ -84,7 +84,7 @@ echo form_close();
 			<?php
 			foreach($this->{$_model_name}->_get('defs') AS $field=>$defs){
 				if ($defs->list === true){
-					echo '<th scope="col">'.Lang($field).'</th>';
+					echo '<th scope="col">'.$this->render_object->render_link($field,'add').'</a></th>';
 				}
 			}
 			?>
@@ -96,7 +96,7 @@ echo form_close();
 	foreach($datas AS $key => $data){
 		echo '<tr>';
 		echo '<td>';
-			echo $this->render_object->render_element_menu($data);
+			echo $this->render_object->render_element_menu($data, (($data->billed) ? true:false));
 		echo '</td>';	
 
 		foreach($this->{$_model_name}->_get('defs') AS $field=>$defs){

@@ -24,6 +24,7 @@ class MY_Controller extends CI_Controller {
 	protected $json = null;
 	protected $json_path = APPPATH.'models/json/';
 	protected $per_page	= 10;
+	protected $next_view = 'list';
 					
 	/**
 	 * Generic Constructor
@@ -225,7 +226,7 @@ class MY_Controller extends CI_Controller {
 			} else if ($this->input->post('form_mod') == 'add'){
 				$datas['id'] = $this->{$this->_model_name}->post($datas);
 			}
-			redirect($this->_get('_rules')['list']->url);
+			redirect($this->_get('_rules')[$this->next_view]->url);
 		}
 		$this->_set('view_inprogress',$this->_edit_view);
 		$this->render_view();

@@ -26,6 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="<?php echo base_url('Rates_controller/list');?>"><?php echo Lang('Rates');?></a>
 						<a class="dropdown-item" href="<?php echo base_url('Import_controller/list');?>"><?php echo Lang('Import');?></a>
+						<a class="dropdown-item" href="<?php echo base_url('Inputs_controller/list');?>"><?php echo Lang('Inputs');?></span></a>
 						<a class="dropdown-item" href="#"><?php echo Lang('Parameter');?></a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#AboutModal"><?php echo Lang('About');?></a>
@@ -53,8 +54,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<nav class="navbar navbar-dark bg-dark">
 				<ul class="navbar-nav mr-auto flex-column">
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo base_url('Inputs_controller/list');?>">
-							<span class="oi oi-person"></span> <?php echo Lang('Inputs');?></span>
+						<a class="nav-link" href="<?php echo base_url('Inputs_controller/billed');?>">
+							<span class="oi oi-spreadsheet"></span> <?php echo Lang('Inputs');?></span>
 						</a>
 					</li>					
 					<li class="nav-item">

@@ -7,7 +7,7 @@ class Input_model extends Core_model{
 	
 	function __construct(){
 		parent::__construct();
-		$this->_set('_debug', FALSE);
+		$this->_set('_debug', TRUE);
 		
 		$this->_set('table'	, 'inputs');
 		$this->_set('key'	, 'id');
@@ -29,6 +29,8 @@ class Input_model extends Core_model{
 	}
 
 	public function get_from($month = null, $year = null){
+		$this->_set_filter();
+		$this->_set_search();		
 		if ($month)
 			$this->db->where('MONTH(billing_date)',$month);
 		if ($year)
@@ -42,14 +44,13 @@ class Input_model extends Core_model{
 		return $datas;
 	}
 
-	public function get_group_by($month = null ,$year = null){
-		
+	public function get_group_by($month = null ,$year = null){		
 		if ($month)
 			$this->db->where('MONTH(billing_date)',$month);
 		if ($year)
 			$this->db->where('YEAR(billing_date)',$year);
 
-		$datas = $this->db->select('MONTH(billing_date) AS MONTH,YEAR(billing_date) AS YEAR,SUM(duration) AS SUM, count(*) AS NB')
+		$datas = $this->db->select('MONTH(billing_date) AS MONTH,YEAR(billing_date) AS YEAR,SUM(duration) AS SUM, count(*) AS NB, billed')
 					   ->order_by($this->order, $this->direction )
 					   ->group_by(implode(',',$this->group_by))
 					   ->get($this->table)

@@ -72,7 +72,7 @@
 		"list": false,
 		"search": false,
 		"rules": null,
-		"since": 1,
+		"since": 1,		
 		"dbforge": {
 			"type": "DATETIME",
 			"null": true
@@ -102,10 +102,14 @@
 	},
 	"billed": {
 		"type": "checkbox",
-		"list": false,
+		"list": true,
 		"search": false,
 		"rules": null,
 		"since": 1,
+		"values": {
+			"0": "Non",
+			"1": "Oui"
+		},		
 		"dbforge": {
 			"type": "INT",
 			"constraint": "5"

@@ -24,6 +24,7 @@ class Inputs_controller extends MY_Controller {
 		$this->_set('_debug', TRUE);
 		
 		$this->init();
+		$this->_set('next_view', 'add');
 	}
 
 	public function filter_set(){
@@ -62,8 +63,10 @@ class Inputs_controller extends MY_Controller {
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
 		//$this->data_view['month_in_progress'] = date('m');
 		if ($this->data_view['month_in_progress']){
-			$this->{$this->_model_name}->_set('order'			, 'billing_date,id');
-			$this->{$this->_model_name}->_set('direction'		, 'DESC');	
+			$this->{$this->_model_name}->_set('global_search'	, $this->session->userdata($this->set_ref_field('global_search')));
+			$this->{$this->_model_name}->_set('order'			, $this->session->userdata($this->set_ref_field('order')));
+			$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
+			$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));	
 			//GET DATAS
 			$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
 			$this->data_view['datas'] 	= $this->{$this->_model_name}->get_from($this->data_view['month_in_progress'],date('Y'));			
@@ -76,12 +79,23 @@ class Inputs_controller extends MY_Controller {
 		$this->render_view();
 	}
 	
-	/*function list(){
-
+	function bill(){
+		
+	}
+	
+	function rebill(){
+		
+	}
+	
+	function billed(){
+		$this->{$this->_model_name}->_set('group_by',  ['MONTH(billing_date)','YEAR(billing_date)','billed']);
+		$this->{$this->_model_name}->_set('order'			, 'billing_date');
+		//GET DATAS
+		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_group_by();
 		
 		$this->_set('view_inprogress','unique/list_view_input');
 		$this->render_view();
-	}*/
+	}
 
 
 }
