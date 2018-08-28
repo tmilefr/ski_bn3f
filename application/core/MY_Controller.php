@@ -11,16 +11,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class MY_Controller extends CI_Controller {
 	
-	protected $autorised_get_key 	= array('order','direction','filter','page','repertoire','search','id'); //key in url
+	protected $_autorised_get_key 	= array('order','direction','filter','page','repertoire','search','id'); //key in url
 	protected $_model_name			= false;
 	protected $_debug_array  		= array();
 	protected $_debug 				= TRUE;
 	protected $_controller_name 	= null;
+	protected $_rules				= null;
+	protected $_autorize			= array();
+	
 	protected $view_inprogress 		= null;
 	protected $data_view 			= array();
 	protected $title 				= '';
-	protected $_rules				= null;
-	protected $_autorize			= array();
 	protected $json = null;
 	protected $json_path = APPPATH.'models/json/';
 	protected $per_page	= 10;
@@ -140,7 +141,7 @@ class MY_Controller extends CI_Controller {
 		}
 		$array = $this->uri->uri_to_assoc(3);
 		foreach($array AS $field=>$value){
-			if (in_array($field,$this->autorised_get_key)){
+			if (in_array($field,$this->_autorised_get_key)){
 				switch($field){
 					case 'search':
 						$this->session->set_userdata( $this->set_ref_field('global_search') ,'');
@@ -167,18 +168,29 @@ class MY_Controller extends CI_Controller {
 		return $name.'_'.$this->_controller_name;
 	}
 	
-	public function delete($id = 0){
-		if ($id){
-			$this->{$this->_model_name}->_set('key_value',$id);
-			$this->{$this->_model_name}->delete();
-		}
-		redirect($this->_get('_rules')['list']->url);
-	}
-	
-	public function add(){
-		$this->render_object->_set('form_mod', 'add');
-		$this->edit();
-	}
+	public function list()
+	{
+		$this->{$this->_model_name}->_set('global_search'	, $this->session->userdata($this->set_ref_field('global_search')));
+		$this->{$this->_model_name}->_set('order'			, $this->session->userdata($this->set_ref_field('order')));
+		$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
+		$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));
+		$this->{$this->_model_name}->_set('per_page'		, $this->per_page);
+		$this->{$this->_model_name}->_set('page'			, $this->session->userdata($this->set_ref_field('page')));
+		
+		//GET DATAS
+		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
+		$this->data_view['datas'] 	= $this->{$this->_model_name}->get();
+		
+		$config = array();
+		$config['per_page'] 	= $this->per_page;
+		$config['base_url'] 	= $this->config->item('base_url').$this->_controller_name.'/list/page/';
+		$config['total_rows'] 	= $this->{$this->_model_name}->get_pagination();
+		$this->pagination->initialize($config);	
+
+		
+		$this->_set('view_inprogress','unique/list_view');
+		$this->render_view();
+	}	
 	
 	public function view($id){
 		if ($id){
@@ -191,6 +203,19 @@ class MY_Controller extends CI_Controller {
 		$this->render_view();		
 		
 	}	
+	
+	public function delete($id = 0){
+		if ($id){
+			$this->{$this->_model_name}->_set('key_value',$id);
+			$this->{$this->_model_name}->delete();
+		}
+		redirect($this->_get('_rules')['list']->url);
+	}
+	
+	public function add(){
+		$this->render_object->_set('form_mod', 'add');
+		$this->edit();
+	}
 	
 	public function edit($id = 0)
 	{		
@@ -232,34 +257,9 @@ class MY_Controller extends CI_Controller {
 		$this->render_view();
 	}
 
-	public function list()
-	{
-		$this->{$this->_model_name}->_set('global_search'	, $this->session->userdata($this->set_ref_field('global_search')));
-		$this->{$this->_model_name}->_set('order'			, $this->session->userdata($this->set_ref_field('order')));
-		$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
-		$this->{$this->_model_name}->_set('direction'		, $this->session->userdata($this->set_ref_field('direction')));
-		$this->{$this->_model_name}->_set('per_page'		, $this->per_page);
-		$this->{$this->_model_name}->_set('page'			, $this->session->userdata($this->set_ref_field('page')));
-		
-		//GET DATAS
-		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');
-		$this->data_view['datas'] 	= $this->{$this->_model_name}->get();
-		
-		$config = array();
-		$config['per_page'] 	= $this->per_page;
-		$config['base_url'] 	= $this->config->item('base_url').$this->_controller_name.'/list/page/';
-		$config['total_rows'] 	= $this->{$this->_model_name}->get_pagination();
-		$this->pagination->initialize($config);	
-
-		
-		$this->_set('view_inprogress','unique/list_view');
-		$this->render_view();
-	}
-
 	public function index(){
 		redirect($this->_get('_rules')['list']->url);
 	}
-
 	
 	public function _set($field,$value){
 		$this->$field = $value;

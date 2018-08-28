@@ -12,6 +12,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Inputs_controller extends MY_Controller {
 
 	public function __construct(){
+		
+		$this->_autorised_get_key[] = 'month';
+		$this->_autorised_get_key[] = 'year';
+		$this->_autorised_get_key[] = 'rebill';		
+		
+		
 		parent::__construct();
 		$this->_controller_name = 'Inputs_controller';  //controller name for routing
 		$this->_model_name 		= 'Input_model';	   //DataModel
@@ -21,10 +27,13 @@ class Inputs_controller extends MY_Controller {
 		
 		$this->title .= $this->lang->line($this->_controller_name);
 		
-		$this->_set('_debug', TRUE);
+		$this->_set('_debug', FALSE);
 		
 		$this->init();
 		$this->_set('next_view', 'add');
+		
+		$this->load->model('Users_model');
+		$this->load->model('Rates_model');
 	}
 
 	public function filter_set(){
@@ -79,12 +88,29 @@ class Inputs_controller extends MY_Controller {
 		$this->render_view();
 	}
 	
-	function bill(){
+	function make_bill(){
 		
-	}
-	
-	function rebill(){
-		
+		$this->{$this->_model_name}->_set('filter'			, ['MONTH(billing_date)' => $this->session->userdata($this->set_ref_field('month')) ,'YEAR(billing_date)' => $this->session->userdata($this->set_ref_field('year')), 'billed'=> (( $this->session->userdata($this->set_ref_field('rebill')) ==  'on' ) ? 1 : 0 ) ] );
+		$inputs 	=  $this->{$this->_model_name}->get();
+
+		$stat = new StdClass();
+		foreach( $inputs AS $input){
+			
+			if (isset($stat->input[$input->user]['dates'][$input->billing_date][$input->rates])){
+				$stat->input[$input->user]['dates'][$input->billing_date][$input->rates] += $input->duration;
+			} else {
+				$stat->input[$input->user]['dates'][$input->billing_date][$input->rates] = $input->duration;
+			}
+			
+			if (isset($stat->input[$input->user][$input->rates]['duration'])){
+				$stat->input[$input->user][$input->rates]['duration'] += $input->duration;
+			} else {
+				$stat->input[$input->user][$input->rates]['duration'] = $input->duration;
+			}
+		}
+		$this->data_view['consos'] 	= $stat;
+		$this->_set('view_inprogress','unique/bill');
+		$this->render_view();
 	}
 	
 	function billed(){
