@@ -102,10 +102,10 @@ class Inputs_controller extends MY_Controller {
 				$stat->input[$input->user]['dates'][$input->billing_date][$input->rates] = $input->duration;
 			}
 			
-			if (isset($stat->input[$input->user][$input->rates]['duration'])){
-				$stat->input[$input->user][$input->rates]['duration'] += $input->duration;
+			if (isset($stat->input[$input->user]['conso'][$input->rates])){
+				$stat->input[$input->user]['conso'][$input->rates] += $input->duration;
 			} else {
-				$stat->input[$input->user][$input->rates]['duration'] = $input->duration;
+				$stat->input[$input->user]['conso'][$input->rates] = $input->duration;
 			}
 		}
 		$this->data_view['consos'] 	= $stat;
