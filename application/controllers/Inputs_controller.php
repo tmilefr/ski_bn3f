@@ -34,6 +34,7 @@ class Inputs_controller extends MY_Controller {
 		
 		$this->load->model('Users_model');
 		$this->load->model('Rates_model');
+		$this->load->model('Family_model');
 	}
 
 	public function filter_set(){
@@ -90,25 +91,52 @@ class Inputs_controller extends MY_Controller {
 	
 	function make_bill(){
 		
-		$this->{$this->_model_name}->_set('filter'			, ['MONTH(billing_date)' => $this->session->userdata($this->set_ref_field('month')) ,'YEAR(billing_date)' => $this->session->userdata($this->set_ref_field('year')), 'billed'=> (( $this->session->userdata($this->set_ref_field('rebill')) ==  'on' ) ? 1 : 0 ) ] );
-		$inputs 	=  $this->{$this->_model_name}->get();
+		$inputs 	=  $this->{$this->_model_name}->get_inputs($this->session->userdata($this->set_ref_field('month')) , $this->session->userdata($this->set_ref_field('year')) );
 
-		$stat = new StdClass();
+		$this->data_view['rates'] = array();
+		$rates = $this->Rates_model->get_all();
+		
+		$consos = new StdClass();
+		$consos->month = $this->session->userdata($this->set_ref_field('month'));
+		$consos->year = $this->session->userdata($this->set_ref_field('year'));
+		
+		$consos->rates = array();
+				
+		foreach($rates AS $rate){
+			$consos->rates[$rate->id] = $rate;
+		}
+		
 		foreach( $inputs AS $input){
+			$this->Users_model->_set('key_value',$input->user);
 			
-			if (isset($stat->input[$input->user]['dates'][$input->billing_date][$input->rates])){
-				$stat->input[$input->user]['dates'][$input->billing_date][$input->rates] += $input->duration;
+			$user = new StdClass();
+			$user->details = $this->Users_model->get_one();
+			$consos->user[$input->user] = $user;
+			
+			if (!$user->details->family){
+				$user->details->family = 'f'.$input->user;
+				$consos->family[$user->details->family] = $this->Users_model->get_one();
 			} else {
-				$stat->input[$input->user]['dates'][$input->billing_date][$input->rates] = $input->duration;
+				$this->Family_model->_set('key_value',$user->details->family );
+				$consos->family[$user->details->family] = $this->Family_model->get_one();
 			}
 			
-			if (isset($stat->input[$input->user]['conso'][$input->rates])){
-				$stat->input[$input->user]['conso'][$input->rates] += $input->duration;
+			
+			
+			if (isset($consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates])){
+				$consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates] += $input->duration;
 			} else {
-				$stat->input[$input->user]['conso'][$input->rates] = $input->duration;
+				$consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates] = $input->duration;
+			}
+			
+			if (isset($consos->input[$user->details->family][$input->user]['conso'][$input->rates])){
+				$consos->input[$user->details->family][$input->user]['conso'][$input->rates] += $input->duration;
+			} else {
+				$consos->input[$user->details->family][$input->user]['conso'][$input->rates] = $input->duration;
 			}
 		}
-		$this->data_view['consos'] 	= $stat;
+		ksort($consos->input);
+		$this->data_view['consos'] 	= $consos;
 		$this->_set('view_inprogress','unique/bill');
 		$this->render_view();
 	}

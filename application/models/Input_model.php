@@ -7,7 +7,7 @@ class Input_model extends Core_model{
 	
 	function __construct(){
 		parent::__construct();
-		$this->_set('_debug', FALSE);
+		$this->_set('_debug', TRUE);
 		
 		$this->_set('table'	, 'inputs');
 		$this->_set('key'	, 'id');
@@ -15,6 +15,23 @@ class Input_model extends Core_model{
 		$this->_set('direction'	, 'desc');
 		$this->_set('json'	, 'Input.json');
 		$this->_init_def();
+	}
+	
+	
+	function get_inputs($month,$year){
+		if (is_array($this->filter) AND count($this->filter)){
+			foreach($this->filter AS $key => $value){
+				$this->db->where($key , $value);
+			}
+		} 	
+		$datas = $this->db->select('*')
+					   ->order_by('user', 'DESC' )
+					   ->where('MONTH(billing_date)',$month)
+					   ->where('YEAR(billing_date)',$year)
+					   ->get($this->table)
+					   ->result();
+		$this->_debug_array[] = $this->db->last_query();
+		return $datas;
 	}
 	
 	function get_last($nb, $order, $direction ){
