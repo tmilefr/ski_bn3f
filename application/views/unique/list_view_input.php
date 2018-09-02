@@ -1,5 +1,5 @@
 <div class="container-fluid">	
-	<table class="table table-sm">
+	<table class="table table-sm table-striped">
 		<thead>
 		<?php
 		echo '<tr>';

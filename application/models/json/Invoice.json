@@ -1,0 +1,81 @@
+{
+	"id": {
+		"type": "hidden",
+		"list": true,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "INT",
+			"constraint": "11",
+			"unsigned": true,
+			"auto_increment": true
+		}
+	},
+	"header": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"month": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "INT",
+			"constraint": "5"
+		}
+	},
+	"year": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "INT",
+			"constraint": "5"
+		}
+	},	
+	"created": {
+		"type": "created",
+		"list": false,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "DATETIME",
+			"null": true
+		}
+	},
+	"updated": {
+		"type": "updated",
+		"list": false,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "DATETIME",
+			"null":true
+		}
+	},
+	"content": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	}
+}

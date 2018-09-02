@@ -1,18 +1,16 @@
 <div class="container-fluid">
-<?php 
-foreach($consos->input AS $family => $users){ 
-	?>
-	<div class="card">
+<?php/*
+ <div class="card">
 	<div class="card-header">
 			<nav class="navbar navbar-expand-lg"> 
 				<ul class="navbar-nav mr-auto"> 
 					<li class="nav-item"> 
 						<?php
-							echo  Lang('Family_bill').' '.$consos->family[$family]->name;
+							echo  $invoice->header;
 						?>
 					</li> 
 				</ul> 	
-				<?php echo $consos->month.' / '.$consos->year;?>
+				<?php echo $invoice->month.' / '.$invoice->year;?>
 			</nav> 	
 	</div>
 	<?php
@@ -59,11 +57,7 @@ foreach($consos->input AS $family => $users){
 		</div>
 	<?php
 	}?>
-	</div><br/>
-<?php
-}
-
-?>
+	</div><br/>*/?>
 </div>
 
 

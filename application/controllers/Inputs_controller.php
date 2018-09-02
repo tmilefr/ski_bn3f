@@ -137,7 +137,42 @@ class Inputs_controller extends MY_Controller {
 		}
 		ksort($consos->input);
 		$this->data_view['consos'] 	= $consos;
-		$this->_set('view_inprogress','unique/bill');
+		
+		foreach($consos->input AS $family => $users){ 
+			$invoice = new StdClass();
+			$invoice->header = Lang('Family_bill').' '.$consos->family[$family]->name;
+			$invoice->month = $consos->month;
+			$invoice->year =  $consos->year;
+			$invoice->sum = 0;
+			foreach($users as $user => $datas){
+				$part = new StdClass();
+				$part->name = $consos->user[$user]->details->name.' '.$consos->user[$user]->details->surname;
+				foreach($datas['dates'] AS $key=>$values){
+					$i = 0;
+					foreach($values AS $rate=>$duration){
+						$day = new StdClass();
+						$day->date = $key;
+						$day->rate = $consos->rates[$rate]->name;
+						$day->duration = $duration;
+						$part->days[] = $day;
+					}
+				}
+				$total = 0;
+				foreach($datas['conso'] AS $rate=>$duration){
+					$footer = new StdClass();
+					$footer->rate = $consos->rates[$rate]->name;
+					$footer->duration = $duration;
+					$footer->cost = round($duration * $consos->rates[$rate]->amount, 2);
+					$total += round($duration * $consos->rates[$rate]->amount, 2);
+					$part->footer[] = $footer;
+				}
+				$invoice->part[] = $part;
+				$invoice->sum += $total;
+			}
+			echo '<pre>'.print_r(json_encode($invoice),1).'</pre>';
+		}
+		
+		$this->_set('view_inprogress','unique/Invoice_view');
 		$this->render_view();
 	}
 	

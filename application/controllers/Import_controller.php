@@ -39,6 +39,7 @@ class Import_controller extends MY_Controller {
 		$this->data_view['files']  = directory_map($this->data_path,1);
 		$this->data_view['process'] = ['SyncTours','ImportUsers','ImportRates','ImportUsers','ImportFamily'];
 		
+		$this->SyncTours();
 		$this->ImportInputs();
 		
 		$this->_set('view_inprogress','unique/import_view');
@@ -48,7 +49,7 @@ class Import_controller extends MY_Controller {
 	function ImportInputs(){
 		$this->GenericSql_model->exec('TRUNCATE inputs');
 		$sql = 'INSERT INTO inputs (billing_date, user, rates,duration,billed)
-		SELECT T.Date,U.id,T.TarifID,T.Duree ,T.Edite FROM ski_bn3f.tours AS T LEFT JOIN users AS U ON T.MembreID = U.oldid WHERE YEAR(date) > 2015';
+		SELECT T.Date,U.id,T.TarifID,T.Duree ,T.Edite FROM ski_bn3f.Tours AS T LEFT JOIN users AS U ON T.MembreID = U.oldid WHERE YEAR(date) > 2015';
 		return $this->GenericSql_model->exec($sql);
 	}
 	
