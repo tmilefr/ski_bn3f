@@ -59,6 +59,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</a>
 					</li>					
 					<li class="nav-item">
+						<a class="nav-link" href="<?php echo base_url('Invoice_controller/list');?>">
+							<span class="oi oi-document"></span> <?php echo Lang('Invoice');?></span>
+						</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="<?php echo base_url('Users_controller/list');?>">
 							<span class="oi oi-person"></span> <?php echo Lang('User');?></span>
 						</a>

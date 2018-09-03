@@ -43,6 +43,9 @@ $lang['duration'] = 'Durée';
 $lang['close'] = 'Pour un amis proche';
 $lang['LAST_5_INPUTS'] = 'Les 5 derniers enregistrements';
 
+$lang['Family_bill'] = 'Famille / membre ';
+
+
 /* HOME */
 $lang['Years'] = 'Années';
 $lang['Hours'] = 'Heures';

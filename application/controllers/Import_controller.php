@@ -39,8 +39,8 @@ class Import_controller extends MY_Controller {
 		$this->data_view['files']  = directory_map($this->data_path,1);
 		$this->data_view['process'] = ['SyncTours','ImportUsers','ImportRates','ImportUsers','ImportFamily'];
 		
-		$this->SyncTours();
-		$this->ImportInputs();
+		/*$this->SyncTours();
+		$this->ImportInputs();*/
 		
 		$this->_set('view_inprogress','unique/import_view');
 		$this->render_view();

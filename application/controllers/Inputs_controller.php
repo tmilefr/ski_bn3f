@@ -91,6 +91,8 @@ class Inputs_controller extends MY_Controller {
 	
 	function make_bill(){
 		
+		$this->load->model('Invoice_model');
+		
 		$inputs 	=  $this->{$this->_model_name}->get_inputs($this->session->userdata($this->set_ref_field('month')) , $this->session->userdata($this->set_ref_field('year')) );
 
 		$this->data_view['rates'] = array();
@@ -99,13 +101,11 @@ class Inputs_controller extends MY_Controller {
 		$consos = new StdClass();
 		$consos->month = $this->session->userdata($this->set_ref_field('month'));
 		$consos->year = $this->session->userdata($this->set_ref_field('year'));
-		
 		$consos->rates = array();
-				
 		foreach($rates AS $rate){
 			$consos->rates[$rate->id] = $rate;
 		}
-		
+		/* DATA CONSOLIDATION */
 		foreach( $inputs AS $input){
 			$this->Users_model->_set('key_value',$input->user);
 			
@@ -114,15 +114,13 @@ class Inputs_controller extends MY_Controller {
 			$consos->user[$input->user] = $user;
 			
 			if (!$user->details->family){
-				$user->details->family = 'f'.$input->user;
+				//no family
+				$user->details->family = 'u'.$input->user;
 				$consos->family[$user->details->family] = $this->Users_model->get_one();
 			} else {
 				$this->Family_model->_set('key_value',$user->details->family );
 				$consos->family[$user->details->family] = $this->Family_model->get_one();
-			}
-			
-			
-			
+			}			
 			if (isset($consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates])){
 				$consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates] += $input->duration;
 			} else {
@@ -136,13 +134,15 @@ class Inputs_controller extends MY_Controller {
 			}
 		}
 		ksort($consos->input);
-		$this->data_view['consos'] 	= $consos;
+		//$this->data_view['consos'] 	= $consos;
 		
+		/*Invoice construct ( finaly JSON OBJET in DataBase )*/
 		foreach($consos->input AS $family => $users){ 
 			$invoice = new StdClass();
 			$invoice->header = Lang('Family_bill').' '.$consos->family[$family]->name;
 			$invoice->month = $consos->month;
 			$invoice->year =  $consos->year;
+			$invoice->family =  $family;
 			$invoice->sum = 0;
 			foreach($users as $user => $datas){
 				$part = new StdClass();
@@ -169,10 +169,29 @@ class Inputs_controller extends MY_Controller {
 				$invoice->part[] = $part;
 				$invoice->sum += $total;
 			}
-			echo '<pre>'.print_r(json_encode($invoice),1).'</pre>';
+			$invoice->content = json_encode($invoice);
+			
+			//no family
+			if ( substr($family,0,1) == 'u'){
+				$user = substr($family,1);
+				$family = '';
+			} else {
+				$user = '';
+			}
+			$exist = $this->Invoice_model->is_exist(null,null,['month'=>$invoice->month,'year'=>$invoice->year,'family'=>$family,'user'=>$user]);
+			$datas = ['header'=>$invoice->header,'month' => $invoice->month, 'year'=>$invoice->year,'sum'=>$invoice->sum ,'content'=>$invoice->content,'family'=>$family,'user'=>$user];
+			if (!$exist){
+				$this->Invoice_model->post( $datas );
+			} else {
+				$this->Invoice_model->_set('key_value', $exist->id);
+				$this->Invoice_model->_set('datas', $datas);
+				$this->Invoice_model->put();				
+			}
+			$this->data_view['invoices'][$invoice->sum] = $invoice;
+			krsort($this->data_view['invoices']);
 		}
 		
-		$this->_set('view_inprogress','unique/Invoice_view');
+		$this->_set('view_inprogress','unique/Invoices_view');
 		$this->render_view();
 	}
 	

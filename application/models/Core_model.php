@@ -91,12 +91,12 @@ class Core_model extends CI_Model {
 		$this->db->truncate($this->table);	
 	}	
 	
-	public function is_exist($field = 'id' ,$value){
-		$query = $this->db->get_where($this->table , array($field => $value));
+	public function is_exist($field = 'id' ,$value, $fields = null){
+		$query = $this->db->get_where($this->table , (($fields) ? $fields:array($field => $value)) );
 		$this->_debug_array[] = $this->db->last_query();
 		
 		if ($query->num_rows())
-			return true;
+			return $query->row();
 		else
 			return false;			
 	}	
@@ -189,6 +189,9 @@ class Core_model extends CI_Model {
 		$this->_set_filter();
 		$this->_set_search();		  		
 		if ($this->per_page){
+			if ($this->per_page == $this->page){
+				$this->page = 1;
+			}
 			$this->db->limit( $this->per_page , $this->page);
 		}
         $datas = $this->db->select( ($this->autorized_fields ? implode(',',$this->autorized_fields) : '*' ) )

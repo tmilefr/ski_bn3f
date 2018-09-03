@@ -7,7 +7,7 @@ class Input_model extends Core_model{
 	
 	function __construct(){
 		parent::__construct();
-		$this->_set('_debug', TRUE);
+		$this->_set('_debug', FALSE);
 		
 		$this->_set('table'	, 'inputs');
 		$this->_set('key'	, 'id');

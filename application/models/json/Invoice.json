@@ -24,27 +24,71 @@
 		}
 	},
 	"month": {
-		"type": "input",
+		"type": "select",
 		"list": true,
 		"search": true,
 		"rules": null,
 		"since": 1,
+		"values": {
+			"1":"Janvier",
+			"2":"Février",
+			"3":"Mars",
+			"4":"Avril",
+			"5":"Mai",
+			"6":"Juin",
+			"7":"Juillet",
+			"8":"Août",
+			"9":"Septembre",
+			"10":"Octobre",
+			"11":"Novembre",
+			"12":"Décembre"
+		},		
 		"dbforge": {
 			"type": "INT",
 			"constraint": "5"
 		}
 	},
 	"year": {
-		"type": "input",
+		"type": "select",
 		"list": true,
 		"search": true,
 		"rules": null,
 		"since": 1,
+		"values": {
+			"2015":"2015",
+			"2016":"2016",
+			"2017":"2017",
+			"2018":"2018"
+		},
 		"dbforge": {
 			"type": "INT",
 			"constraint": "5"
 		}
 	},	
+	"family": {
+		"type": "select_database",
+		"list": true,
+		"search": false,
+		"rules": null,
+		"since": 2,
+		"values": "distinct(family,id:name)",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "45"
+		}
+	},
+	"user": {
+		"type": "select_database",
+		"list": true,
+		"search": false,
+		"rules": null,
+		"since": 2,
+		"values": "distinct(users,id:name@surname)",
+		"dbforge": {
+			"type": "INT",
+			"constraint": "5"
+		}
+	},		
 	"created": {
 		"type": "created",
 		"list": false,
@@ -69,13 +113,23 @@
 	},
 	"content": {
 		"type": "input",
+		"list": false,
+		"search": false,
+		"rules": "trim",
+		"since": 1,
+		"dbforge": {
+			"type": "LONGBLOB"
+		}
+	},
+	"sum": {
+		"type": "input",
 		"list": true,
 		"search": true,
 		"rules": "trim",
 		"since": 1,
 		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "255"
+			"type": "DECIMAL",
+			"constraint": "10,2"
 		}
 	}
 }
