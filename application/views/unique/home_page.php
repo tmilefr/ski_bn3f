@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 		<div class="col-sm">
-			2
+		
 		</div>	
 	</div>
 </div>
@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	};
 
 
-	var config = {
+	/*var config = {
 		type: 'line',
 		data: {
 			labels: [<?php echo implode(',',$BOAT['years']);?>],
@@ -110,7 +110,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}]
 			}
 		}
-	};
+	};*/
 
 	window.onload = function() {
 		var ctx = document.getElementById('canvas_min').getContext('2d');
@@ -129,8 +129,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 		
-		var ctx = document.getElementById('canvas_boat').getContext('2d');
-		window.myLine = new Chart(ctx, config);
+		/*var ctx = document.getElementById('canvas_boat').getContext('2d');
+		window.myLine = new Chart(ctx, config);*/
 
 	};	
 

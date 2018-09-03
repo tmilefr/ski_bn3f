@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author      Tmile
  * @link        http://www.24bis.com
  */
+
 class Invoice_controller extends MY_Controller {
 
 	public function __construct(){
@@ -25,7 +26,12 @@ class Invoice_controller extends MY_Controller {
 		$this->_set('_debug', FALSE);
 		
 		$this->init();
+		
+		$this->load->library('Dom_pdf');
 	}
+	
+	
+	
 	
 	public function view($id){
 		if ($id){
@@ -35,9 +41,16 @@ class Invoice_controller extends MY_Controller {
 			
 			$this->data_view['invoice'] = $dba_data;
 		}	
-		$this->_set('view_inprogress',$this->_list_view);
-		$this->render_view();		
+		/*$this->_set('view_inprogress',$this->_list_view);
+		$this->render_view();*/
 		
+		$this->load->view('unique/Invoice_view_pdf.php', $this->data_view);
+		$html = $this->output->get_output();
+
+		// Convert to PDF
+		$this->dompdf->load_html($html);        
+		$this->dompdf->render();
+		$this->dompdf->stream($dba_data->header.'_'.$dba_data->month.'_'.$dba_data->year);
 	}		
 
 }

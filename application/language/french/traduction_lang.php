@@ -43,7 +43,12 @@ $lang['duration'] = 'Durée';
 $lang['close'] = 'Pour un amis proche';
 $lang['LAST_5_INPUTS'] = 'Les 5 derniers enregistrements';
 
-$lang['Family_bill'] = 'Famille / membre ';
+$lang['Family_bill'] = 'Famille';
+$lang['User_bill'] = 'Membre';
+
+$lang['Invoice'] = 'Factures';
+$lang['Invoice_controller'] = 'Gestion des factures';
+
 
 
 /* HOME */

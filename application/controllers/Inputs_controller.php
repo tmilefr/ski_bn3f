@@ -139,9 +139,9 @@ class Inputs_controller extends MY_Controller {
 		/*Invoice construct ( finaly JSON OBJET in DataBase )*/
 		foreach($consos->input AS $family => $users){ 
 			$invoice = new StdClass();
-			$invoice->header = Lang('Family_bill').' '.$consos->family[$family]->name;
 			$invoice->month = $consos->month;
 			$invoice->year =  $consos->year;
+			$invoice->header = $consos->family[$family]->name;
 			$invoice->family =  $family;
 			$invoice->sum = 0;
 			foreach($users as $user => $datas){
@@ -175,8 +175,10 @@ class Inputs_controller extends MY_Controller {
 			if ( substr($family,0,1) == 'u'){
 				$user = substr($family,1);
 				$family = '';
+				$invoice->header = Lang('User_bill').' '.$invoice->header;
 			} else {
 				$user = '';
+				$invoice->header = Lang('Family_bill').' '.$invoice->header;
 			}
 			$exist = $this->Invoice_model->is_exist(null,null,['month'=>$invoice->month,'year'=>$invoice->year,'family'=>$family,'user'=>$user]);
 			$datas = ['header'=>$invoice->header,'month' => $invoice->month, 'year'=>$invoice->year,'sum'=>$invoice->sum ,'content'=>$invoice->content,'family'=>$family,'user'=>$user];
@@ -190,9 +192,10 @@ class Inputs_controller extends MY_Controller {
 			$this->data_view['invoices'][$invoice->sum] = $invoice;
 			krsort($this->data_view['invoices']);
 		}
-		
+		redirect('Inputs_controller/billed');
+		/*
 		$this->_set('view_inprogress','unique/Invoices_view');
-		$this->render_view();
+		$this->render_view();*/
 	}
 	
 	function billed(){

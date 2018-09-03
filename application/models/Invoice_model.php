@@ -7,7 +7,7 @@ class Invoice_model extends Core_model{
 		parent::__construct();
 		$this->_set('_debug', TRUE);
 		
-		$this->_set('table'	, 'invoice');
+		$this->_set('table'	, 'Invoice');
 		$this->_set('key'	, 'id');
 		$this->_set('order'	, 'id');
 		$this->_set('direction'	, 'desc');

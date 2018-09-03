@@ -26,10 +26,12 @@ class Input_model extends Core_model{
 		} 	
 		$datas = $this->db->select('*')
 					   ->order_by('user', 'DESC' )
+					   ->order_by('billing_date', 'ASC' )
 					   ->where('MONTH(billing_date)',$month)
 					   ->where('YEAR(billing_date)',$year)
 					   ->get($this->table)
 					   ->result();
+		echo '<pre>'.print_r($this->db->last_query(),1).'</pre>';
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;
 	}

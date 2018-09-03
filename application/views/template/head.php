@@ -87,7 +87,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</ul> 
 				<?php  
 				if ($this->render_object->_get('_ui_rules') AND !$this->render_object->_get('form_mod')){  
-				echo '<a class="btn btn-success" href="'.$this->render_object->_get('_ui_rules')['add']->url.'"><span class="oi oi-plus"></span> '.$this->render_object->_get('_ui_rules')['add']->name.'</a>'; 
+					if ($this->render_object->_get('_ui_rules')['add']->autorize)
+						echo '<a class="btn btn-success" href="'.$this->render_object->_get('_ui_rules')['add']->url.'"><span class="oi oi-plus"></span> '.$this->render_object->_get('_ui_rules')['add']->name.'</a>'; 
 				} 
 				?> 
 			</nav> 	

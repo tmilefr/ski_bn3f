@@ -24,7 +24,7 @@ class MY_Controller extends CI_Controller {
 	protected $title 				= '';
 	protected $json = null;
 	protected $json_path = APPPATH.'models/json/';
-	protected $per_page	= 10;
+	protected $per_page	= 20;
 	protected $next_view = 'list';
 					
 	/**
