@@ -11,7 +11,7 @@ class Home extends MY_Controller {
 		$this->title = '';
 		$this->data_view['content'] = '';
 		$this->init();
-		
+		$this->data_view['search_object']->autorize = false;
 		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
 	}
 

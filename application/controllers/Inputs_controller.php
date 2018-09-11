@@ -35,6 +35,7 @@ class Inputs_controller extends MY_Controller {
 		$this->load->model('Users_model');
 		$this->load->model('Rates_model');
 		$this->load->model('Family_model');
+	
 	}
 
 	public function filter_set(){
@@ -90,6 +91,7 @@ class Inputs_controller extends MY_Controller {
 	}
 	
 	function make_bill(){
+		$this->load->library('Dom_pdf');
 		
 		$this->load->model('Invoice_model');
 		
@@ -170,7 +172,6 @@ class Inputs_controller extends MY_Controller {
 				$invoice->sum += $total;
 			}
 			$invoice->content = json_encode($invoice);
-			
 			//no family
 			if ( substr($family,0,1) == 'u'){
 				$user = substr($family,1);
@@ -180,15 +181,21 @@ class Inputs_controller extends MY_Controller {
 				$user = '';
 				$invoice->header = Lang('Family_bill').' '.$invoice->header;
 			}
+			//update or create
 			$exist = $this->Invoice_model->is_exist(null,null,['month'=>$invoice->month,'year'=>$invoice->year,'family'=>$family,'user'=>$user]);
 			$datas = ['header'=>$invoice->header,'month' => $invoice->month, 'year'=>$invoice->year,'sum'=>$invoice->sum ,'content'=>$invoice->content,'family'=>$family,'user'=>$user];
 			if (!$exist){
-				$this->Invoice_model->post( $datas );
+				$id = $this->Invoice_model->post( $datas );
 			} else {
 				$this->Invoice_model->_set('key_value', $exist->id);
 				$this->Invoice_model->_set('datas', $datas);
 				$this->Invoice_model->put();				
 			}
+			
+			//MAKE pdf
+			$this->dom_pdf->DoInvoice($invoice);
+
+			
 			$this->data_view['invoices'][$invoice->sum] = $invoice;
 			krsort($this->data_view['invoices']);
 		}
@@ -197,6 +204,8 @@ class Inputs_controller extends MY_Controller {
 		$this->_set('view_inprogress','unique/Invoices_view');
 		$this->render_view();*/
 	}
+	
+
 	
 	function billed(){
 		$this->{$this->_model_name}->_set('group_by',  ['MONTH(billing_date)','YEAR(billing_date)','billed']);

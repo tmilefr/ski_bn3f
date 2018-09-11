@@ -36,21 +36,13 @@ class Invoice_controller extends MY_Controller {
 	public function view($id){
 		if ($id){
 			$this->{$this->_model_name}->_set('key_value',$id);
-			$dba_data = $this->{$this->_model_name}->get_one();
-			$dba_data->content = json_decode($dba_data->content);
-			
-			$this->data_view['invoice'] = $dba_data;
+			$invoice = $this->{$this->_model_name}->get_one();
+			$invoice->content = json_decode($invoice->content);
 		}	
-		/*$this->_set('view_inprogress',$this->_list_view);
-		$this->render_view();*/
+		$this->data_view['invoice'] = $invoice;
+		$this->_set('view_inprogress',$this->_list_view);
+		$this->render_view();
 		
-		$this->load->view('unique/Invoice_view_pdf.php', $this->data_view);
-		$html = $this->output->get_output();
-
-		// Convert to PDF
-		$this->dompdf->load_html($html);        
-		$this->dompdf->render();
-		$this->dompdf->stream($dba_data->header.'_'.$dba_data->month.'_'.$dba_data->year);
 	}		
 
 }
