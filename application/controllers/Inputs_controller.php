@@ -68,7 +68,8 @@ class Inputs_controller extends MY_Controller {
 			} else if ($this->input->post('form_mod') == 'add'){
 				$this->{$this->_model_name}->post($datas);
 				
-				$this->data_view['last_date'] = $datas['billing_date'];
+				$this->render_object->_reset_value('duration');
+				$this->render_object->_reset_value('rates');
 			}
 		}	
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');

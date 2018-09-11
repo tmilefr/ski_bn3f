@@ -33,4 +33,40 @@ if ( ! function_exists('HumanReadableFilesize'))
 		return round($size, 2) .(($unit) ? ' ' . $units[$i]:'');
 	}
 }
+
+if ( ! function_exists('GetFormatDate'))
+{
+	function GetFormatDate($date,$mode = 'view',$notime = true){ //TODO : helper or in FormElement ? # Add by nL for WideVoip : 2013-04-19
+		if ($date != '0000-00-00'){
+			$regex_fr  = '`([0-9]{1,2})[-\/ \.]?([0-9]{1,2})[-\/ \.]?([0-9]{4})(.*)`';
+			$regex_eng = '`([0-9]{4})[-\/ \.]?([0-9]{1,2})[-\/ \.]?([0-9]{1,2})(.*)`';
+
+			$regex = $regex_fr;
+			$format_bdd = '\\3-\\2-\\1 \\4';
+			if ($notime){
+				$format_vue = '\\1/\\2/\\3';
+			} else {
+				$format_vue = '\\1/\\2/\\3 \\4';
+			}
+			
+			if (preg_match($regex_eng, $date, $array_date)){
+				$regex = $regex_eng;
+				$format_bdd = '\\1-\\2-\\3 \\4';
+				if ($notime){
+					$format_vue = '\\3/\\2/\\1';
+				} else {
+					$format_vue = '\\3/\\2/\\1 \\4';
+				}
+			}
+			switch($mode){
+				case 'bdd':
+					return  preg_replace($regex, $format_bdd, $date);
+				break;
+				case 'view':
+					return  preg_replace($regex, $format_vue, $date);
+				break;
+			}
+		}	
+	}	
+}
 ?>

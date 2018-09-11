@@ -3,7 +3,7 @@
 		<div class="card-header">
 			<nav class="navbar navbar-expand-lg"> 
 				<ul class="navbar-nav mr-auto"> 
-					<li class="nav-item"> 
+					<li class="nav-item"> Facturation Minutes SKI BN3F : 
 					<?php
 					echo  $invoice->content->header;
 					?>
@@ -25,7 +25,7 @@
 				<table class="table table-sm table-striped">
 				<?php
 				foreach($part->days AS $day){
-					echo '<tr><td style="width: 40%">'.$day->date.'</td><td style="width: 30%">'.$day->rate.'</td><td style="width: 30%" class="text-right">'.$day->duration.' '.Lang('min').'</td></tr>';
+					echo '<tr><td style="width: 40%">'.GetFormatDate($day->date).'</td><td style="width: 30%">'.$day->rate.'</td><td style="width: 30%" class="text-right">'.$day->duration.' '.Lang('min').'</td></tr>';
 				}
 				?>
 				</table>
@@ -35,10 +35,10 @@
 				<?php 	
 				$total = 0;
 				foreach($part->footer AS $footer){
-					echo '<tr><td style="width: 25(%">&nbsp;</td><td style="width: 25%">'.$footer->rate.'</td><td style="width: 25%" class="text-right">'.$footer->duration.' '.Lang('min').'</td><td style="width: 25%" class="text-right">'.$footer->cost.'</td></tr>';
+					echo '<tr><td style="width: 25(%">&nbsp;</td><td style="width: 25%">'.$footer->rate.'</td><td style="width: 25%" class="text-right">'.$footer->duration.' '.Lang('min').'</td><td style="width: 25%" class="text-right">'.$footer->cost.' &euro;</td></tr>';
 					$total += $footer->cost;
 				}
-				echo '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="text-right">'.$total.'</td></tr>';
+				echo '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td class="text-right">'.$total.' &euro;</td></tr>';
 				?>	
 				</table>
 			</div>

@@ -38,7 +38,7 @@ foreach($invoice->content->part as $part){	?>
 		<table>
 		<?php
 		foreach($part->days AS $key=>$day){
-			echo '<tr class="'.((is_float($key/2)) ? 'pair':'').'"><td style="width: 25%">'.$day->date.'</td><td style="width: 25%">'.$day->rate.'</td><td style="width: 50%" class="text-right">'.$day->duration.' '.Lang('min').'</td></tr>';
+			echo '<tr class="'.((is_float($key/2)) ? 'pair':'').'"><td style="width: 25%">'.GetFormatDate($day->date).'</td><td style="width: 25%">'.$day->rate.'</td><td style="width: 50%" class="text-right">'.$day->duration.' '.Lang('min').'</td></tr>';
 		}
 		?>
 		</table>
@@ -47,10 +47,10 @@ foreach($invoice->content->part as $part){	?>
 		<?php 	
 		$total = 0;
 		foreach($part->footer AS $footer){
-			echo '<tr><td style="width: 25 %">&nbsp;</td><td style="width: 25%">'.$footer->rate.'</td><td style="width: 25%" class="text-right">'.$footer->duration.' '.Lang('min').'</td><td style="width: 25%" class="text-right">'.$footer->cost.'</td></tr>';
+			echo '<tr><td style="width: 25 %">&nbsp;</td><td style="width: 25%">'.$footer->rate.'</td><td style="width: 25%" class="text-right">'.$footer->duration.' '.Lang('min').'</td><td style="width: 25%" class="text-right">'.$footer->cost.' &euro;</td></tr>';
 			$total += $footer->cost;
 		}
-		echo '<tr><td class="sep_dashed" colspan="3">&nbsp;</td><td class="sep_dashed text-right">'.$total.'</td></tr>';
+		echo '<tr><td class="sep_dashed" colspan="3">&nbsp;</td><td class="sep_dashed text-right">'.$total.' &euro;</td></tr>';
 		?>	
 		</table>
 <?php } ?>

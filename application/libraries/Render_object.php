@@ -10,6 +10,8 @@ Class Render_object{
 	protected $_model 	= FALSE;
 	protected $_ui_rules= FALSE;
 	protected $form_mod = FALSE;
+	protected $notime	= TRUE;
+	protected $_reset   = [];
 	
 	public function __construct(){
 		$this->CI =& get_instance();
@@ -21,6 +23,10 @@ Class Render_object{
 
 	public function _get($field){
 		return $this->$field;
+	}
+	
+	public function _reset_value($field){
+		$this->_reset[$field] = true;
 	}	
 	
 	public function label($name){
@@ -77,14 +83,18 @@ Class Render_object{
 			}	
 		}	
 	}
-	
+	//need to make a real element object.
 	function RenderFormElement($field){
 		$value = null;
-		if ($value = set_value($field)){ //in first, POST data
-
+		if (isset($this->_reset[$field]) AND  $this->_reset[$field]){
+			
 		} else {
-			if (isset($this->dba_data)){ // try to check database
-				$value = $this->dba_data->{$field};
+			if ($value = set_value($field)){ //in first, POST data
+
+			} else {
+				if (isset($this->dba_data)){ // try to check database
+					$value = $this->dba_data->{$field};
+				}
 			}
 		}
 		
@@ -136,6 +146,9 @@ Class Render_object{
 		switch($this->_model->_get('defs')[$field]->type){
 			case 'password':
 				return '*********';
+			break;
+			case 'date':
+				return GetFormatDate($value);
 			break;
 			default:
 			case 'input':
