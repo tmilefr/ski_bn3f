@@ -193,6 +193,7 @@ class MY_Controller extends CI_Controller {
 	}	
 	
 	public function view($id){
+		$this->data_view['search_object']->autorize = false;
 		if ($id){
 			$this->render_object->_set('id',		$id);
 			$this->{$this->_model_name}->_set('key_value',$id);
@@ -219,6 +220,7 @@ class MY_Controller extends CI_Controller {
 	
 	public function edit($id = 0)
 	{		
+		$this->data_view['search_object']->autorize = false;
 		$this->data_view['id'] = '';
 		if (!$id){
 			if ($this->input->post('id') ){

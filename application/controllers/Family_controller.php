@@ -25,11 +25,26 @@ class Family_controller extends MY_Controller {
 		
 		$this->_set('_debug', TRUE);
 		$this->init();
+		
+		$this->load->model('Users_model');
 	}
 
-	function feeder(){
-		$this->LoadJsonData( 'Family_data.json', $this->_model_name, 'Family');
-	}
+	public function view($id){
+		$this->data_view['search_object']->autorize = false;
+		if ($id){
+			$this->render_object->_set('id',		$id);
+			$this->{$this->_model_name}->_set('key_value',$id);
+			$dba_data = $this->{$this->_model_name}->get_one();
+			$this->render_object->_set('dba_data',$dba_data);
+		
+			$this->Users_model->_set('filter',['family'=>$id]);
+			$this->data_view['users'] = $this->Users_model->get_all();
+		}	
+		
+		$this->_set('view_inprogress',$this->_list_view);
+		$this->render_view();		
+		
+	}	
 
 	
 

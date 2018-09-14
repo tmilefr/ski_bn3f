@@ -6,6 +6,26 @@ h1 {
 	border-bottom: 1px solid #D0D0D0;
 }
 
+
+h2{
+	color: #444;
+	font-size: 18px;
+
+}
+
+
+h3{
+	color: #444;
+	font-size: 14px;
+}
+
+h4{
+	color: #444;
+	font-size: 12px;
+	margin:0;
+	padding:0;
+}
+
 code {
 	font-family: Consolas, Monaco, Courier New, Courier, monospace;
 	font-size: 10px;
@@ -66,6 +86,15 @@ body {
 .dropdown-item.active, .dropdown-item:active{color:#212529;}
 .dropdown-item:focus, .dropdown-item:hover{background:#fec400;}
 
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -250px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
 
 
 /* ---------------------------------------------------

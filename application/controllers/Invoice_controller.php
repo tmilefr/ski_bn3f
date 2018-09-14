@@ -34,6 +34,7 @@ class Invoice_controller extends MY_Controller {
 	
 	
 	public function view($id){
+		$this->data_view['search_object']->autorize = false;
 		if ($id){
 			$this->{$this->_model_name}->_set('key_value',$id);
 			$invoice = $this->{$this->_model_name}->get_one();

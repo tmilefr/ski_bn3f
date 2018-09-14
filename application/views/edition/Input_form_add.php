@@ -80,7 +80,11 @@
 			<tr>			
 				<th scope="col">&nbsp;</th>
 				<?php
+				
+				
 				foreach($this->{$_model_name}->_get('defs') AS $field=>$defs){
+					//echo '<pre><code>'.print_r( $defs , 1).'</code></pre>';
+					
 					if ($defs->list === true){
 						echo '<th scope="col">'.$this->render_object->render_link($field,'add').'</a></th>';
 					}

@@ -49,7 +49,30 @@ $lang['User_bill'] = 'Membre';
 $lang['Invoice'] = 'Factures';
 $lang['Invoice_controller'] = 'Gestion des factures';
 
+$lang['REF_EMAIL'] = 'Email d\'envoit des factures';
 
+$lang['REF_ADRESS'] = 'Adresse de référence';
+
+$lang['MONTH'] = 'Mois';	
+$lang['YEAR'] = 'Année';
+$lang['SUM'] = 'Somme';	
+$lang['NB'] = 'Nombre';	
+$lang['billed'] = 'Facturé';
+$lang['MEMBERS'] = 'Membre(s)';
+
+$lang['header'] = 'Titre';
+$lang['month'] = 'Mois';
+$lang['year'] = 'Année';
+$lang['sum'] = 'Somme';
+$lang['VALID'] = 'Valider';
+$lang[''] = '';
+$lang[''] = '';
+	
+
+$lang['INPUTS_IN_MONTH'] = 'Saisie(s) sur le mois ';
+
+$lang['Bill'] = 'Lancer la facturation';
+$lang['ReBill'] = 'Relancer la facturation';
 
 /* HOME */
 $lang['Years'] = 'Années';

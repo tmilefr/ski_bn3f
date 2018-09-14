@@ -34,6 +34,15 @@ if ( ! function_exists('HumanReadableFilesize'))
 	}
 }
 
+if ( ! function_exists('NameToFilename'))
+{
+	function NameToFilename($name) {
+		return str_replace(['\\',' ','/'],['_','_','_'] ,$name);
+	}
+}
+
+
+
 if ( ! function_exists('GetFormatDate'))
 {
 	function GetFormatDate($date,$mode = 'view',$notime = true){ //TODO : helper or in FormElement ? # Add by nL for WideVoip : 2013-04-19

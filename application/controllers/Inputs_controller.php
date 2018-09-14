@@ -35,7 +35,8 @@ class Inputs_controller extends MY_Controller {
 		$this->load->model('Users_model');
 		$this->load->model('Rates_model');
 		$this->load->model('Family_model');
-	
+		
+		$this->load->library('Dom_pdf');
 	}
 
 	public function filter_set(){
@@ -45,6 +46,7 @@ class Inputs_controller extends MY_Controller {
 
 	public function add()
 	{		
+		$this->data_view['search_object']->autorize = false;
 		$datas = array();
 		$this->data_view['id'] = '';
 		$this->data_view['month_in_progress'] = $this->session->userdata( $this->set_ref_field('month_in_progress') );	
@@ -84,15 +86,13 @@ class Inputs_controller extends MY_Controller {
 			$this->data_view['datas'] 	= $this->{$this->_model_name}->get_from($this->data_view['month_in_progress'],date('Y'));			
 			
 		}	
-
-		
 		
 		$this->_set('view_inprogress','edition/Input_form_add');
 		$this->render_view();
 	}
 	
 	function make_bill(){
-		$this->load->library('Dom_pdf');
+		
 		
 		$this->load->model('Invoice_model');
 		
@@ -197,24 +197,36 @@ class Inputs_controller extends MY_Controller {
 			$this->dom_pdf->DoInvoice($invoice);
 
 			
-			$this->data_view['invoices'][$invoice->sum] = $invoice;
+			$this->data_view['invoices'][] = $invoice;
+			$this->data_view['month'] = $consos->month;
+			$this->data_view['year'] = $consos->year;
 			krsort($this->data_view['invoices']);
 		}
+
+		$this->dom_pdf->DoRecap($this->data_view);
+		
 		redirect('Inputs_controller/billed');
-		/*
-		$this->_set('view_inprogress','unique/Invoices_view');
-		$this->render_view();*/
+		
+		//$this->_set('view_inprogress','unique/Invoices_view');
+		//$this->render_view();
 	}
 	
 
 	
 	function billed(){
+		
+		//TODO use invoices table ...
 		$this->{$this->_model_name}->_set('group_by',  ['MONTH(billing_date)','YEAR(billing_date)','billed']);
 		$this->{$this->_model_name}->_set('order'			, 'billing_date');
 		//GET DATAS
 		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_group_by();
-		
+		$this->data_view['MONTHS'] 	= [1=>'Janvier',2=>'Février',3=>'Mars',4=>'Avril',5=>'Mai',6=>'Juin',7=>'Juillet',8=>'Août',9=>'Septembre',10=>'Octobre',11=>'Novembre',12=>'Decembre'];
+		$this->data_view['pdf_path'] = $this->dom_pdf->_get('pdf_path');
+		$this->data_view['pdf_url_path'] = $this->dom_pdf->_get('pdf_url_path');
 		$this->_set('view_inprogress','unique/list_view_input');
+		
+		
+		
 		$this->render_view();
 	}
 

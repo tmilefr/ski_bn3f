@@ -23,11 +23,16 @@ class Dom_pdf {
 	
 	var $CI;
 	var $pdf_path = '';
-	
+
+	/**
+	 * Constructor of class element.
+	 * @return void
+	 */	
 	public function __construct() {
 		$this->CI = & get_instance();
 		$this->_init();
 		$this->pdf_path = str_replace('application','data/invoices',APPPATH);
+		$this->pdf_url_path = base_url().'data/invoices';
 	}
 	
 	public function _init(){
@@ -42,12 +47,19 @@ class Dom_pdf {
 		$this->_init();
 	}
 	
+	function DoRecap($data_view){
+		$html = $this->CI->load->view('unique/Invoices_view_pdf.php', $data_view, true);
+		$filename ='RECAP_'.$data_view['month'].'_'.$data_view['year'].'.pdf';
+		$this->makePdf($filename, $html);
+	}
+	
+	
 	//not sure that's good place for this ... need to do invoice lib
 	function DoInvoice($invoice){
 		$invoice->content = json_decode($invoice->content);
 		$data_view['invoice'] = $invoice;
 		$html = $this->CI->load->view('unique/Invoice_view_pdf.php', $data_view, true);
-		$filename = str_replace(['\\',' ','/'],['_','_','_'] ,$invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
+		$filename = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
 		$this->makePdf($filename, $html);
 	}
 	
@@ -60,5 +72,20 @@ class Dom_pdf {
 		} catch (Exception $e) {
 			echo 'Exception reçue : ',  $e->getMessage(), "\n";
 		}
+	}	
+	
+	/**
+	 * Generic set
+	 * @return void
+	 */
+	public function _set($field,$value){
+		$this->$field = $value;
+	}
+	/**
+	 * Generic get
+	 * @return void
+	 */
+	public function _get($field){
+		return $this->$field;
 	}	
 }
