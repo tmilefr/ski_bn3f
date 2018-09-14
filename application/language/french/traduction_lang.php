@@ -30,6 +30,7 @@ $lang['amount'] = 'prix';
 
 $lang['Parameter'] = 'Paramètres';
 
+$lang['invoice'] = 'Facture';
 
 
 $lang['Inputs'] = 'Saisies';

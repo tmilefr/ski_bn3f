@@ -8,8 +8,15 @@
 					echo  $invoice->content->header;
 					?>
 					</li> 
+					<li>
+					&nbsp;
+					</li>
+					<li>
+						<?php echo $url_pdf;?>
+					</li>
 				</ul> 	
 				<?php echo $invoice->month.' / '.$invoice->year.' : '. $invoice->sum.' €';?>
+				
 			</nav> 	
 		</div>
 		<?php

@@ -34,11 +34,19 @@ class Invoice_controller extends MY_Controller {
 	
 	
 	public function view($id){
+		$this->data_view['url_pdf'] = '';
 		$this->data_view['search_object']->autorize = false;
 		if ($id){
 			$this->{$this->_model_name}->_set('key_value',$id);
 			$invoice = $this->{$this->_model_name}->get_one();
 			$invoice->content = json_decode($invoice->content);
+			
+			$pdf = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
+			if (is_file($this->dom_pdf->_get('pdf_path').$pdf)){
+				$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->dom_pdf->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoice').'</a>';
+			}		
+					
+			
 		}	
 		$this->data_view['invoice'] = $invoice;
 		$this->_set('view_inprogress',$this->_list_view);

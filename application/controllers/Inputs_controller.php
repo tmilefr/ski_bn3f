@@ -223,6 +223,7 @@ class Inputs_controller extends MY_Controller {
 		$this->data_view['MONTHS'] 	= [1=>'Janvier',2=>'Février',3=>'Mars',4=>'Avril',5=>'Mai',6=>'Juin',7=>'Juillet',8=>'Août',9=>'Septembre',10=>'Octobre',11=>'Novembre',12=>'Decembre'];
 		$this->data_view['pdf_path'] = $this->dom_pdf->_get('pdf_path');
 		$this->data_view['pdf_url_path'] = $this->dom_pdf->_get('pdf_url_path');
+
 		$this->_set('view_inprogress','unique/list_view_input');
 		
 		
