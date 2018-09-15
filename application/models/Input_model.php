@@ -38,8 +38,8 @@ class Input_model extends Core_model{
 	
 	function update_inputs($month,$year){
 		$this->datas = new StdClass();
-		$datas->billed = TRUE;
-		
+		$this->datas->billed = TRUE;
+		$this->datas->updated = date('Y-m-d H:i:s');
 		$this->db->where('MONTH(billing_date)',$month);
 		$this->db->where('YEAR(billing_date)',$year);
 		$this->db->update($this->table, $this->datas);	
