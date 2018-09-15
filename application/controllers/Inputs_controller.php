@@ -204,7 +204,7 @@ class Inputs_controller extends MY_Controller {
 		}
 
 		$this->dom_pdf->DoRecap($this->data_view);
-		
+		$this->{$this->_model_name}->update_inputs($consos->month, $consos->year);
 		redirect('Inputs_controller/billed');
 		
 		//$this->_set('view_inprogress','unique/Invoices_view');

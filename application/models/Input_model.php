@@ -31,9 +31,18 @@ class Input_model extends Core_model{
 					   ->where('YEAR(billing_date)',$year)
 					   ->get($this->table)
 					   ->result();
-		echo '<pre>'.print_r($this->db->last_query(),1).'</pre>';
+		//echo '<pre>'.print_r($this->db->last_query(),1).'</pre>';
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;
+	}
+	
+	function update_inputs($month,$year){
+		$this->datas = new StdClass();
+		$datas->billed = TRUE;
+		
+		$this->db->where('MONTH(billing_date)',$month)
+		$this->db->where('YEAR(billing_date)',$year)
+		$this->db->update($this->table, $this->datas);	
 	}
 	
 	function get_last($nb, $order, $direction ){
