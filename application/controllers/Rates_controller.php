@@ -22,7 +22,7 @@ class Rates_controller extends MY_Controller {
 		
 		$this->title .= $this->lang->line($this->_controller_name);
 		
-		$this->_set('_debug', TRUE);
+		$this->_set('_debug', FALSE);
 		
 		$this->init();
 	}
