@@ -40,8 +40,8 @@ class Input_model extends Core_model{
 		$this->datas = new StdClass();
 		$datas->billed = TRUE;
 		
-		$this->db->where('MONTH(billing_date)',$month)
-		$this->db->where('YEAR(billing_date)',$year)
+		$this->db->where('MONTH(billing_date)',$month);
+		$this->db->where('YEAR(billing_date)',$year);
 		$this->db->update($this->table, $this->datas);	
 	}
 	
