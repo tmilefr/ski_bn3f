@@ -14,9 +14,5 @@ class Users_model extends Core_model{
 		$this->_set('json'	, 'Users.json');
 		$this->_init_def();
 	}
-	
-
-
 }
 ?>
-
