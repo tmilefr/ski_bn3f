@@ -14,9 +14,5 @@ class Invoice_model extends Core_model{
 		$this->_set('json'	, 'Invoice.json');
 		$this->_init_def();
 	}
-	
-
-
 }
 ?>
-

@@ -14,9 +14,5 @@ class Rates_model extends Core_model{
 		$this->_set('json'	, 'Rates.json');
 		$this->_init_def();
 	}
-	
-
-
 }
 ?>
-

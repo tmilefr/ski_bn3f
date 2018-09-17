@@ -14,7 +14,5 @@ class Family_model extends Core_model{
 		$this->_set('json'	, 'Family.json');
 		$this->_init_def();
 	}
-
 }
 ?>
-
