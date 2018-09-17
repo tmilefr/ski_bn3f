@@ -159,9 +159,5 @@ class Input_model extends Core_model{
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;			
 	}
-
-
-
 }
 ?>
-

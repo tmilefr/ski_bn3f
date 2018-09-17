@@ -27,9 +27,6 @@
 			<div class="col-sm">
 				<canvas id="canvas_min"></canvas>
 			</div>
-			<div class="col-sm">
-				
-			</div>
 		</div>
 	  </div>
 	</div>	
