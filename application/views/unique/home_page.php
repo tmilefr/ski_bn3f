@@ -8,11 +8,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<canvas id="canvas_min"></canvas>
 		</div>	
 		<div class="col-sm">
-			<canvas id="canvas_boat"></canvas>
-		</div>
-	 </div>
-	<div class="row">
-		<div class="col-sm">
 			<div class="accordion" id="accordionTopUser">
 			<?php foreach($TOP AS $year=>$tours){ ?>
 				<div class="card">
@@ -25,16 +20,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 					<div id="collapse<?php echo $year;?>" class="collapse <?php echo (($year == date('Y')) ? 'show':'');?>" aria-labelledby="heading<?php echo $year;?>" data-parent="#accordionTopUser">
 						<div class="card-body">
-							<?php echo $this->bootstrap_tools->render_table(['UserName','NB_TOUR','SUM_TOUR','MOY_TOUR'] , $tours, 'table-striped table-sm', 5);?>
+							<?php echo $this->bootstrap_tools->render_table(['UserName','NB_TOUR','SUM_TOUR','MOY_TOUR'] , $tours, 'table-striped table-sm', 10);?>
 						</div>
 					</div>
 				</div>
 			<?php } ?>
 			</div>
 		</div>
-		<div class="col-sm">
-		
-		</div>	
 	</div>
 </div>
 <script>

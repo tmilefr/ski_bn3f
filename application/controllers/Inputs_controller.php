@@ -46,7 +46,6 @@ class Inputs_controller extends MY_Controller {
 
 	public function add()
 	{		
-		$this->data_view['search_object']->autorize = false;
 		$datas = array();
 		$this->data_view['id'] = '';
 		$this->data_view['month_in_progress'] = $this->session->userdata( $this->set_ref_field('month_in_progress') );	

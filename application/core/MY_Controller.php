@@ -11,10 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class MY_Controller extends CI_Controller {
 	
-	protected $_autorised_get_key 	= array('order','direction','filter','page','repertoire','search','id'); //key in url
+	protected $_autorised_get_key 	= array('order','direction','filter','page','repertoire','search','id'); //autorised key in url
 	protected $_model_name			= false;
 	protected $_debug_array  		= array();
-	protected $_debug 				= TRUE;
+	protected $_debug 				= FALSE;
 	protected $_controller_name 	= null;
 	protected $_rules				= null;
 	protected $_autorize			= array();
@@ -28,25 +28,33 @@ class MY_Controller extends CI_Controller {
 	protected $next_view = 'list';
 					
 	/**
-	 * Generic Constructor
-	 *
-	 * @param       
-	 * @return      void()
+	 * @brief Generic Constructor
+	 * @returns  void()
+	 * 
+	 * 
 	 */
 	public function __construct()
 	{
 		parent::__construct();
-		//$this->output->enable_profiler(TRUE);
 		$this->load->helper('tools');
 		$this->load->library('Render_object');
 		$this->load->library('bootstrap_tools');
-		$this->lang->load('traduction');
 		
+		$this->lang->load('traduction');
 		$this->config->load('app');
 	}
 	
 	
 	
+	/**
+	 * @brief Load Json 
+	 * @param $json 
+	 * @param $model 
+	 * @param $path 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function LoadJsonData($json,$model,$path){
 		$this->load->model($model);
 		$json = file_get_contents($this->json_path.$json);
@@ -56,6 +64,12 @@ class MY_Controller extends CI_Controller {
 		}
 	}	
 	
+	/**
+	 * @brief Controller initialisation
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function init(){
 		$this->process_url();
 		
@@ -64,43 +78,59 @@ class MY_Controller extends CI_Controller {
 		$this->data_view['title'] 		= $this->title;
 		
 		$this->data_view['footer_line'] = '';	
+		switch($this->config->item('debug_app')){
+			case 'debug':
+				$this->_set('_debug', TRUE);
+			break;
+			case 'profiler':
+				$this->output->enable_profiler(TRUE);
+			break;
+		}
 		if ($this->_model_name){
 			$this->load->model($this->_model_name);
-			$this->data_view['_model_name'] = $this->_model_name;
+			$this->data_view['_model_name'] = $this->_model_name;// Need ?
 			$this->render_object->_set('datamodel',	$this->_model_name); 
 			$this->render_object->Set_Rules_elements();
+			$this->{$this->_model_name}->_set('_debug', $this->_debug);
 		}
-
+		//Create CRUD URL		
 		foreach($this->_autorize AS $key=>$value){
 			$this->_set_ui_rules($key , $value);
 		}
 		//to permit use it in view.
-		$this->render_object->_set('_ui_rules' ,$this->_rules);
+		$this->render_object->_set('_ui_rules' , $this->_rules);
 		
-		$search_object = new StdClass();
-		$search_object->url = $this->router->class.'/'.$this->router->method;
-		$search_object->global_search = $this->session->userdata($this->set_ref_field('global_search'));
-		$search_object->autorize = true;
+		$search_object 					= new StdClass();
+		$search_object->url 			= $this->router->class.'/'.$this->router->method;
+		$search_object->global_search 	= $this->session->userdata($this->set_ref_field('global_search'));
+		$search_object->autorize 		= FALSE;
 		$this->data_view['search_object'] = $search_object;
-	
 	}
 	
 	
 	
+	/**
+	 * @brief Set Rules for CRUD URL
+	 * @param $key 
+	 * @param $value 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function _set_ui_rules($key,$value){
 		$rules = new StdClass();
-		$rules->url =  base_url($this->_controller_name.'/'.$key);
-		$rules->name = $this->lang->line(strtoupper($key).'_'.$this->_controller_name);
-		$rules->autorize = $value;
+		$rules->url 	=  base_url($this->_controller_name.'/'.$key);
+		$rules->name 	= $this->lang->line(strtoupper($key).'_'.$this->_controller_name);
+		$rules->autorize= $value;
 		$this->_rules[$key] = $rules;
 	}
 
-	
 	/**
-	 * Generic Destructor
-	 *
+	 * @brief 		Destructor
 	 * @param       $this->_debug boolean
 	 * @return      void()
+	 * 
+	 * 
 	 */
 	function __destruct(){
 		if ($this->_debug){
@@ -109,11 +139,12 @@ class MY_Controller extends CI_Controller {
 	}	
 	
 	/**
-	 * RenderView
-	 *
+	 * @brief 		Render View in Template
 	 * @param       $this->view_inprogress
 	 * @param		$this->data_view
 	 * @return      void()
+	 * 
+	 * 
 	 */
 	function render_view(){
 		if ($this->input->is_ajax_request()){
@@ -124,17 +155,25 @@ class MY_Controller extends CI_Controller {
 			$this->load->view('template/footer',		$this->data_view);	
 		}
 	}
+
 	/**
-	 * _debug : Set Debug Array
-	 *
+	 * @brief _debug : Set Debug Array
 	 * @param       $this->_debug_array
 	 * @param		$msg (string)
 	 * @return      void()
+	 * 
+	 * 
 	 */
 	function _debug($msg){
 		$this->_debug_array[] = $msg;
 	}
  
+	/**
+	 * @brief Processing variable on url
+	 * @returns $this->session
+	 * 
+	 * 
+	 */
 	public function process_url(){
 		if ($this->input->post('global_search')){
 			$this->session->set_userdata( $this->set_ref_field('global_search') ,$this->input->post('global_search'));
@@ -164,12 +203,27 @@ class MY_Controller extends CI_Controller {
 		}
 	} 
 	
+	/**
+	 * @brief Attach variable to controller name
+	 * @param $name 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function set_ref_field($name){
 		return $name.'_'.$this->_controller_name;
 	}
 	
+	/**
+	 * @brief Generic list view ( Need PHP 7)
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function list()
 	{
+		$this->data_view['search_object']->autorize = true;
+		
 		$this->{$this->_model_name}->_set('global_search'	, $this->session->userdata($this->set_ref_field('global_search')));
 		$this->{$this->_model_name}->_set('order'			, $this->session->userdata($this->set_ref_field('order')));
 		$this->{$this->_model_name}->_set('filter'			, $this->session->userdata($this->set_ref_field('filter')));
@@ -192,8 +246,14 @@ class MY_Controller extends CI_Controller {
 		$this->render_view();
 	}	
 	
+	/**
+	 * @brief Genric View Method
+	 * @param $id 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function view($id){
-		$this->data_view['search_object']->autorize = false;
 		if ($id){
 			$this->render_object->_set('id',		$id);
 			$this->{$this->_model_name}->_set('key_value',$id);
@@ -205,6 +265,13 @@ class MY_Controller extends CI_Controller {
 		
 	}	
 	
+	/**
+	 * @brief DELETE Method 
+	 * @param $id 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function delete($id = 0){
 		if ($id){
 			$this->{$this->_model_name}->_set('key_value',$id);
@@ -213,14 +280,26 @@ class MY_Controller extends CI_Controller {
 		redirect($this->_get('_rules')['list']->url);
 	}
 	
+	/**
+	 * @brief ADD Method
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function add(){
 		$this->render_object->_set('form_mod', 'add');
 		$this->edit();
 	}
 	
+	/**
+	 * @brief Edition Method
+	 * @param $id 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function edit($id = 0)
 	{		
-		$this->data_view['search_object']->autorize = false;
 		$this->data_view['id'] = '';
 		if (!$id){
 			if ($this->input->post('id') ){
@@ -259,14 +338,35 @@ class MY_Controller extends CI_Controller {
 		$this->render_view();
 	}
 
+	/**
+	 * @brief Router Default 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function index(){
 		redirect($this->_get('_rules')['list']->url);
 	}
 	
+	/**
+	 * @brief Generic SETTER
+	 * @param $field 
+	 * @param $value 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function _set($field,$value){
 		$this->$field = $value;
 	}
 
+	/**
+	 * @brief Generic GETTER
+	 * @param $field 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function _get($field){
 		return $this->$field;
 	} 

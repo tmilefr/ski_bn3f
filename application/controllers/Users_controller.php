@@ -25,13 +25,16 @@ class Users_controller extends MY_Controller {
 
 		$this->_set('_debug', FALSE);
 		$this->Users_model->_set('_debug', FALSE);
+		$this->load->library('calendar');
 
 	}
 	
 	function view($id){
 		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
 		$this->load->model('Input_model');
-		$this->data_view['stats'] = $this->Input_model->get_stats_user_month( null , null ,$id);
+		$this->data_view['stats']['conso'] = $this->Input_model->get_stats_user_month( null , null ,$id);
+		$this->data_view['stats']['moy']   = $this->Input_model->get_stats_user(null,null,$id);
+		
 		
 		parent::view($id);
 	}

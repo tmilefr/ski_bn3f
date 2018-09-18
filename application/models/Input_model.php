@@ -18,6 +18,14 @@ class Input_model extends Core_model{
 	}
 	
 	
+	/**
+	 * @brief Get input for periode
+	 * @param $month 
+	 * @param $year 
+	 * @returns Array();
+	 * 
+	 * 
+	 */
 	function get_inputs($month,$year){
 		if (is_array($this->filter) AND count($this->filter)){
 			foreach($this->filter AS $key => $value){
@@ -31,11 +39,18 @@ class Input_model extends Core_model{
 					   ->where('YEAR(billing_date)',$year)
 					   ->get($this->table)
 					   ->result();
-		//echo '<pre>'.print_r($this->db->last_query(),1).'</pre>';
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;
 	}
 	
+	/**
+	 * @brief Update Input for periode 
+	 * @param $month 
+	 * @param $year 
+	 * @returns void()
+	 * 
+	 * 
+	 */
 	function update_inputs($month,$year){
 		$this->datas = new StdClass();
 		$this->datas->billed = TRUE;
@@ -45,6 +60,15 @@ class Input_model extends Core_model{
 		$this->db->update($this->table, $this->datas);	
 	}
 	
+	/**
+	 * @brief 
+	 * @param $nb 
+	 * @param $order 
+	 * @param $direction 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function get_last($nb, $order, $direction ){
 		$this->db->limit( $nb , 0);
 		
@@ -56,6 +80,14 @@ class Input_model extends Core_model{
 		return $datas;
 	}
 
+	/**
+	 * @brief 
+	 * @param $month 
+	 * @param $year 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function get_from($month = null, $year = null){
 		$this->_set_filter();
 		$this->_set_search();		
@@ -72,6 +104,14 @@ class Input_model extends Core_model{
 		return $datas;
 	}
 
+	/**
+	 * @brief 
+	 * @param $month 
+	 * @param $year 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function get_group_by($month = null ,$year = null){		
 		if ($month)
 			$this->db->where('MONTH(billing_date)',$month);
@@ -87,6 +127,15 @@ class Input_model extends Core_model{
 		return $datas;
 	}
 
+	/**
+	 * @brief Get Stats for user
+	 * @param $month 
+	 * @param $year 
+	 * @param $user 
+	 * @returns array();
+	 * 
+	 * 
+	 */
 	function get_stats_user($month = null ,$year = null, $user = null){
 		if ($month)
 			$this->db->where('MONTH(billing_date)',$month);
@@ -95,18 +144,28 @@ class Input_model extends Core_model{
 		if ($user)
 			$this->db->where('user',$user);
 		$this->db->where('duration > 0 ', null);
-		$datas = $this->db->select('YEAR(billing_date) AS YEAR,SUM(duration) AS SUM_TOUR, count(*) AS NB_TOUR, CONCAT(users.name," ",users.surname) AS UserName, ROUND(SUM(duration) / count(*),2) AS MOY_TOUR')
-					  ->order_by('YEAR','DESC')
+		$datas = $this->db->select('YEAR(billing_date) AS YEAR,MONTH(billing_date) AS MONTH,SUM(duration) AS SUM_TOUR, count(*) AS NB_TOUR, CONCAT(users.name," ",users.surname) AS UserName, ROUND(SUM(duration) / count(*),2) AS MOY_TOUR')
 					  ->order_by('SUM_TOUR','DESC')
+					  ->order_by('YEAR(billing_date)','DESC')
+					  ->order_by('MONTH(billing_date)','DESC')
 					  ->order_by('user','DESC')
 				      ->group_by('user,YEAR(billing_date)')
 					  ->join('users','inputs.user=users.id','LEFT')
 					  ->get($this->table)					  
-					  ->result();
+					  ->result();  
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;	
 	}
 
+	/**
+	 * @brief 
+	 * @param $month 
+	 * @param $year 
+	 * @param $user 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function get_stats_user_month($month = null ,$year = null, $user = null){
 		if ($month)
 			$this->db->where('MONTH(billing_date)',$month);
@@ -144,6 +203,14 @@ class Input_model extends Core_model{
 		return $stats_user_month;	
 	}
 
+	/**
+	 * @brief 
+	 * @param $year 
+	 * @param $user 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function get_minutes_year($year = null, $user = null){
 		if ($year)
 			$this->db->where('YEAR(billing_date)',$year);

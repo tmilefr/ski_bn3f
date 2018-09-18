@@ -1,4 +1,5 @@
-RewriteBase /ski_bn3f
+
+RewriteBase /dev/ski_bn3f
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
