@@ -66,6 +66,7 @@ class Core_model extends CI_Model {
 					}
 					$defs->values = $data;
 				break;
+				case 'typeahead':
 				case 'select_database':
 				  $datas_select = array();
 				  preg_match('/(\w+)\((\w+)\,(\w+)\:(.*)\)/', $defs->values, $param);
@@ -80,9 +81,27 @@ class Core_model extends CI_Model {
 					$datas_select[$data->{$param[3]}] = $data->{$param[4]};
 				  }
 				  $defs->values = $datas_select;
+				  if ($defs->type == 'select_database')
+					$defs->type = 'select';
 				break;
+				default:
+					$defs->values = [];
 			}
-			
+			//FIELD OBJECT ELEMENT
+			$fileobject = APPPATH.'libraries/elements/element_'.$defs->type.'.php';
+			if (is_file($fileobject)){
+				require_once($fileobject);
+				$object_name = 'element_'.$defs->type;
+			} else {
+				require_once(APPPATH.'libraries/elements/element.php');
+				$object_name = 'element';
+			}
+			$defs->element = new $object_name;
+			foreach($defs AS $key => $value){
+				$defs->element->_set($key , $value);
+			}
+			$defs->element->_set('values', $defs->values);	
+			$defs->element->_set('name', $field);
 			$this->defs[$field] = $defs;
 		}
 	}

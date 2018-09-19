@@ -97,43 +97,9 @@ Class Render_object{
 				}
 			}
 		}
-		
-		switch($this->_model->_get('defs')[$field]->type){
-			default:
-			case 'input':
-				echo $this->CI->bootstrap_tools->input_text($field, $field, $value);
-			break;
-			case 'typeahead':
-				echo $this->CI->bootstrap_tools->input_typeahead($field, $value);
-			break;
-			case 'password':
-				echo $this->CI->bootstrap_tools->password_text($field, $field, $value);
-			break;
-			case 'select_database':
-			case 'select':
-				echo $this->CI->bootstrap_tools->input_select($field, $this->_model->_get('defs')[$field]->values, $value);
-			break;
-			case 'date':
-				echo $this->CI->bootstrap_tools->input_date($field,$value);
-			break;
-			case 'checkbox':
-				echo $this->CI->bootstrap_tools->input_checkbox($field, $value);
-			break;
-			case 'created':
-				if ($this->form_mod == 'edit'){
-					
-				} else {
-					echo form_hidden($field , date('Y-m-d h:i:s'));
-				}
-			break;
-			case 'updated':
-				if ($this->form_mod == 'edit'){
-					echo form_hidden($field , date('Y-m-d h:i:s'));
-				} else {
-					
-				}
-			break;
-		}
+		$this->_model->_get('defs')[$field]->element->_set('form_mod', $this->form_mod);
+		$this->_model->_get('defs')[$field]->element->_set('value', $value);
+		return $this->_model->_get('defs')[$field]->element->RenderFormElement();
 	}
 	
 	function RenderElement($field,$value = null){
@@ -141,31 +107,10 @@ Class Render_object{
 			if (isset($this->dba_data)){ // try to check database
 				$value = $this->dba_data->{$field};
 			}
-		}		
-			
-		switch($this->_model->_get('defs')[$field]->type){
-			case 'password':
-				return '*********';
-			break;
-			case 'date':
-				return GetFormatDate($value);
-			break;
-			default:
-			case 'input':
-				return $value;
-			break;
-			case 'checkbox':
-				return (($value) ? 'oui':'non');
-			break;
-			case 'select_database':
-			case 'select':
-				if (isset($this->_model->_get('defs')[$field]->values[$value]))
-					return $this->_model->_get('defs')[$field]->values[$value];
-				else
-					return 'N/A';
-			
-			break;
-		}
+		}	
+		$this->_model->_get('defs')[$field]->element->_set('form_mod', $this->form_mod);	
+		$this->_model->_get('defs')[$field]->element->_set('value', $value);
+		return $this->_model->_get('defs')[$field]->element->Render();
 	}
 	
 	public function __destruct(){

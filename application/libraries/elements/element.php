@@ -3,14 +3,19 @@
 class element
 {
 	protected $mode; //view, form.
-	protected $name = null;
-	protected $value = null;
+	protected $name   	= null; //unique id ?
+	protected $value  	= null;
+	protected $values 	= [];
+	protected $type 	= '';
+	
+	public function RenderFormElement(){
+		return $this->CI->bootstrap_tools->input_text($this->name, $this->CI->lang->line($this->name) , $this->value);
+	}
 	
 	public function Render(){
-		echo $this->CI->bootstrap_tools->input_text($this->name, $this->CI->lang->line($this->name) , $this->value);
+		return $this->value;
 	}
 
-	
 	/**
 	 * Constructor of class element.
 	 * @return void
@@ -27,6 +32,7 @@ class element
 	public function __destruct()
 	{
 		unset($this->CI);
+		//echo '<pre><code>'.print_r($this , 1).'</code></pre>';
 	}
 	
 	/**
