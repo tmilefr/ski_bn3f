@@ -32,7 +32,7 @@
 		}
 	},	
 	"user": {
-		"type": "typeahead",
+		"type": "select_database",
 		"list": true,
 		"search": false,
 		"rules": "trim|required",

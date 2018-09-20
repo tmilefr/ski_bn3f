@@ -23,7 +23,7 @@ class Inputs_controller extends MY_Controller {
 		$this->_model_name 		= 'Input_model';	   //DataModel
 		$this->_edit_view 		= 'edition/Input_form';//template for editing
 		$this->_list_view		= '';
-		$this->_autorize 		= array('add'=>true,'edit'=>true,'list'=>true,'delete'=>false,'view'=>false);
+		$this->_autorize 		= array('add'=>true,'edit'=>true,'list'=>true,'delete'=>true,'view'=>false);
 		
 		$this->title .= $this->lang->line($this->_controller_name);
 		
@@ -38,6 +38,7 @@ class Inputs_controller extends MY_Controller {
 		
 		$this->load->library('Dom_pdf');
 	}
+	
 	public function data(){
 		$users = $this->Input_model->_get('defs')['user'];
 		echo '[';

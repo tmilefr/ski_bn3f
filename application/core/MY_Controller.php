@@ -277,7 +277,7 @@ class MY_Controller extends CI_Controller {
 			$this->{$this->_model_name}->_set('key_value',$id);
 			$this->{$this->_model_name}->delete();
 		}
-		redirect($this->_get('_rules')['list']->url);
+		redirect($this->_get('_rules')[$this->next_view]->url);
 	}
 	
 	/**

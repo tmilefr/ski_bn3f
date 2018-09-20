@@ -39,6 +39,28 @@
 		</div>
 	  </div>
 	</div>
+	
+	<!- modal tools for delete ->
+	<div id="confirmModal" class="modal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title"><?php echo Lang('DELETE_CONFIRMATION');?></h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<p><?php echo Lang('TXT_DELETE_CONFIRMATION');?></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-success" data-dismiss="modal"><?php echo Lang('CANCEL');?></button>
+			<button type="button" class="btn btn-danger" id="confirmModalYes"><?php echo Lang('YES');?></button>
+		  </div>
+		</div>
+	  </div>
+	</div>	
+	
 	<!-- Optional JavaScript -->
 	<?php $this->bootstrap_tools->RenderAttachFiles('js');?>
   </body>
