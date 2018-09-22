@@ -36,7 +36,7 @@ class Inputs_controller extends MY_Controller {
 		$this->load->model('Rates_model');
 		$this->load->model('Family_model');
 		
-		$this->load->library('Dom_pdf');
+		$this->load->library('Libinvoice');
 	}
 	
 	public function data(){
@@ -202,8 +202,8 @@ class Inputs_controller extends MY_Controller {
 			}
 			
 			//MAKE pdf
-			$this->dom_pdf->DoInvoice($invoice);
-
+			$this->libinvoice->DoInvoice($invoice);
+			$this->libinvoice->SendByMail();
 			
 			$this->data_view['invoices'][] = $invoice;
 			$this->data_view['month'] = $consos->month;
@@ -211,7 +211,7 @@ class Inputs_controller extends MY_Controller {
 			krsort($this->data_view['invoices']);
 		}
 
-		$this->dom_pdf->DoRecap($this->data_view);
+		$this->libinvoice->DoRecap($this->data_view);
 		$this->{$this->_model_name}->update_inputs($consos->month, $consos->year);
 		redirect('Inputs_controller/billed');
 		
@@ -229,8 +229,8 @@ class Inputs_controller extends MY_Controller {
 		//GET DATAS
 		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_group_by();
 		$this->data_view['MONTHS'] 	= [1=>'Janvier',2=>'Février',3=>'Mars',4=>'Avril',5=>'Mai',6=>'Juin',7=>'Juillet',8=>'Août',9=>'Septembre',10=>'Octobre',11=>'Novembre',12=>'Decembre'];
-		$this->data_view['pdf_path'] = $this->dom_pdf->_get('pdf_path');
-		$this->data_view['pdf_url_path'] = $this->dom_pdf->_get('pdf_url_path');
+		$this->data_view['pdf_path'] = $this->libinvoice->_get('pdf_path');
+		$this->data_view['pdf_url_path'] = $this->libinvoice->_get('pdf_url_path');
 
 		$this->_set('view_inprogress','unique/list_view_input');
 		

@@ -1,29 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-/**
-* Name:  DOMPDF
-* 
-* Author: Geordy James 
-*         @geordyjames
-*          
-*Location : https://github.com/geordyjames/Codeigniter-Dompdf-v0.7.0-Library
-* Origin API Class: https://github.com/dompdf/dompdf
-*          
-* Created:  24.01.2017
-* Created by Geordy James to give support to dompdf 0.7.0 and above 
-* Mod by nL (init / reset function for multiple document)
-* Description:  This is a Codeigniter library which allows you to convert HTML to PDF with the DOMPDF library
-* 
-*/
 require_once APPPATH.'third_party/dompdf/autoload.inc.php';
 		
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-class Dom_pdf {
+class Libinvoice {
 	
 	var $CI;
 	var $pdf_path = '';
-
+	var $filename = '';
+	
 	/**
 	 * Constructor of class element.
 	 * @return void
@@ -43,7 +29,8 @@ class Dom_pdf {
 	}
 	
 	public function reset(){
-		unset($this->CI->dompdf);
+		if (isset($this->CI->dompdf))
+			unset($this->CI->dompdf);
 		$this->_init();
 	}
 	
@@ -59,20 +46,32 @@ class Dom_pdf {
 		$invoice->content = json_decode($invoice->content);
 		$data_view['invoice'] = $invoice;
 		$html = $this->CI->load->view('unique/Invoice_view_pdf.php', $data_view, true);
-		$filename = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
-		$this->makePdf($filename, $html);
+		$this->filename = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
+		$this->makePdf($html);
 	}
 	
-	function makePdf($filename, $html){
+	function makePdf($html){
 		try{
 			$this->reset();
 			$this->CI->dompdf->load_html($html);        
 			$this->CI->dompdf->render();
-			file_put_contents($this->pdf_path.$filename, $this->CI->dompdf->output()); 
+			file_put_contents($this->pdf_path.$this->filename, $this->CI->dompdf->output()); 
 		} catch (Exception $e) {
 			echo 'Exception reçue : ',  $e->getMessage(), "\n";
 		}
 	}	
+	
+	function SendByMail(){
+		$this->CI->load->library('email');
+		$this->CI->email->from('ski@bn3f.fr', 'Your Name');
+		$this->CI->email->to('nicolas.laresser@gamail.com');
+		//$this->CI->email->cc('another@another-example.com');
+		$this->CI->email->subject('Email Test');
+		$this->CI->email->message('Testing the email class.');
+		$this->CI->email->attach($this->CI->dompdf->output(), 'attachment', $this->filename , 'application/pdf');
+		$this->CI->email->send();
+	}
+	
 	
 	/**
 	 * Generic set
