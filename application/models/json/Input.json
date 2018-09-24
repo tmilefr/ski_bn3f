@@ -32,12 +32,12 @@
 		}
 	},	
 	"user": {
-		"type": "select_database",
+		"type": "typeahead",
 		"list": true,
 		"search": false,
 		"rules": "trim|required",
 		"since": 2,
-		"values": "distinct(users,id:name@surname)",
+		"values": "distinct(users,id:surname@name)",
 		"dbforge": {
 			"type": "INT",
 			"constraint": "5"

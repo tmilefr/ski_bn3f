@@ -17,7 +17,6 @@ class Input_model extends Core_model{
 		$this->_init_def();
 	}
 	
-	
 	/**
 	 * @brief Get input for periode
 	 * @param $month 

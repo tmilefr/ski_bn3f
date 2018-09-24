@@ -1,9 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * @brief 
+ * 
+ * 
+ */
 class Home extends MY_Controller {
 
 	
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function __construct(){
 		parent::__construct();
 		$this->_model_name 		= 'Input_model';	   //DataModel
@@ -14,6 +25,12 @@ class Home extends MY_Controller {
 		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
 	}
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function index()
 	{
 		

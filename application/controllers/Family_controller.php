@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * User Controller
  *
+ * @brief 		Family Managment
  * @package     WebApp
  * @subpackage  Core
  * @category    Factory
@@ -11,6 +12,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Family_controller extends MY_Controller {
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function __construct(){
 		parent::__construct();
 		
@@ -29,6 +36,13 @@ class Family_controller extends MY_Controller {
 		$this->load->model('Users_model');
 	}
 
+	/**
+	 * @brief 
+	 * @param $id 
+	 * @returns void()
+	 * 
+	 * 
+	 */
 	public function view($id){
 		if ($id){
 			$this->render_object->_set('id',		$id);

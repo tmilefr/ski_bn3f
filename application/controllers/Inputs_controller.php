@@ -38,16 +38,8 @@ class Inputs_controller extends MY_Controller {
 		
 		$this->load->library('Libinvoice');
 	}
-	
-	public function data(){
-		$users = $this->Input_model->_get('defs')['user'];
-		echo '[';
-		foreach($users->values AS $key => $value){
-			echo '{ "id":'.$key.', "name":"'.$value.'"},';
-		}
-		echo '{"id":0, "name":""}]';
-	}
 
+	
 	public function filter_set(){
 		$this->session->set_userdata( $this->set_ref_field('month_in_progress') , $this->input->post('month_in_progress') );
 		redirect('Inputs_controller/add');

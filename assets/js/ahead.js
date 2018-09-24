@@ -1,23 +1,38 @@
-/*$('.typeahead').typeahead({
-    displayText: function (item) {
-        return item.name + ' ' + item.surname + ', ' + item.company
-    },
-    afterSelect: function (item) {
-        this.$element[0].value = item.email
-    },
-    source: [
-        { "name": "Alyce", "surname": "White", "company": "Combot", "email": "alycewhite@combot.com", "city": "Talpa" },
-        { "name": "Santos", "surname": "Pierce", "company": "Franscene", "email": "santospierce@franscene.com", "city": "Vienna" },
-        { "name": "Deirdre", "surname": "Reed", "company": "Whiskey Comp.", "email": "deirdrereed@whiskeycomp.com", "city": "Belva" },
-        { "name": "Whitaker", "surname": "Brennan", "company": "Opticom", "email": "whitakerbrennan@opticom.com", "city": "Lodoga" },
-        { "name": "Kristin", "surname": "Norman", "company": "Irack", "email": "kristinnorman@irack.com", "city": "Bodega" }
-    ]
+$(".typeahead").each(function( index ) {
+	object = $( this );
+	
+	$.get( object.attr('data-source') , function(data){ 
+		console.log(data);
+		
+		object.typeahead({
+			source:		data ,
+			autoSelect: true,
+			displayText: function(item){ return item.label;},
+			/*updater:function(item){ 
+				console.log(object.attr('data-dst'));
+			}*/
+		});
+			
+	},'json');
+
+});
+/*
+$(".typeahead").each(function( index ) {
+	$.get( $( this ).attr('data-source') , function(data){ 
+		$( this ).typeahead({
+			source: function(data, process) {
+				objects = [];
+				map = {};
+				$.each(data, function(i, object) {
+					map[object.label] = object;
+					objects.push(object.label);
+				});
+				process(objects);
+			},
+			updater: function(item) {
+				$('hiddenInputElement').val(map[item].id);
+				return item;
+			}			
+		});	
+	},'json');
 });*/
-
-$.get("data/user.json", function(data){ 
-	$(".typeahead").typeahead({
-		source:data,
-		autoSelect: true
-	})	
-},'json');
-

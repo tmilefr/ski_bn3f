@@ -136,12 +136,7 @@ Class Bootstrap_tools{
 			  </div>';
 	}
 	
-	public function input_typeahead($name,$value){
-		$this->_SetHead('assets/plugins/js/bootstrap3-typeahead.js','js');
-		$this->_SetHead('assets/js/ahead.js','js');
-		
-		return '<input id="input'.$name.'" name="'.$name.'" autocomplete="off" class="typeahead form-control" value="'.$value.'">';
-	}
+
 	
 	
 	public function input_text($name,$placeholder = '',$value = ''){

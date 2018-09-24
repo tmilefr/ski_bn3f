@@ -27,10 +27,8 @@ class Invoice_controller extends MY_Controller {
 		
 		$this->init();
 		
-		$this->load->library('Dom_pdf');
+		$this->load->library('Libinvoice');
 	}
-	
-	
 	
 	
 	public function view($id){
@@ -41,8 +39,8 @@ class Invoice_controller extends MY_Controller {
 			$invoice->content = json_decode($invoice->content);
 			
 			$pdf = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
-			if (is_file($this->dom_pdf->_get('pdf_path').$pdf)){
-				$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->dom_pdf->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoice').'</a>';
+			if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
+				$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoice').'</a>';
 			}		
 					
 			

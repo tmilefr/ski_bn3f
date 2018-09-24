@@ -4,7 +4,12 @@
 class element_typeahead extends element
 {	
 	public function RenderFormElement(){
-		return $this->CI->bootstrap_tools->input_typeahead($this->name, $this->value);	
+		$this->CI->bootstrap_tools->_SetHead('assets/plugins/js/bootstrap3-typeahead.js','js');
+		$this->CI->bootstrap_tools->_SetHead('assets/js/ahead.js','js');		
+		
+
+		
+		return '<input data-dst="input'.$this->name.'" name="ta'.$this->name.'" id="ta'.$this->name.'" data-source="'.base_url().$this->CI->_get('_controller_name').'/JsonData/'.$this->name.'"  autocomplete="off" class="typeahead form-control" value="'.$this->value.'"><input type="hidden" id="input'.$this->name.'" name="'.$this->name.'" value="">';
 	}
 	
 	public function Render(){

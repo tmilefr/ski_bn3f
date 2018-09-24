@@ -46,6 +46,15 @@ class MY_Controller extends CI_Controller {
 	
 	
 	
+	public function Jsondata($field){
+		$users = $this->{$this->_model_name}->_get('defs')[$field];
+		$tmp = '[';
+		foreach($users->values AS $key => $value){
+			$tmp .= '{ "id":'.$key.', "label":"'.$value.'"},';
+		}
+		echo substr($tmp,0,-1).']';
+	}	
+	
 	/**
 	 * @brief Load Json 
 	 * @param $json 

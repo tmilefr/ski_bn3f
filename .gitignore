@@ -6,3 +6,7 @@ application/logs/
 application/config/database\.php
 
 data/invoices/
+
+\.htaccess
+
+index\.php
