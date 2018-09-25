@@ -72,6 +72,7 @@ class Inputs_controller extends MY_Controller {
 				
 				$this->render_object->_reset_value('duration');
 				$this->render_object->_reset_value('rates');
+				$this->render_object->_reset_value('close');
 			}
 		}	
 		$this->data_view['fields'] 	= $this->{$this->_model_name}->_get('autorized_fields');

@@ -7,7 +7,7 @@ $(".typeahead").each(function( index ) {
 			autoSelect: true,
 			displayText: function(item){ return item.label;},
 			afterSelect: function(item){ 
-				console.log( object.attr('data-dst') );
+				$('#'+object.attr('data-dst')).val(item.id);
 			}
 		});
 			
