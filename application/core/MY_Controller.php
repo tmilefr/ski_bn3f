@@ -343,6 +343,7 @@ class MY_Controller extends CI_Controller {
 			}
 			redirect($this->_get('_rules')[$this->next_view]->url);
 		}
+	
 		$this->_set('view_inprogress',$this->_edit_view);
 		$this->render_view();
 	}

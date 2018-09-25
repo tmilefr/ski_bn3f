@@ -86,7 +86,6 @@ class Inputs_controller extends MY_Controller {
 			$this->data_view['datas'] 	= $this->{$this->_model_name}->get_from($this->data_view['month_in_progress'],date('Y'));			
 			
 		}	
-		
 		$this->_set('view_inprogress','edition/Input_form_add');
 		$this->render_view();
 	}
