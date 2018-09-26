@@ -32,10 +32,39 @@ class Users_controller extends MY_Controller {
 	function view($id){
 		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
 		$this->load->model('Input_model');
-		$this->data_view['stats']['conso'] = $this->Input_model->get_stats_user_month( null , null ,$id);
-		$this->data_view['stats']['moy']   = $this->Input_model->get_stats_user(null,null,$id);
 		
+		$this->Input_model->_set('group_by', ['user','YEAR(billing_date)','MONTH(billing_date)']);
+		$this->Input_model->_set('order'   , ['YEAR(billing_date)'=>'DESC','MONTH(billing_date)'=>'DESC','user'=>'DESC']);		
 		
+		$datas = $this->Input_model->get_stats_user(null,null,$id);
+		$tmp   = array();
+		$stats = array();
+		foreach($datas AS $key=>$obj){
+			$stats['month'][$obj->MONTH] = $obj->MONTH;
+			$stats['year'][$obj->YEAR] = $obj->YEAR;
+			@$tmp[$obj->YEAR][$obj->MONTH] = $obj;
+		}
+		ksort($stats['month']);
+		ksort($stats['year']);	
+		
+		foreach($stats['year'] AS $year){
+			foreach($stats['month'] AS $month){
+				if (isset($tmp[$year][$month])){
+					$stats['line'][$year][$month] = $tmp[$year][$month]->SUM_TOUR;
+					@$stats['global'][$year] += $tmp[$year][$month]->SUM_TOUR;
+				} else {
+					$stats['line'][$year][$month] = 0;
+				}
+			}
+		}
+		$stats['color']['2020'] = '#ff9933';
+		$stats['color']['2019'] = '#ff9933';
+		
+		$stats['color']['2018'] = '#ff9933';
+		$stats['color']['2017'] = '#0099ff';
+		$stats['color']['2016'] = '#009933';		
+		
+		$this->data_view['stats'] = $stats;
 		parent::view($id);
 	}
 

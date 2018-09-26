@@ -5,12 +5,13 @@ class Core_model extends CI_Model {
 	protected $table; 	//table used in model
 	protected $key; 	//id used in model
 	protected $key_value; 	
-	protected $order; 	//sort used in model
+	protected $order	= []; 	//sort used in model
 	protected $direction;//direction used in model
 	protected $autorized_fields = array();
 	protected $autorized_fields_search = array();
 	protected $datas = array(); // datas in model
 	protected $filter = array();//filter for model
+	protected $group_by = array(); //group by for model
 	protected $per_page = 20;
 	protected $_debug = FALSE;
 	protected $page = 1;
@@ -26,6 +27,9 @@ class Core_model extends CI_Model {
 	{
 		parent::__construct();
 		$this->load->database();
+		if (!$this->page){
+			$this->page = 1;
+		}
 		
 	}
 
@@ -178,6 +182,23 @@ class Core_model extends CI_Model {
 			$this->db->group_end();
 		} 
 	}
+	
+	function _set_group_by(){
+		if (is_array($this->group_by) AND count($this->group_by)){
+			foreach($this->group_by AS $key => $value){
+				$this->db->group_by($value);
+			}
+		} 	
+	}
+
+	function _set_order_by(){
+		if (is_array($this->order) AND count($this->order)){
+			foreach($this->order AS $key => $value){
+				$this->db->order_by($key, $value);
+			}
+		} 	
+	}	
+	
 
 	function _set_search(){
 		if ($this->global_search){
@@ -207,11 +228,10 @@ class Core_model extends CI_Model {
     public function get(){
 		$this->_set_filter();
 		$this->_set_search();		  		
-		if ($this->per_page){
-			if ($this->per_page == $this->page){
-				$this->page = 1;
-			}
-			$this->db->limit( $this->per_page , $this->page);
+		if ($this->per_page  ){
+			if (!$this->page)
+				$this->page = 1 ;
+			$this->db->limit(intval($this->per_page), ($this->page - 1 ) * $this->per_page);
 		}
         $datas = $this->db->select( ($this->autorized_fields ? implode(',',$this->autorized_fields) : '*' ) )
                            ->order_by($this->order, $this->direction )

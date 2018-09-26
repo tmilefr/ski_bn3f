@@ -17,7 +17,7 @@ class Rates_controller extends MY_Controller {
 		$this->_model_name 		= 'Rates_model';	   //DataModel
 		$this->_edit_view 		= 'edition/Rates_form';//template for editing
 		$this->_list_view		= '';
-		$this->_autorize 		= array('add'=>true,'edit'=>true,'list'=>true,'delete'=>false,'view'=>false);
+		$this->_autorize 		= array('add'=>true,'edit'=>true,'list'=>true,'delete'=>true,'view'=>false);
 		
 		
 		$this->title .= $this->lang->line($this->_controller_name);

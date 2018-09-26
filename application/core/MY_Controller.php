@@ -24,7 +24,7 @@ class MY_Controller extends CI_Controller {
 	protected $title 				= '';
 	protected $json = null;
 	protected $json_path = APPPATH.'models/json/';
-	protected $per_page	= 20;
+	protected $per_page	= 10;
 	protected $next_view = 'list';
 					
 	/**
@@ -245,6 +245,7 @@ class MY_Controller extends CI_Controller {
 		$this->data_view['datas'] 	= $this->{$this->_model_name}->get();
 		
 		$config = array();
+		$config['use_page_numbers'] = TRUE;
 		$config['per_page'] 	= $this->per_page;
 		$config['base_url'] 	= $this->config->item('base_url').$this->_controller_name.'/list/page/';
 		$config['total_rows'] 	= $this->{$this->_model_name}->get_pagination();
