@@ -15,11 +15,7 @@ Class Bootstrap_tools{
 		$this->_SetHead('assets/vendor/open-iconic/css/open-iconic-bootstrap.css','css');
 		$this->_SetHead('assets/css/app.css','css');
 		$this->_SetHead('assets/css/callouts.css','css');
-		
-		/* plugins */
-		$this->_SetHead('assets/plugins/js/bootstrap-datepicker.js','js');
-		$this->_SetHead('assets/plugins/css/datepicker.css','css');		
-		
+
 		/* UI TOOLS */
 		$this->_SetHead('assets/js/toggle_menu.js','js');
 		$this->_SetHead('assets/js/confirm.js','js');
