@@ -28,7 +28,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<a class="dropdown-item" href="<?php echo base_url('Rates_controller/list');?>"><?php echo Lang('Rates');?></a>
 						<a class="dropdown-item" href="<?php echo base_url('Import_controller/list');?>"><?php echo Lang('Import');?></a>
 						<a class="dropdown-item" href="<?php echo base_url('Inputs_controller/list');?>"><?php echo Lang('Inputs');?></span></a>
-						<a class="dropdown-item" href="#"><?php echo Lang('Parameter');?></a>
+						<a class="dropdown-item" href="<?php echo base_url('Parameters');?>"><?php echo Lang('Parameter');?></a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#AboutModal"><?php echo Lang('About');?></a>
 					</div>

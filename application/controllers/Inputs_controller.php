@@ -91,54 +91,52 @@ class Inputs_controller extends MY_Controller {
 		$this->render_view();
 	}
 	
-	function make_bill(){
-		
-		
+	function make_bill(){	
 		$this->load->model('Invoice_model');
-		
-		$inputs 	=  $this->{$this->_model_name}->get_inputs($this->session->userdata($this->set_ref_field('month')) , $this->session->userdata($this->set_ref_field('year')) );
-
 		$this->data_view['rates'] = array();
 		$rates = $this->Rates_model->get_all();
-		
+		//std class with all datas
 		$consos = new StdClass();
-		$consos->month = $this->session->userdata($this->set_ref_field('month'));
-		$consos->year = $this->session->userdata($this->set_ref_field('year'));
 		$consos->rates = array();
 		foreach($rates AS $rate){
 			$consos->rates[$rate->id] = $rate;
 		}
-		/* DATA CONSOLIDATION */
-		foreach( $inputs AS $input){
-			$this->Users_model->_set('key_value',$input->user);
-			
-			$user = new StdClass();
-			$user->details = $this->Users_model->get_one();
-			$consos->user[$input->user] = $user;
-			
-			if (!$user->details->family){
-				//no family
-				$user->details->family = 'u'.$input->user;
-				$consos->family[$user->details->family] = $this->Users_model->get_one();
-			} else {
-				$this->Family_model->_set('key_value',$user->details->family );
-				$consos->family[$user->details->family] = $this->Family_model->get_one();
+
+		foreach($_POST['month'] AS $period){
+			list($month,$year) = explode('_', $period);
+			$inputs 			= $this->{$this->_model_name}->get_inputs($month , $year);
+			$consos->month .= $month.".";
+			$consos->year  = $year;
+			/* DATA CONSOLIDATION */
+			foreach( $inputs AS $input){
+				$this->Users_model->_set('key_value',$input->user);
+				
+				$user = new StdClass();
+				$user->details = $this->Users_model->get_one();
+				$consos->user[$input->user] = $user;
+				
+				if (!$user->details->family){
+					//no family
+					$user->details->family = 'u'.$input->user;
+					$consos->family[$user->details->family] = $this->Users_model->get_one();
+				} else {
+					$this->Family_model->_set('key_value',$user->details->family );
+					$consos->family[$user->details->family] = $this->Family_model->get_one();
+				}			
+				if (isset($consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates])){
+					$consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates] += $input->duration;
+				} else {
+					$consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates] = $input->duration;
+				}
+				
+				if (isset($consos->input[$user->details->family][$input->user]['conso'][$input->rates])){
+					$consos->input[$user->details->family][$input->user]['conso'][$input->rates] += $input->duration;
+				} else {
+					$consos->input[$user->details->family][$input->user]['conso'][$input->rates] = $input->duration;
+				}
 			}			
-			if (isset($consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates])){
-				$consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates] += $input->duration;
-			} else {
-				$consos->input[$user->details->family][$input->user]['dates'][$input->billing_date][$input->rates] = $input->duration;
-			}
-			
-			if (isset($consos->input[$user->details->family][$input->user]['conso'][$input->rates])){
-				$consos->input[$user->details->family][$input->user]['conso'][$input->rates] += $input->duration;
-			} else {
-				$consos->input[$user->details->family][$input->user]['conso'][$input->rates] = $input->duration;
-			}
 		}
 		ksort($consos->input);
-		//$this->data_view['consos'] 	= $consos;
-		
 		/*Invoice construct ( finaly JSON OBJET in DataBase )*/
 		foreach($consos->input AS $family => $users){ 
 			$invoice = new StdClass();
@@ -182,7 +180,8 @@ class Inputs_controller extends MY_Controller {
 				$user = '';
 				$invoice->header = Lang('Family_bill').' '.$invoice->header;
 			}
-			//update or create
+			
+  			//update or create
 			$exist = $this->Invoice_model->is_exist(null,null,['month'=>$invoice->month,'year'=>$invoice->year,'family'=>$family,'user'=>$user]);
 			$datas = ['header'=>$invoice->header,'month' => $invoice->month, 'year'=>$invoice->year,'sum'=>$invoice->sum ,'content'=>$invoice->content,'family'=>$family,'user'=>$user];
 			if (!$exist){
@@ -202,7 +201,7 @@ class Inputs_controller extends MY_Controller {
 			$this->data_view['year'] = $consos->year;
 			krsort($this->data_view['invoices']);
 		}
-
+		
 		$this->libinvoice->DoRecap($this->data_view);
 		$this->{$this->_model_name}->update_inputs($consos->month, $consos->year);
 		redirect('Inputs_controller/billed');

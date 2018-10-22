@@ -1,4 +1,4 @@
-RewriteBase /facturation
+RewriteBase /ski_bn3f
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
