@@ -6,15 +6,15 @@ $config['app_name'] = 'Facturation BN3F';
 $config['slogan'] 	= 'Outil de facturation de la BN3F pour le ski';
 $config['about'] 	= 'By NL';
 $config['debug_app']= 'none'; //none,debug,profiler
+$config['sidebar'] = 'on';
 
-$config['sidebar'] = 'on'; 
-$config['crlf'] = ''; 
-$config['crlf'] = ''; 
-$config['crlf'] = ''; 
-$config['crlf'] = ''; 
-$config['crlf'] = ''; 
-$config['crlf'] = ''; 
-$config['crlf'] = ''; 
+$config['crlf'] = '';
+$config['crlf'] = '';
+$config['crlf'] = '';
+$config['crlf'] = '';
+$config['crlf'] = '';
+$config['crlf'] = '';
+$config['crlf'] = '';
 
 /* EMAIL */
 $config['protocol'] = "smtp";
@@ -27,6 +27,6 @@ $config['charset'] = 'utf-8';
 $config['mailtype'] = 'html';
 $config['wordwrap'] = TRUE;
 $config['newline'] = "\r\n";
-$config['crlf'] = "\r\n";  
+$config['crlf'] = "\r\n";
 
 

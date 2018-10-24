@@ -3,134 +3,149 @@
 		"type": "input",
 		"list": true,
 		"search": true,
-		"rules": "trim|required|min_length[5]|max_length[255]",
+		"rules": "trim",
 		"since": 1,
+		"bloc":"app",
 		"dbforge": {
 			"type": "VARCHAR",
 			"constraint": "255"
 		}
 	},
-	"surname": {
+	"slogan": {
 		"type": "input",
 		"list": true,
 		"search": true,
-		"rules": null,
-		"since": 1,
-		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "255"
-		}
-	},
-	"created": {
-		"type": "created",
-		"list": false,
-		"search": false,
-		"rules": null,
-		"since": 1,
-		"dbforge": {
-			"type": "DATETIME",
-			"null": true
-		}
-	},
-	"updated": {
-		"type": "updated",
-		"list": false,
-		"search": false,
-		"rules": null,
-		"since": 1,
-		"dbforge": {
-			"type": "DATETIME",
-			"null":true
-		}
-	},	
-	"section": {
-		"type": "select",
-		"list": true,
-		"search": false,
-		"rules": null,
-		"since": 1,
-		"values": {
-			"1": "Motonautisme",
-			"2": "Ski",
-			"3": "Voile",
-			"4": "Wake"
-		},
-		"dbforge": {
-			"type": "INT",
-			"constraint": "5"
-		}
-	},
-	"family": {
-		"type": "select_database",
-		"list": true,
-		"search": false,
-		"rules": null,
-		"since": 2,
-		"values": "distinct(family,id:name)",
-		"dbforge": {
-			"type": "INT",
-			"constraint": "5"
-		}
-	},
-	"email": {
-		"type": "input",
-		"list": false,
-		"search": false,
-		"rules": "",
-		"since": 1,
-		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "255",
-			"null":true
-		}
-	},
-	"adress": {
-		"type": "input",
-		"list": false,
-		"search": false,
-		"rules": null,
-		"since": 1,
-		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "255"
-		}
-	},
-	"postalcode": {
-		"type": "input",
-		"list": false,
-		"search": false,
-		"rules": "",
-		"since": 1,
-		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "5"
-		}
-	},
-	"town": {
-		"type": "input",
-		"list": false,
-		"search": false,
 		"rules": "trim",
 		"since": 1,
+		"bloc":"app",
 		"dbforge": {
 			"type": "VARCHAR",
 			"constraint": "255"
 		}
 	},
-	"country": {
+	"debug_app": {
 		"type": "select",
 		"list": false,
 		"search": false,
 		"rules": null,
 		"since": 1,
+		"bloc":"app",
 		"values": {
-			"FR": "France",
-			"GE": "Allemagne",
-			"CH": "Suisse"
+			"none": "none",
+			"debug": "debug",
+			"profiler": "profiler"
 		},
 		"dbforge": {
 			"type": "VARCHAR",
 			"constraint": "255"
 		}
-	}
+	},
+	"protocol": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"smtp_host": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"smtp_port": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"smtp_user": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"smtp_pass": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"smtp_crypto": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"charset": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"mailtype": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	},
+	"wordwrap": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim",
+		"since": 1,
+		"bloc":"e-mail",
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	}	
 }
