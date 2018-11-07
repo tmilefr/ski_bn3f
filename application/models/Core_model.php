@@ -60,6 +60,7 @@ class Core_model extends CI_Model {
 				$this->autorized_fields_search[] = $field;
 			}
 			switch($defs->type){
+				case 'month':
 				case 'checkbox':
 				case 'select':
 					$data = array();

@@ -24,7 +24,7 @@
 		}
 	},
 	"month": {
-		"type": "select",
+		"type": "month",
 		"list": true,
 		"search": true,
 		"rules": null,

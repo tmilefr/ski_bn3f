@@ -37,6 +37,11 @@ class Inputs_controller extends MY_Controller {
 		$this->load->model('Family_model');
 		
 		$this->load->library('Libinvoice');
+		
+		if (function_exists("set_time_limit") == TRUE AND @ini_get("safe_mode") == 0) /* directory process is long ! TODO : change the method*/
+		{
+			@set_time_limit(300);
+		}				
 	}
 
 	
@@ -101,7 +106,7 @@ class Inputs_controller extends MY_Controller {
 		foreach($rates AS $rate){
 			$consos->rates[$rate->id] = $rate;
 		}
-
+		ksort($_POST['month']);
 		foreach($_POST['month'] AS $period){
 			list($month,$year) = explode('_', $period);
 			$inputs 			= $this->{$this->_model_name}->get_inputs($month , $year);
