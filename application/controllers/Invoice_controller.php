@@ -35,19 +35,17 @@ class Invoice_controller extends MY_Controller {
 		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_recap($month,$year);
 		$this->data_view['month'] = $month;
 		$this->data_view['year'] = $year;
-		
+		$pdf = NameToFilename('RECAP_'.$this->data_view['month'].'_'.$this->data_view['year']).'.pdf';
 
 		if (isset($month) AND isset($year)){
-			$pdf = 'RECAP_'.str_replace(',','_',$this->data_view['month']).'_'.$this->data_view['year'].'.pdf';
 			$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('recap').'</a>';			
 			if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
 				$this->libinvoice->DoRecap($this->data_view);
 			}
-			
 			$this->_set('view_inprogress','unique/recap_view_users');
 		} else {
 			foreach($this->data_view['datas'] AS $key=>$data){
-				$pdf = 'RECAP_'.str_replace(',','_',$this->data_view['month']).'_'.$data->year.'.pdf';		
+				$pdf = NameToFilename('RECAP_'.$data->month.'_'.$data->year).'.pdf';
 				if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
 					$this->data_view['datas'][$key]->url_pdf = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('recap').'</a>';
 				} else {

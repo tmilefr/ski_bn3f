@@ -85,7 +85,7 @@ class Libinvoice {
 		$this->CI->render_object->_set('datamodel',	'Invoice_model'); 
 		$this->CI->render_object->Set_Rules_elements();		
 		$html = $this->CI->load->view('unique/recap_view_users_pdf.php', $data_view, true);
-		$this->filename = 'RECAP_'.$data_view['month'].'_'.$data_view['year'].'.pdf';
+		$this->filename = NameToFilename('RECAP_'.$data_view['month'].'_'.$data_view['year']).'.pdf';
 		$this->makePdf($html);
 	}
 	
