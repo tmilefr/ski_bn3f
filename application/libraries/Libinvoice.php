@@ -97,7 +97,7 @@ class Libinvoice {
 		$invoice->content = json_decode($invoice->content);
 		$data_view['invoice'] = $invoice;
 		$html = $this->CI->load->view('unique/Invoice_view_pdf.php', $data_view, true);
-		$this->filename = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
+		$this->filename = NameToFilename($invoice->header.'_'.$invoice->month.'_'.$invoice->year).'.pdf';
 		$this->makePdf($html);
 	}
 	

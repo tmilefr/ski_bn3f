@@ -70,9 +70,9 @@ class Invoice_controller extends MY_Controller {
 			$this->{$this->_model_name}->_set('key_value',$id);
 			$invoice = $this->{$this->_model_name}->get_one();
 			
-			$pdf = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
+			$pdf = NameToFilename($invoice->header.'_'.$invoice->month.'_'.$invoice->year).'.pdf';
 			if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
-				$this->email->to('nicolas.laresser@gamail.com');
+				$this->email->to('nicolas.laresser@gmail.com');
 				$this->email->subject('Email Test');
 				$this->email->message('Testing the email class.');
 				$this->email->attach( $this->libinvoice->_get('pdf_path').$pdf , 'attachment', $pdf , 'application/pdf');
@@ -90,7 +90,7 @@ class Invoice_controller extends MY_Controller {
 		if ($id){
 			$this->{$this->_model_name}->_set('key_value',$id);
 			$invoice = $this->{$this->_model_name}->get_one();
-			$pdf = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
+			$pdf = NameToFilename($invoice->header.'_'.$invoice->month.'_'.$invoice->year).'.pdf';
 			if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
 				$this->libinvoice->DoPDF($invoice);
 			} else {
