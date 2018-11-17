@@ -111,19 +111,7 @@ class Libinvoice {
 			echo 'Exception reçue : ',  $e->getMessage(), "\n";
 		}
 	}	
-	
-	function SendByMail(){
-		/*$this->CI->load->library('email');
-		$this->CI->email->from('ski@bn3f.fr', 'Your Name');
-		$this->CI->email->to('nicolas.laresser@gamail.com');
-		//$this->CI->email->cc('another@another-example.com');
-		$this->CI->email->subject('Email Test');
-		$this->CI->email->message('Testing the email class.');
-		$this->CI->email->attach($this->CI->dompdf->output(), 'attachment', $this->filename , 'application/pdf');
-		$this->CI->email->send();*/
-	}
-	
-	
+
 	/**
 	 * Generic set
 	 * @return void

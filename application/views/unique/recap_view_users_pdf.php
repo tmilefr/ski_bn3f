@@ -120,7 +120,7 @@ p{
 			<tr><td>
 				<h2>Facturation Minutes SKI BN3F : </h2>
 			</td><td class=" text-right">
-				<h3><?php echo Lang('RECAP').' '.$this->render_object->RenderElement('month', $month).' / '.$year;?></h3>
+				<h3><?php echo Lang('invoice_list_in').' '.$this->render_object->RenderElement('month', $month).' / '.$year;?></h3>
 			</td>
 			</tr>
 		</table>
