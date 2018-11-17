@@ -76,12 +76,13 @@ class Invoice_controller extends MY_Controller {
 				$this->email->subject('Email Test');
 				$this->email->message('Testing the email class.');
 				$this->email->attach( $this->libinvoice->_get('pdf_path').$pdf , 'attachment', $pdf , 'application/pdf');
-				$this->data_view['sendmail'][] = $this->email->send();
+				//$this->data_view['sendmail'][] = $this->email->send();
 			} else {
 				$this->data_view['sendmail'][] = $this->libinvoice->_get('pdf_path').$pdf. ' not exist';
 			}
 		}
 		$this->_set('view_inprogress','unique/sendmail');
+		$this->render_view();
 	}
 	
 	public function view($id){
