@@ -9,11 +9,12 @@ class element_month extends element
 	
 	public function Render(){
 		$return = '';
-		if (strpos($this->value, '.')){
-			$values = explode('.',$this->value);
-			foreach($values AS $value){
-				$return .= ' - '.$this->_get_value($value);
-			}				
+		if (strpos($this->value, ',')){
+			$values = explode(',',$this->value);
+			foreach($values AS $key=>$value){
+				$values[$key] = $this->_get_value($value);
+			}
+			return implode(' - ', $values);				
 		} else {
 			$return = $this->_get_value($this->value);
 		}

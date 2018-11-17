@@ -269,7 +269,7 @@ class Core_model extends CI_Model {
 	
 	public function __destruct(){
 		if ($this->_debug){
-			echo '<pre><code>'.print_r($this ,1).'</code></pre>';
+			echo '<pre><code>'.print_r($this->_debug_array ,1).'</code></pre>';
 		}
 	}	
 

@@ -60,7 +60,8 @@ class Home extends MY_Controller {
 				}
 			}
 		}
-	
+		$stats['color']['2020'] = '#ff9933';		
+		$stats['color']['2019'] = '#ff9933';	
 		$stats['color']['2018'] = '#ff9933';
 		$stats['color']['2017'] = '#0099ff';
 		$stats['color']['2016'] = '#009933';

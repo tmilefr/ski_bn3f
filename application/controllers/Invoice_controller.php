@@ -30,20 +30,54 @@ class Invoice_controller extends MY_Controller {
 		$this->load->library('Libinvoice');
 	}
 	
+	function recap($month = null,$year = null, $pdf = null){
+		$month = str_replace('_',',',$month);
+		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_recap($month,$year);
+		$this->data_view['month'] = $month;
+		$this->data_view['year'] = $year;
+		
+
+		if (isset($month) AND isset($year)){
+			$pdf = 'RECAP_'.str_replace(',','_',$this->data_view['month']).'_'.$this->data_view['year'].'.pdf';
+			$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('recap').'</a>';			
+			if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
+				$this->libinvoice->DoRecap($this->data_view);
+			}
+			
+			$this->_set('view_inprogress','unique/recap_view_users');
+		} else {
+			foreach($this->data_view['datas'] AS $key=>$data){
+				$pdf = 'RECAP_'.str_replace(',','_',$this->data_view['month']).'_'.$data->year.'.pdf';		
+				if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
+					$this->data_view['datas'][$key]->url_pdf = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('recap').'</a>';
+				} else {
+					$this->data_view['datas'][$key]->url_pdf = '';
+				}
+				if (isset($sum[$data->year])){
+					$sum[$data->year]+= $data->SUM;
+				} else {
+					$sum[$data->year] = $data->SUM;
+				}
+			}
+			$this->data_view['stats'] = $sum;
+			$this->_set('view_inprogress','unique/recap_view');
+		}
+		$this->render_view();
+	}
+	
 	
 	public function view($id){
 		$this->data_view['url_pdf'] = '';
 		if ($id){
 			$this->{$this->_model_name}->_set('key_value',$id);
 			$invoice = $this->{$this->_model_name}->get_one();
-			$invoice->content = json_decode($invoice->content);
-			
 			$pdf = NameToFilename($invoice->header).'_'.$invoice->month.'_'.$invoice->year.'.pdf';
-			if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
-				$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoice').'</a>';
-			}		
-					
-			
+			if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
+				$this->libinvoice->DoPDF($invoice);
+			} else {
+				$invoice->content = json_decode($invoice->content);
+			}
+			$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoice').'</a>';
 		}	
 		$this->data_view['invoice'] = $invoice;
 		$this->_set('view_inprogress',$this->_list_view);

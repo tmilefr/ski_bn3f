@@ -6,6 +6,8 @@
 	echo '<div class="form-row">
 			<div class="form-group col-md-2">';
 			echo $this->bootstrap_tools->input_select('month_in_progress', [4=>'avril',5=>'mai',6=>'juin',7=>'juillet',8=>'aout',9=>'septembre',10=>'octobre',11=>'novembre'], $month_in_progress);
+			echo '</div><div class="form-group col-md-2">';
+			echo $this->bootstrap_tools->input_select('year_in_progress', [2016=>2016,2017=>2017,2018=>2018,2019=>2019,2020=>2020,2021=>2021,2022=>2022,2023=>2023], $year_in_progress);
 	echo '	</div><div class="form-group col-md-2">
 				<button type="submit" class="btn btn-primary">'.Lang('VALID').'</button>
 		  </div>

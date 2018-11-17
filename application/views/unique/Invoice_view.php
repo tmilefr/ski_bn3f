@@ -15,7 +15,7 @@
 						<?php echo $url_pdf;?>
 					</li>
 				</ul> 	
-				<?php echo $invoice->month.' / '.$invoice->year.' : '. $invoice->sum.' €';?>
+				<?php echo $this->render_object->RenderElement('month', $invoice->month).' / '.$invoice->year.' : '. $invoice->sum.' €';?>
 				
 			</nav> 	
 		</div>
@@ -29,13 +29,16 @@
 				</h5>
 			</div>
 			<div class="card-text">
-				<table class="table table-sm table-striped">
 				<?php
-				foreach($part->days AS $day){
-					echo '<tr><td style="width: 40%">'.GetFormatDate($day->date).'</td><td style="width: 30%">'.$day->rate.'</td><td style="width: 30%" class="text-right">'.$day->duration.' '.Lang('min').'</td></tr>';
+				foreach($part->days AS $month=>$days){
+					echo '<h3>'.$this->render_object->RenderElement('month',$month).'</h3>';
+					echo '<table class="table table-sm table-striped">';
+					foreach($days AS $day){	
+						echo '<tr><td style="width: 40%">'.GetFormatDate($day->date).'</td><td style="width: 30%">'.$day->rate.'</td><td style="width: 30%" class="text-right">'.$day->duration.' '.Lang('min').'</td></tr>';
+					}
+					echo '</table>';
 				}
 				?>
-				</table>
 			</div>
 			<div class="card-footer">
 				<table class="table table-sm table-striped">

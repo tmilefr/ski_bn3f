@@ -1,10 +1,14 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style type="text/css">
 body {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, Verdana, Geneva, Sans-serif;
 	font-size: 14px;
 	color: #4F5155;
-	/*background-color: #F5F5F5;*/
 }
 
 @page { margin: 90px 10px 0px 20px; }
@@ -108,3 +112,42 @@ p{
 .nowrap{
 	white-space:nowrap;
 }
+</style>
+</head>
+<body>
+<div id="header">
+	<table >
+			<tr><td>
+				<h2>Facturation Minutes SKI BN3F : </h2>
+			</td><td class=" text-right">
+				<h3><?php echo Lang('RECAP').' '.$this->render_object->RenderElement('month', $month).' / '.$year;?></h3>
+			</td>
+			</tr>
+		</table>
+	</td></tr>
+</div>
+<div id="footer">
+	<p class="footer">
+		BN3F / SKI
+	</p>
+ </div>
+<div id="content">
+	<table class="table table-striped table-sm">
+	  <thead>
+		<tr>			
+			<th scope="col"><?php echo Lang('family');?></th>
+			<th scope="col" class="text-right"><?php echo Lang('sum');?></th>
+		  </tr>
+	  </thead>
+	  <tbody>
+	<?php 
+	$sum = 0;
+	foreach($datas AS $key=>$invoice){
+		echo '<tr><td>'.$invoice->header.'</td><td class="text-right">'.$invoice->sum.'</td></tr>';
+		$sum += $invoice->sum;
+	}
+	echo '<tr><td>'.Lang('total').'</td><td class="text-right">'.$sum.'</td></tr>';
+	?>
+	</tbody>
+	</table>
+</div>

@@ -37,7 +37,7 @@ if ( ! function_exists('HumanReadableFilesize'))
 if ( ! function_exists('NameToFilename'))
 {
 	function NameToFilename($name) {
-		return str_replace(['\\',' ','/'],['_','_','_'] ,$name);
+		return str_replace(['\\',' ','/',','],['_','_','_','_'] ,$name);
 	}
 }
 

@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="oi oi-cog"></span></a>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="<?php echo base_url('Rates_controller/list');?>"><?php echo Lang('Rates');?></a>
-						<a class="dropdown-item" href="<?php echo base_url('Import_controller/list');?>"><?php echo Lang('Import');?></a>
+						<a class="dropdown-item" href="<?php echo base_url('Invoice_controller/list');?>"><?php echo Lang('Invoice');?></a>
 						<a class="dropdown-item" href="<?php echo base_url('Inputs_controller/list');?>"><?php echo Lang('Inputs');?></span></a>
 						<a class="dropdown-item" href="<?php echo base_url('Parameters');?>"><?php echo Lang('Parameter');?></a>
 						<div class="dropdown-divider"></div>
@@ -60,7 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</a>
 					</li>					
 					<li class="nav-item">
-						<a class="nav-link" href="<?php echo base_url('Invoice_controller/list');?>">
+						<a class="nav-link" href="<?php echo base_url('Invoice_controller/recap');?>">
 							<span class="oi oi-document"></span> <?php echo Lang('Invoice');?></span>
 						</a>
 					</li>

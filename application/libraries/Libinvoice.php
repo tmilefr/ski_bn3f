@@ -28,6 +28,53 @@ class Libinvoice {
 		$this->CI->dompdf = $pdf;
 	}
 	
+	function MakeInvoice($users){
+		$invoice = new StdClass();
+		$invoice->month = $this->defs->month;
+		$invoice->year =  $this->defs->year;
+		$invoice->header = $this->defs->family[$this->family]->name;
+		$invoice->family =  $this->family;
+		$invoice->sum = 0;
+		foreach($users as $user => $datas){
+			$part = new StdClass();
+			$part->name = $this->defs->user[$user]->details->name.' '.$this->defs->user[$user]->details->surname;
+			foreach($datas['dates'] AS $month=>$dates){
+				foreach($dates AS $key=>$values){
+					$i = 0;
+					foreach($values AS $rate=>$duration){
+						$day = new StdClass();
+						$day->date = $key;
+						$day->rate = $this->defs->rates[$rate]->name;
+						$day->duration = $duration;
+						$part->days[$month][] = $day;
+					}
+				}
+			}
+			$total = 0;
+			foreach($datas['conso'] AS $rate=>$duration){
+				$footer = new StdClass();
+				$footer->rate = $this->defs->rates[$rate]->name;
+				$footer->duration = $duration;
+				$footer->cost = round($duration * $this->defs->rates[$rate]->amount, 2);
+				$total += round($duration * $this->defs->rates[$rate]->amount, 2);
+				$part->footer[] = $footer;
+			}
+			$invoice->part[] = $part;
+			$invoice->sum += $total;
+		}
+		$invoice->content = json_encode($invoice);
+		//no family
+		if ( substr($this->family,0,1) == 'u'){
+			$invoice->user = substr($this->family,1);
+			$invoice->family = '';
+			$invoice->header = Lang('User_bill').' '.$invoice->header;
+		} else {
+			$invoice->user = '';
+			$invoice->header = Lang('Family_bill').' '.$invoice->header;
+		}
+		return $invoice;
+	}
+	
 	public function reset(){
 		if (isset($this->CI->dompdf))
 			unset($this->CI->dompdf);
@@ -35,14 +82,18 @@ class Libinvoice {
 	}
 	
 	function DoRecap($data_view){
-		$html = $this->CI->load->view('unique/Invoices_view_pdf.php', $data_view, true);
-		$filename ='RECAP_'.$data_view['month'].'_'.$data_view['year'].'.pdf';
-		$this->makePdf($filename, $html);
+		$this->CI->render_object->_set('datamodel',	'Invoice_model'); 
+		$this->CI->render_object->Set_Rules_elements();		
+		$html = $this->CI->load->view('unique/recap_view_users_pdf.php', $data_view, true);
+		$this->filename = 'RECAP_'.$data_view['month'].'_'.$data_view['year'].'.pdf';
+		$this->makePdf($html);
 	}
 	
 	
 	//not sure that's good place for this ... need to do invoice lib
-	function DoInvoice($invoice){
+	function DoPdf($invoice){
+		$this->CI->render_object->_set('datamodel',	'Invoice_model'); 
+		$this->CI->render_object->Set_Rules_elements();
 		$invoice->content = json_decode($invoice->content);
 		$data_view['invoice'] = $invoice;
 		$html = $this->CI->load->view('unique/Invoice_view_pdf.php', $data_view, true);
@@ -62,14 +113,14 @@ class Libinvoice {
 	}	
 	
 	function SendByMail(){
-		$this->CI->load->library('email');
+		/*$this->CI->load->library('email');
 		$this->CI->email->from('ski@bn3f.fr', 'Your Name');
 		$this->CI->email->to('nicolas.laresser@gamail.com');
 		//$this->CI->email->cc('another@another-example.com');
 		$this->CI->email->subject('Email Test');
 		$this->CI->email->message('Testing the email class.');
 		$this->CI->email->attach($this->CI->dompdf->output(), 'attachment', $this->filename , 'application/pdf');
-		$this->CI->email->send();
+		$this->CI->email->send();*/
 	}
 	
 	
