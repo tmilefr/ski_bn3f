@@ -26,30 +26,39 @@ class Invoice_controller extends MY_Controller {
 		$this->_set('_debug', FALSE);
 		
 		$this->init();
-		
+		$this->load->model('Users_model');
 		$this->load->library('Libinvoice');
 	}
 	
 	function recap($month = null,$year = null, $pdf = null){
 		$month = str_replace('_',',',$month);
-		$this->data_view['datas'] 	= $this->{$this->_model_name}->get_recap($month,$year);
+		$datas =  $this->{$this->_model_name}->get_recap($month,$year);
 		$this->data_view['month'] = $month;
 		$this->data_view['year'] = $year;
 		$pdf = NameToFilename('RECAP_'.$this->data_view['month'].'_'.$this->data_view['year']).'.pdf';
 
 		if (isset($month) AND isset($year)){
+			foreach($datas AS $key=>$data){
+				if ($data->user){
+					$data->info = $this->Users_model->get_user($data->user, true);
+				} else {
+					$data->info = $this->Users_model->get_user($data->family, false);
+				}
+			}			
+			$this->data_view['datas'] 	= $datas;
 			$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoices_list').'</a>';			
 			if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
 				$this->libinvoice->DoRecap($this->data_view);
 			}
 			$this->_set('view_inprogress','unique/recap_view_users');
 		} else {
-			foreach($this->data_view['datas'] AS $key=>$data){
+			
+			foreach($datas AS $key=>$data){
 				$pdf = NameToFilename('RECAP_'.$data->month.'_'.$data->year).'.pdf';
 				if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
-					$this->data_view['datas'][$key]->url_pdf = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoices_list').'</a>';
+					$datas[$key]->url_pdf = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoices_list').'</a>';
 				} else {
-					$this->data_view['datas'][$key]->url_pdf = '';
+					$datas[$key]->url_pdf = '';
 				}
 				if (isset($sum[$data->year])){
 					$sum[$data->year]+= $data->SUM;
@@ -57,6 +66,7 @@ class Invoice_controller extends MY_Controller {
 					$sum[$data->year] = $data->SUM;
 				}
 			}
+			$this->data_view['datas'] 	= $datas;
 			$this->data_view['stats'] = $sum;
 			$this->_set('view_inprogress','unique/recap_view');
 		}
@@ -69,11 +79,15 @@ class Invoice_controller extends MY_Controller {
 		foreach($_POST['invoices'] AS $id){
 			$this->{$this->_model_name}->_set('key_value',$id);
 			$invoice = $this->{$this->_model_name}->get_one();
-			
+			if ($invoice->user){
+				$invoice->info = $this->Users_model->get_user($invoice->user, true);
+			} else {
+				$invoice->info = $this->Users_model->get_user($invoice->family, false);
+			}
 			$pdf = NameToFilename($invoice->header.'_'.$invoice->month.'_'.$invoice->year).'.pdf';
 			if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
-				$this->email->to('nicolas.laresser@gmail.com');
-				$this->email->subject('Email Test');
+				$this->email->to($invoice->info->email);
+				$this->email->subject('Minutes BN3F '.$invoice->month.' '.$invoice->year);
 				$this->email->message('Testing the email class.');
 				$this->email->attach( $this->libinvoice->_get('pdf_path').$pdf , 'attachment', $pdf , 'application/pdf');
 				$this->data_view['sendmail'][] = $this->email->send();

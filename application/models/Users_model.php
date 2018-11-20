@@ -14,5 +14,19 @@ class Users_model extends Core_model{
 		$this->_set('json'	, 'Users.json');
 		$this->_init_def();
 	}
+	
+	function get_user($id,$user = true){
+		if ($user){
+			$this->key_value = $id;
+			$datas = $this->get_one();
+		} else {
+			$datas =$this->db->select('*')
+						   ->join('family','family.id='.$this->table.'.family','left')
+						   ->where('family',$id)
+						   ->get($this->table)
+						   ->row();
+		}
+		return $datas;
+	}
 }
 ?>

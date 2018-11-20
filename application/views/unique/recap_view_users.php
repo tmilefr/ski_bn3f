@@ -16,13 +16,14 @@ echo form_open('Invoice_controller/SendByMail', array('class' => '', 'id' => 'se
 				  </tr>
 			  </thead>
 			  <tbody>
+
 			<?php 
 			$sum = 0;
 			foreach($datas AS $key=>$invoice){
-				echo '<tr><td><input type="checkbox" name="invoices[]" value="'.$invoice->id.'" /></td><td>'.$invoice->header.'</td><td class="text-right">'.$invoice->sum.'</td></tr>';
+				echo '<tr><td><div class="form-check">'.(($invoice->info->email) ? '<input class="form-check-input" type="checkbox" id="check'.$invoice->id.'" name="invoices[]" value="'.$invoice->id.'" /> <label class="form-check-label" for="check'.$invoice->id.'">'.$invoice->info->email.'</label>':'<p class="text-danger">NO E-MAIL</p>').'</div></td><td>'.$invoice->header.'</td><td class="text-right">'.$invoice->sum.'</td></tr>';
 				$sum += $invoice->sum;
 			}
-			echo '<tr><td>'.Lang('total').'</td><td class="text-right">'.$sum.'</td></tr>';
+			echo '<tr><td>&nbsp;</td><td class="text-right">'.Lang('total').'</td><td class="text-right">'.$sum.'</td></tr>';
 			?>
 			</tbody>
 			</table>

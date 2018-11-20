@@ -31,7 +31,6 @@ class Invoice_model extends Core_model{
 						   ->result();
 		} 
 		return $datas;
-	}
-	
+	}	
 }
 ?>
