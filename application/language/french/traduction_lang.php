@@ -96,4 +96,8 @@ $lang['TXT_DELETE_CONFIRMATION'] = '&Ecirc;tes vous s&ucirc;r de vouloir supprim
 $lang['CANCEL'] = 'Abandon';
 $lang['YES']   = 'oui';
 
+$lang['invoices_list'] = 'document recapitulatif';
+$lang['invoice_list_in'] = 'liste des factures pour ';
+$lang['invoices_period'] = 'Période de facturation';
+$lang['details'] = 'Détails';
 ?>

@@ -137,16 +137,17 @@ p{
 		<tr>			
 			<th scope="col"><?php echo Lang('family');?></th>
 			<th scope="col" class="text-right"><?php echo Lang('sum');?></th>
+			<th scope="col">&nbsp;</th>
 		  </tr>
 	  </thead>
 	  <tbody>
 	<?php 
 	$sum = 0;
 	foreach($datas AS $key=>$invoice){
-		echo '<tr><td>'.$invoice->header.'</td><td class="text-right">'.$invoice->sum.'</td></tr>';
+		echo '<tr class="'.((is_float($key/2)) ? 'pair':'impair').'"><td>'.$invoice->header.'</td><td class="text-right">'.$invoice->sum.'</td><td class="nowrap"> <input type="checkbox"> </td></tr>';
 		$sum += $invoice->sum;
 	}
-	echo '<tr><td>'.Lang('total').'</td><td class="text-right">'.$sum.'</td></tr>';
+	echo '<tr><td class="sep_dashed">'.Lang('total').'</td><td class="text-right sep_dashed">'.$sum.'</td><td>&nbsp;</td></tr>';
 	?>
 	</tbody>
 	</table>

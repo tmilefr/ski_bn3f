@@ -47,7 +47,8 @@ class Invoice_controller extends MY_Controller {
 			}			
 			$this->data_view['datas'] 	= $datas;
 			$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoices_list').'</a>';			
-			if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
+			$forced = true;
+			if (!is_file($this->libinvoice->_get('pdf_path').$pdf) OR $forced == true){
 				$this->libinvoice->DoRecap($this->data_view);
 			}
 			$this->_set('view_inprogress','unique/recap_view_users');
@@ -89,7 +90,7 @@ class Invoice_controller extends MY_Controller {
 				$this->email->to($invoice->info->email);
 				$this->email->subject('Minutes BN3F '.$invoice->month.' '.$invoice->year);
 				$this->email->message('Testing the email class.');
-				$this->email->attach( $this->libinvoice->_get('pdf_path').$pdf , 'attachment', $pdf , 'application/pdf');
+				$this->email->attach( $this->libinvoice->_get('pdf_path').'/'.$pdf , 'attachment', $pdf , 'application/pdf');
 				$this->data_view['sendmail'][] = $this->email->send();
 			} else {
 				$this->data_view['sendmail'][] = $this->libinvoice->_get('pdf_path').$pdf. ' not exist';

@@ -91,9 +91,17 @@ class Libinvoice {
 	
 	
 	//not sure that's good place for this ... need to do invoice lib
+	/**
+	 * @brief Pdf Create with $invoice data and Invoice_view_pdf view
+	 * @param $invoice 
+	 * @returns void()
+	 * 
+	 * 
+	 */
 	function DoPdf($invoice){
 		$this->CI->render_object->_set('datamodel',	'Invoice_model'); 
 		$this->CI->render_object->Set_Rules_elements();
+		//invoice content
 		$invoice->content = json_decode($invoice->content);
 		$data_view['invoice'] = $invoice;
 		$html = $this->CI->load->view('unique/Invoice_view_pdf.php', $data_view, true);
@@ -101,6 +109,13 @@ class Libinvoice {
 		$this->makePdf($html);
 	}
 	
+	/**
+	 * @brief Create PDF File with Html content
+	 * @param $html 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function makePdf($html){
 		try{
 			$this->reset();
@@ -110,9 +125,7 @@ class Libinvoice {
 		} catch (Exception $e) {
 			echo 'Exception reçue : ',  $e->getMessage(), "\n";
 		}
-	}	
-
-	
+	}		
 	
 	/**
 	 * Generic set
