@@ -30,15 +30,32 @@ class Invoice_controller extends MY_Controller {
 		$this->load->library('Libinvoice');
 	}
 	
+	/**
+	 * @brief Make invoice list with user / sum
+	 * @param $month 
+	 * @param $year 
+	 * @param $pdf 
+	 * @returns view
+	 * 
+	 * 
+	 */
 	function recap($month = null,$year = null, $pdf = null){
 		$month = str_replace('_',',',$month);
 		$datas =  $this->{$this->_model_name}->get_recap($month,$year);
 		$this->data_view['month'] = $month;
 		$this->data_view['year'] = $year;
-		$pdf = NameToFilename('RECAP_'.$this->data_view['month'].'_'.$this->data_view['year']).'.pdf';
+		
 
 		if (isset($month) AND isset($year)){
 			foreach($datas AS $key=>$data){
+				$pdf = NameToFilename($data->header.'_'.$data->month.'_'.$data->year).'.pdf';
+				if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
+					$data->pdf = false;
+					//$this->libinvoice->DoPDF($invoice);
+				} else {
+					$data->pdf = $pdf;
+				}
+				
 				if ($data->user){
 					$data->info = $this->Users_model->get_user($data->user, true);
 				} else {
@@ -46,6 +63,8 @@ class Invoice_controller extends MY_Controller {
 				}
 			}			
 			$this->data_view['datas'] 	= $datas;
+			
+			$pdf = NameToFilename('RECAP_'.$this->data_view['month'].'_'.$this->data_view['year']).'.pdf';
 			$this->data_view['url_pdf'] = '<a target="_new" href="'.$this->libinvoice->_get('pdf_url_path').'/'.$pdf.'"><span class="oi oi-file"></span> '.Lang('invoices_list').'</a>';			
 			$forced = true;
 			if (!is_file($this->libinvoice->_get('pdf_path').$pdf) OR $forced == true){
@@ -74,6 +93,12 @@ class Invoice_controller extends MY_Controller {
 		$this->render_view();
 	}
 	
+	/**
+	 * @brief Send Invoice by e-mail in pdf format
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function SendByMail(){
 		$this->load->library('email');
 		$this->email->from('ski@bn3f.fr', 'BN3F SKI');
@@ -87,12 +112,12 @@ class Invoice_controller extends MY_Controller {
 			}
 			$pdf = NameToFilename($invoice->header.'_'.$invoice->month.'_'.$invoice->year).'.pdf';
 			if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
-				$this->email->clear(TRUE);
 				$this->email->to($invoice->info->email);
-				$this->email->subject('Minutes BN3F '.$invoice->month.' '.$invoice->year);
-				$this->email->message('<p>Bonjour '.$invoice->header.' <br/> Voici votre facture pour la periode '.$invoice->month.' '.$invoice->year.'  ('.$this->libinvoice->_get('pdf_path').$pdf .')<br/> Ski BN3f, Sportivement !</p>');
+				$this->email->subject('Minutes BN3F '.$this->render_object->RenderElement('month',$invoice->month).' '.$invoice->year);
+				$this->email->message("Bonjour ".$invoice->header." \n Voici votre facture pour la periode ".$this->render_object->RenderElement('month', $invoice->month)." ".$invoice->year." \n  Sportivement !");
 				$this->email->attach($this->libinvoice->_get('pdf_path').$pdf);
 				$this->data_view['sendmail'][] = $this->email->send();
+				$this->email->clear(TRUE);
 			} else {
 				$this->data_view['sendmail'][] = $this->libinvoice->_get('pdf_path').$pdf. ' not exist';
 			}
@@ -101,6 +126,13 @@ class Invoice_controller extends MY_Controller {
 		$this->render_view();
 	}
 	
+	/**
+	 * @brief View Invoice
+	 * @param $id 
+	 * @returns view
+	 * 
+	 * 
+	 */
 	public function view($id){
 		$this->data_view['url_pdf'] = '';
 		if ($id){
