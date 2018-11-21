@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 Class Bootstrap_tools{
 
 	protected $CI = null; //base controller 
@@ -14,7 +14,6 @@ Class Bootstrap_tools{
 		$this->_SetHead('assets/vendor/bootstrap/css/bootstrap.min.css','css');
 		$this->_SetHead('assets/vendor/open-iconic/css/open-iconic-bootstrap.css','css');
 		$this->_SetHead('assets/css/app.css','css');
-		$this->_SetHead('assets/css/callouts.css','css');
 
 		/* UI TOOLS */
 		$this->_SetHead('assets/js/toggle_menu.js','js');

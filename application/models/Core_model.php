@@ -1,4 +1,5 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+defined('BASEPATH') || exit('No direct script access allowed');
 
 class Core_model extends CI_Model {
 	
@@ -33,6 +34,15 @@ class Core_model extends CI_Model {
 		
 	}
 
+	/**
+	 * @brief 
+	 * @param $table 
+	 * @param $id 
+	 * @param $value 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function distinct($table,$id,$value){
 		try{
 			if (strpos($value,'@')){
@@ -50,6 +60,12 @@ class Core_model extends CI_Model {
 	}	
 	
 	
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function _init_def(){
 		$this->defs = array();
 		$json = file_get_contents($this->json_path.$this->json);
@@ -111,10 +127,25 @@ class Core_model extends CI_Model {
 		}
 	}
 	
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function truncate(){
 		$this->db->truncate($this->table);	
 	}	
 	
+	/**
+	 * @brief 
+	 * @param $field 
+	 * @param $value 
+	 * @param $fields 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function is_exist($field = 'id' ,$value, $fields = null){
 		$query = $this->db->get_where($this->table , (($fields) ? $fields:array($field => $value)) );
 		$this->_debug_array[] = $this->db->last_query();
@@ -125,6 +156,12 @@ class Core_model extends CI_Model {
 			return false;			
 	}	
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function get_all(){
 		if (is_array($this->filter) AND count($this->filter)){
 			foreach($this->filter AS $key => $value){
@@ -144,14 +181,27 @@ class Core_model extends CI_Model {
 		return $datas;
 	}
 	
+	/**
+	 * @brief 
+	 * @param $field 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function get_distinct($field){
 		$this->db->distinct();
-		$datas = $this->db->select("$key,$field")->get($this->table)->result();
+		$datas = $this->db->select($field)->get($this->table)->result();
 		$this->_debug_array[] = $this->db->last_query();
 		return $datas;
 	}		
 	
 	/* only one ? really ? */
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function get_one()
 	{
 		$this->db->select('*')
@@ -162,6 +212,13 @@ class Core_model extends CI_Model {
 		return $datas;
 	}
 
+	/**
+	 * @brief 
+	 * @param $datas 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function post($datas)
 	{
 		/*foreach ($datas AS $key=>$fields){
@@ -170,10 +227,16 @@ class Core_model extends CI_Model {
 			}
 		}*/
 		$this->db->insert($this->table, $datas);
-		return $this->db->insert_id();
 		$this->_debug_array[] = $this->db->last_query();
+		return $this->db->insert_id();
 	}
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function _set_filter(){
 		if (is_array($this->filter) AND count($this->filter)){
 			$this->db->group_start();
@@ -184,6 +247,12 @@ class Core_model extends CI_Model {
 		} 
 	}
 	
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function _set_group_by(){
 		if (is_array($this->group_by) AND count($this->group_by)){
 			foreach($this->group_by AS $key => $value){
@@ -192,6 +261,12 @@ class Core_model extends CI_Model {
 		} 	
 	}
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function _set_order_by(){
 		if (is_array($this->order) AND count($this->order)){
 			foreach($this->order AS $key => $value){
@@ -201,6 +276,12 @@ class Core_model extends CI_Model {
 	}	
 	
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	function _set_search(){
 		if ($this->global_search){
 			$this->db->group_start();
@@ -216,6 +297,12 @@ class Core_model extends CI_Model {
 	}
 
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function get_pagination(){
 		if (!$this->nb){
 			$this->_set_filter();
@@ -226,7 +313,13 @@ class Core_model extends CI_Model {
 	}	
 	
 
-    public function get(){
+    /**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
+	public function get(){
 		$this->_set_filter();
 		$this->_set_search();		  		
 		if ($this->per_page  ){
@@ -241,11 +334,17 @@ class Core_model extends CI_Model {
 		return $datas->result();
     }
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function put()
 	{
 		foreach ($this->datas AS $field=>$data){
 			if (!in_array($field, $this->autorized_fields)){
-				unset($this->datas[$key]);
+				unset($this->datas[$field]);
 			}
 		}
 		$this->db->where($this->key, $this->key_value);
@@ -253,20 +352,47 @@ class Core_model extends CI_Model {
 		$this->_debug_array[] = $this->db->last_query();
 	}
 
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function delete()
 	{
 		$this->db->where_in($this->key, $this->key_value)
 				 ->delete($this->table);
 	}
 
+	/**
+	 * @brief 
+	 * @param $field 
+	 * @param $value 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function _set($field,$value){
 		$this->$field = $value;
 	}
 
+	/**
+	 * @brief 
+	 * @param $field 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function _get($field){
 		return $this->$field;
 	}
 	
+	/**
+	 * @brief 
+	 * @returns 
+	 * 
+	 * 
+	 */
 	public function __destruct(){
 		if ($this->_debug){
 			echo '<pre><code>'.print_r($this->_debug_array ,1).'</code></pre>';

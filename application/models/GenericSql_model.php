@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 class GenericSql_model extends CI_Model {
 	public function __construct()
 	{
@@ -29,7 +29,7 @@ class GenericSql_model extends CI_Model {
                            ->order_by($this->order, $this->direction )
                            ->get($table)
 						   ->result();
-		return $data;
+		return $datas;
 	}
 	
 }

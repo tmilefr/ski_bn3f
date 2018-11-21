@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') || exit('No direct script access allowed');
 $lang['User'] = 'Membres';
 $lang['Users_controller'] = 'Gestion des Membres';
 $lang['ADD_Users_controller'] = 'Ajouter';

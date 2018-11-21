@@ -1,5 +1,5 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+<?php 
+defined('BASEPATH') || exit('No direct script access allowed');
 /**
  * Errors_hook Hook Class
  *

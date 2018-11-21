@@ -1,5 +1,5 @@
 $(".typeahead").each(function( index ) {
-	object = $( this );
+	var object = $( this );
 	
 	$.get( object.attr('data-source') , function(data){ 
 		object.typeahead({

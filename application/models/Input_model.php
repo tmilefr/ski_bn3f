@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') || exit('No direct script access allowed');
 require_once(dirname(__FILE__).'/Core_model.php');
 class Input_model extends Core_model{
 	
