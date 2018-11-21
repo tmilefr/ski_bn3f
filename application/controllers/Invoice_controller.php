@@ -87,10 +87,11 @@ class Invoice_controller extends MY_Controller {
 			}
 			$pdf = NameToFilename($invoice->header.'_'.$invoice->month.'_'.$invoice->year).'.pdf';
 			if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
+				$this->email->clear(TRUE);
 				$this->email->to($invoice->info->email);
 				$this->email->subject('Minutes BN3F '.$invoice->month.' '.$invoice->year);
-				$this->email->message('Testing the email class.');
-				$this->email->attach( $this->libinvoice->_get('pdf_path').'/'.$pdf , 'attachment', $pdf , 'application/pdf');
+				$this->email->message('<p>Bonjour '.$invoice->header.' <br/> Voici votre facture pour la periode '.$invoice->month.' '.$invoice->year.'  ('.$this->libinvoice->_get('pdf_path').$pdf .')<br/> Ski BN3f, Sportivement !</p>');
+				$this->email->attach($this->libinvoice->_get('pdf_path').$pdf);
 				$this->data_view['sendmail'][] = $this->email->send();
 			} else {
 				$this->data_view['sendmail'][] = $this->libinvoice->_get('pdf_path').$pdf. ' not exist';
