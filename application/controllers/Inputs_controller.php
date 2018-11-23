@@ -37,7 +37,7 @@ class Inputs_controller extends MY_Controller {
 		$this->load->model('Family_model');
 		
 		$this->load->library('Libinvoice');
-		$this->Input_model->_set('_debug',TRUE);
+		$this->Input_model->_set('_debug',FALSE);
 		
 		if (function_exists("set_time_limit") == TRUE AND @ini_get("safe_mode") == 0) /* directory process is long ! TODO : change the method*/
 		{

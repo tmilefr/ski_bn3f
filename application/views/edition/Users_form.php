@@ -5,10 +5,6 @@ echo form_error('name', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('surname', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('section', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('family', 	'<div class="alert alert-danger">', '</div>');
-
-echo form_error('adress', 	'<div class="alert alert-danger">', '</div>');
-echo form_error('postalcode', 	'<div class="alert alert-danger">', '</div>');
-echo form_error('town', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('country', 	'<div class="alert alert-danger">', '</div>');
 echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
 ?>
@@ -28,12 +24,18 @@ echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
 				echo $this->render_object->RenderFormElement('surname');
 			?>
 		</div>
-		<div class="form-group col-md-4">
+		<div class="form-group col-md-2">
 			<?php 
 				echo $this->render_object->label('section');
 				echo $this->render_object->RenderFormElement('section'); 
 			?>
-		</div>	
+		</div>
+		<div class="form-group col-md-2">
+			<?php 
+				echo $this->render_object->label('driver');
+				echo $this->render_object->RenderFormElement('driver'); 
+			?>
+		</div>
 	</div>
 	<div class="form-row">
 		<div class="form-group col-md-4">
@@ -42,45 +44,21 @@ echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
 				echo $this->render_object->RenderFormElement('family');
 			?>
 		</div>
-			<span class="align-bottom text-success"><br/><br/><?php echo Lang('OU');?></span>
-	</div>
-	
-	
-	<div class="border border-success mx-auto">
-		<div class="form-row">
-			<div class="form-group col-md-2">
-				<?php 
-					echo $this->render_object->label('adress');
-					echo $this->render_object->RenderFormElement('adress');
-				?>
-			</div>	
-			<div class="form-group col-md-2">
-				<?php 
-					echo $this->render_object->label('postalcode');
-					echo $this->render_object->RenderFormElement('postalcode');
-				?>
-			</div>
-			<div class="form-group col-md-2">
-				<?php 
-					echo $this->render_object->label('town');
-					echo $this->render_object->RenderFormElement('town'); 
-				?>
-			</div>
-			<div class="form-group col-md-2">
+		<div class="form-group col-md-1"><span class="align-bottom text-success"><br/><br/><?php echo Lang('OU');?></span></div>
+		<div class="border border-success mx-auto col-md-7">
+			<div class="form-group ">
 				<?php 
 					echo $this->render_object->label('country');
 					echo $this->render_object->RenderFormElement('country'); 
 				?>
 			</div>
-		</div>
-		<div class="form-row">
-			<div class="form-group col-md-4">
+			<div class="form-group">
 				<?php 
 					echo $this->render_object->label('email');
 					echo $this->render_object->RenderFormElement('email');
 				?>
 			</div>
-		</div>
+		</div>		
 	</div>
   </div>
 </div>

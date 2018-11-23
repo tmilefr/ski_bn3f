@@ -1,7 +1,8 @@
 $(".typeahead").each(function( index ) {
-	var object = $( this );
-	
+	var	object = $( this );
 	$.get( object.attr('data-source') , function(data){ 
+		
+		
 		object.typeahead({
 			source:		data ,
 			autoSelect: true,

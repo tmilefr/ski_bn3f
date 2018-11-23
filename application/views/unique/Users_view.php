@@ -12,8 +12,7 @@
 		<p class="card-text">
 			<?php 
 				echo $this->render_object->label('section').' : '.$this->render_object->RenderElement('section').'<br/>'; 
-				echo $this->render_object->RenderElement('adress').'<br/>';
-				echo $this->render_object->RenderElement('postalcode').' '.$this->render_object->RenderElement('town').' '.$this->render_object->RenderElement('country') ; 		
+				echo $this->render_object->RenderElement('country') ; 		
 			?>				
 		</p>		
 		<?php

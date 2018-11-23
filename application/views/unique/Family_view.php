@@ -11,8 +11,7 @@
 		<h3><?php echo Lang('REF_ADRESS');?></h3>
 		<p class="card-text">
 			<?php 
-				echo $this->render_object->RenderElement('adress').'<br/>';
-				echo $this->render_object->RenderElement('postalcode').' '.$this->render_object->RenderElement('town').' '.$this->render_object->RenderElement('country') ; 
+				echo $this->render_object->RenderElement('country') ; 
 			?>
 		</p>
 		<h3><?php echo Lang('MEMBERS');?></h3>

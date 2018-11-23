@@ -35,39 +35,6 @@
 			"null":true
 		}
 	},	
-	"adress": {
-		"type": "input",
-		"list": true,
-		"search": true,
-		"rules": null,
-		"since": 1,
-		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "255"
-		}
-	},
-	"postalcode": {
-		"type": "input",
-		"list": true,
-		"search": true,
-		"rules": "required",
-		"since": 1,
-		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "5"
-		}
-	},
-	"town": {
-		"type": "input",
-		"list": true,
-		"search": false,
-		"rules": "trim|required",
-		"since": 1,
-		"dbforge": {
-			"type": "VARCHAR",
-			"constraint": "255"
-		}
-	},
 	"country": {
 		"type": "select",
 		"list": true,
@@ -83,7 +50,7 @@
 			"type": "VARCHAR",
 			"constraint": "255"
 		}
-	},	
+	},
 	"created": {
 		"type": "created",
 		"list": false,

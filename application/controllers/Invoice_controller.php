@@ -27,6 +27,7 @@ class Invoice_controller extends MY_Controller {
 		
 		$this->init();
 		$this->load->model('Users_model');
+		$this->load->model('Sendmail_model');
 		$this->load->library('Libinvoice');
 	}
 	
@@ -40,14 +41,20 @@ class Invoice_controller extends MY_Controller {
 	 * 
 	 */
 	function recap($month = null,$year = null, $pdf = null){
+		//save session for sendmail
+		$this->session->set_userdata( $this->set_ref_field('month') , $month );
+		$this->session->set_userdata( $this->set_ref_field('year') , $year );		
+		//transform cause of url rules
 		$month = str_replace('_',',',$month);
 		$datas =  $this->{$this->_model_name}->get_recap($month,$year);
 		$this->data_view['month'] = $month;
 		$this->data_view['year'] = $year;
-		
-
 		if (isset($month) AND isset($year)){
 			foreach($datas AS $key=>$data){
+				
+				
+				
+				
 				$pdf = NameToFilename($data->header.'_'.$data->month.'_'.$data->year).'.pdf';
 				if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
 					$data->pdf = false;
@@ -61,6 +68,9 @@ class Invoice_controller extends MY_Controller {
 				} else {
 					$data->info = $this->Users_model->get_user($data->family, false);
 				}
+				
+				$this->Sendmail_model->_set('filter', ['user' => $data->info->id, 'invoice'=>$pdf]);
+				$data->logsendmail = $this->Sendmail_model->get();
 			}			
 			$this->data_view['datas'] 	= $datas;
 			
@@ -109,25 +119,31 @@ class Invoice_controller extends MY_Controller {
 				$invoice->info = $this->Users_model->get_user($invoice->user, true);
 			} else {
 				$invoice->info = $this->Users_model->get_user($invoice->family, false);
-			}
+			}			
 			$pdf = NameToFilename($invoice->header.'_'.$invoice->month.'_'.$invoice->year).'.pdf';
 			if (is_file($this->libinvoice->_get('pdf_path').$pdf)){
 				$this->email->to($invoice->info->email);
 				$this->email->subject('Minutes BN3F '.$this->render_object->RenderElement('month',$invoice->month).' '.$invoice->year);
 				$this->email->message("Bonjour ".$invoice->header." \n Voici votre facture pour la periode ".$this->render_object->RenderElement('month', $invoice->month)." ".$invoice->year." \n  Sportivement !");
 				$this->email->attach($this->libinvoice->_get('pdf_path').$pdf);
-				$this->data_view['sendmail'][] = $this->email->send();
+				//log send mail
+				$log = new StdClass();
+				$log->date = date('Y-m-d H:i:s');
+				$log->user = $invoice->info->id;
+				$log->invoice = $pdf;				
+				$log->status = (($this->email->send()) ? 'sended':'not-sended');
+				$log->log = $this->email->print_debugger(array('headers'));
+				$this->Sendmail_model->post($log);				
 				$this->email->clear(TRUE);
 			} else {
 				$this->data_view['sendmail'][] = $this->libinvoice->_get('pdf_path').$pdf. ' not exist';
 			}
 		}
-		$this->_set('view_inprogress','unique/sendmail');
-		$this->render_view();
+		redirect('Invoice_controller/recap/'.$this->session->userdata($this->set_ref_field('month')).'/'.$this->session->userdata($this->set_ref_field('year')).'/');
 	}
 	
 	/**
-	 * @brief View Invoice
+	 * @brief View Invoice ( and generate if not )
 	 * @param $id 
 	 * @returns view
 	 * 

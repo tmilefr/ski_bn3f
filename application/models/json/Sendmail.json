@@ -1,0 +1,37 @@
+{
+	"id": {
+		"type": "hidden",
+		"list": true,
+		"search": false,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "INT",
+			"constraint": "11",
+			"unsigned": true,
+			"auto_increment": true
+		}
+	},
+	"date": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": "trim|required",
+		"since": 1,
+		"dbforge": {
+			"type": "DATETIME",
+			"null":true
+		}
+	},
+	"status": {
+		"type": "input",
+		"list": true,
+		"search": true,
+		"rules": null,
+		"since": 1,
+		"dbforge": {
+			"type": "VARCHAR",
+			"constraint": "255"
+		}
+	}
+}
