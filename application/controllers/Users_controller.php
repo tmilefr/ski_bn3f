@@ -11,7 +11,8 @@ defined('BASEPATH') || exit('No direct script access allowed');
  */
 class Users_controller extends MY_Controller {
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->_controller_name = 'Users_controller';  //controller name for routing
 		$this->_model_name 		= 'Users_model';	   //DataModel
@@ -29,7 +30,8 @@ class Users_controller extends MY_Controller {
 
 	}
 	
-	function view($id){
+	function view($id)
+	{
 		$this->bootstrap_tools->_SetHead('assets/vendor/chart.js/Chart.js','js');
 		$this->load->model('Input_model');
 		
@@ -51,7 +53,12 @@ class Users_controller extends MY_Controller {
 			foreach($stats['month'] AS $month){
 				if (isset($tmp[$year][$month])){
 					$stats['line'][$year][$month] = $tmp[$year][$month]->SUM_TOUR;
-					@$stats['global'][$year] += $tmp[$year][$month]->SUM_TOUR;
+					
+					if (isset($stats['global'][$year])){
+						$stats['global'][$year] += $tmp[$year][$month]->SUM_TOUR;
+					} else {
+						$stats['global'][$year] = $tmp[$year][$month]->SUM_TOUR;
+					}
 				} else {
 					$stats['line'][$year][$month] = 0;
 				}

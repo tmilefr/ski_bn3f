@@ -13,27 +13,34 @@ Class Render_object{
 	protected $notime	= TRUE;
 	protected $_reset   = [];
 	
-	public function __construct(){
+	public function __construct()
+	{
 		$this->CI =& get_instance();
 	}
 	
-	public function _set($field,$value){
+	public function _set($field,$value)
+	{
 		$this->$field = $value;
 	}
 
-	public function _get($field){
+	public function _get($field)
+	{
 		return $this->$field;
 	}
 	
-	public function _reset_value($field){
+	public function _reset_value($field)
+	{
 		$this->_reset[$field] = true;
 	}	
 	
-	public function label($name){
+	public function label($name)
+	{
 		return $this->CI->bootstrap_tools->label($name);
 	}	
 	
-	public function render_element_menu($data = null, $blocked = false ){
+	public function render_element_menu($data = null, $blocked = false )
+	{
+		$key_value ='';
 		$element_menu = '';
 		if ($data){	
 			$key_value = $data->{$this->_model->_get('key')};
@@ -42,16 +49,20 @@ Class Render_object{
 				$key_value = $this->dba_data->{$this->_model->_get('key')};
 			}
 		}		
-		if ($this->CI->_get('_rules')['delete']->autorize AND !$blocked)
-			$element_menu .= $this->CI->bootstrap_tools->render_icon_link($this->CI->_get('_rules')['delete']->url 	, $key_value , 'oi-circle-x', 'btn-danger confirmModalLink');		
-		if ($this->CI->_get('_rules')['edit']->autorize AND !$blocked)
-			$element_menu .= $this->CI->bootstrap_tools->render_icon_link($this->CI->_get('_rules')['edit']->url 	, $key_value , 'oi-pencil'	, 'btn-warning');	
-		if ($this->CI->_get('_rules')['view']->autorize AND !$blocked)
-			$element_menu .= $this->CI->bootstrap_tools->render_icon_link($this->CI->_get('_rules')['view']->url	, $key_value , 'oi-zoom-in'	, 'btn-success');	
+		if ($key_value)
+		{
+			if ($this->CI->_get('_rules')['delete']->autorize AND !$blocked)
+				$element_menu .= $this->CI->bootstrap_tools->render_icon_link($this->CI->_get('_rules')['delete']->url 	, $key_value , 'oi-circle-x', 'btn-danger confirmModalLink');		
+			if ($this->CI->_get('_rules')['edit']->autorize AND !$blocked)
+				$element_menu .= $this->CI->bootstrap_tools->render_icon_link($this->CI->_get('_rules')['edit']->url 	, $key_value , 'oi-pencil'	, 'btn-warning');	
+			if ($this->CI->_get('_rules')['view']->autorize AND !$blocked)
+				$element_menu .= $this->CI->bootstrap_tools->render_icon_link($this->CI->_get('_rules')['view']->url	, $key_value , 'oi-zoom-in'	, 'btn-success');	
+		}
 		return $element_menu;
 	}
 	
-	public function render_link($field, $mode = 'list'){
+	public function render_link($field, $mode = 'list')
+	{
 		$filter 	= $this->CI->session->userdata($this->CI->set_ref_field('filter'));
 		$direction 	= $this->CI->session->userdata($this->CI->set_ref_field('direction'));
 		if ( $this->_model->_get('defs')[$field]->dbforge->type == 'INT'){
@@ -73,7 +84,8 @@ Class Render_object{
 		return $string_render_link;
 	}
 	
-	public function Set_Rules_elements(){
+	public function Set_Rules_elements()
+	{
 		$this->_model = $this->CI->{$this->datamodel};
 		
 		$hidden_form = array('form_mod'=>(($this->id) ? 'edit':'add'));
@@ -84,7 +96,8 @@ Class Render_object{
 		}	
 	}
 	//need to make a real element object.
-	function RenderFormElement($field){
+	function RenderFormElement($field)
+	{
 		$value = null;
 		if (isset($this->_reset[$field]) AND  $this->_reset[$field]){
 			
@@ -102,7 +115,8 @@ Class Render_object{
 		return $this->_model->_get('defs')[$field]->element->RenderFormElement();
 	}
 	
-	function RenderElement($field,$value = null){
+	function RenderElement($field,$value = null)
+	{
 		if (!$value) {
 			if (isset($this->dba_data)){ // try to check database
 				$value = $this->dba_data->{$field};
@@ -113,7 +127,8 @@ Class Render_object{
 		return $this->_model->_get('defs')[$field]->element->Render();
 	}
 	
-	public function __destruct(){
+	public function __destruct()
+	{
 		if ($this->_debug == TRUE){
 			unset($this->CI);
 			unset($this->_model);

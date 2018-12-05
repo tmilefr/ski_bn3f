@@ -12,7 +12,8 @@ defined('BASEPATH') || exit('No direct script access allowed');
 
 class Invoice_controller extends MY_Controller {
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->_controller_name = 'Invoice_controller';  //controller name for routing
 		$this->_model_name 		= 'Invoice_model';	   //DataModel
@@ -35,12 +36,12 @@ class Invoice_controller extends MY_Controller {
 	 * @brief Make invoice list with user / sum
 	 * @param $month 
 	 * @param $year 
-	 * @param $pdf 
 	 * @returns view
 	 * 
 	 * 
 	 */
-	function recap($month = null,$year = null, $pdf = null){
+	function recap($month = null,$year = null)
+	{
 		//save session for sendmail
 		$this->session->set_userdata( $this->set_ref_field('month') , $month );
 		$this->session->set_userdata( $this->set_ref_field('year') , $year );		
@@ -51,10 +52,6 @@ class Invoice_controller extends MY_Controller {
 		$this->data_view['year'] = $year;
 		if (isset($month) AND isset($year)){
 			foreach($datas AS $key=>$data){
-				
-				
-				
-				
 				$pdf = NameToFilename($data->header.'_'.$data->month.'_'.$data->year).'.pdf';
 				if (!is_file($this->libinvoice->_get('pdf_path').$pdf)){
 					$data->pdf = false;
@@ -109,7 +106,8 @@ class Invoice_controller extends MY_Controller {
 	 * 
 	 * 
 	 */
-	function SendByMail(){
+	function SendByMail()
+	{
 		$this->load->library('email');
 		$this->email->from('ski@bn3f.fr', 'BN3F SKI');
 		foreach($_POST['invoices'] AS $id){
@@ -149,7 +147,8 @@ class Invoice_controller extends MY_Controller {
 	 * 
 	 * 
 	 */
-	public function view($id){
+	public function view($id)
+	{
 		$this->data_view['url_pdf'] = '';
 		if ($id){
 			$this->{$this->_model_name}->_set('key_value',$id);

@@ -15,7 +15,8 @@ class Home extends MY_Controller {
 	 * 
 	 * 
 	 */
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->_model_name 		= 'Input_model';	   //DataModel
 		$this->_controller_name = 'Home';  //controller name for routing
@@ -54,7 +55,11 @@ class Home extends MY_Controller {
 			foreach($stats['month'] AS $month){
 				if (isset($tmp[$year][$month])){
 					$stats['line'][$year][$month] = $tmp[$year][$month]->SUM;
-					@$stats['global'][$year] += $tmp[$year][$month]->SUM;
+					if (isset($stats['global'][$year])){
+						$stats['global'][$year] += $tmp[$year][$month]->SUM;
+					} else {
+						$stats['global'][$year] = $tmp[$year][$month]->SUM;
+					}
 				} else {
 					$stats['line'][$year][$month] = 0;
 				}
@@ -75,7 +80,6 @@ class Home extends MY_Controller {
 		$this->data_view['TOP'][2016] = $this->Input_model->get_stats_user(null,2016,null);
 			
 		$datas = $this->Input_model->get_minutes_year();
-		//echo '<pre><code>'.print_r($datas , 1).'</code></pre>';
 		
 		$tmp = array();
 		foreach($datas AS $data){

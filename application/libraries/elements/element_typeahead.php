@@ -1,12 +1,20 @@
 <?php
-/* * element_checkbox.php * CHECKBOX Object in page *  */require_once(APPPATH.'libraries/elements/element.php');
+/*
+ * element_checkbox.php
+ * CHECKBOX Object in page
+ * 
+ */
+require_once(APPPATH.'libraries/elements/element.php');
 
 class element_typeahead extends element
 {	
 	public function __construct(){
 		parent::__construct();
+		if (isset($this->CI->bootstrap_tools))
+		{
 		$this->CI->bootstrap_tools->_SetHead('assets/plugins/js/bootstrap3-typeahead.js','js');
 		$this->CI->bootstrap_tools->_SetHead('assets/js/ahead.js','js');
+		}
 	}
 	
 	public function RenderFormElement(){

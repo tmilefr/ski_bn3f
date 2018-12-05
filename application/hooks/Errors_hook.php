@@ -129,9 +129,7 @@ class Errors_hook {
 	private function _save_error($message)
 	{
 
-		$CI =& get_instance();
-		$CI->load->library('session');
-		$CI->_debug($message);
+		echo '<pre>'.print_r($message ,1).'</pre>';
 	}
 
 	/**

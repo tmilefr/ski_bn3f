@@ -1,5 +1,4 @@
 data/invoices/
-
 application/logs/
-
+application/tests/build/
 \.scannerwork/

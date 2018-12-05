@@ -18,7 +18,8 @@ class Family_controller extends MY_Controller {
 	 * 
 	 * 
 	 */
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		
 		$this->_controller_name = 'Family_controller';  //controller name for routing
@@ -43,7 +44,8 @@ class Family_controller extends MY_Controller {
 	 * 
 	 * 
 	 */
-	public function view($id){
+	public function view($id)
+	{
 		if ($id){
 			$this->render_object->_set('id',		$id);
 			$this->{$this->_model_name}->_set('key_value',$id);
