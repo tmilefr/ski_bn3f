@@ -17,3 +17,10 @@ defined('BASEPATH') || exit('No direct script access allowed');
 								'filename' => 'Errors_hook.php',
 								'filepath' => 'hooks'
 							);*/
+$hook['post_controller_constructor'][] = [
+    'class'    => 'Loginchecker',
+    'function' => 'loginCheck',
+    'filename' => 'Loginchecker.php',
+    'filepath' => 'hooks',
+    'params'   => []
+];
