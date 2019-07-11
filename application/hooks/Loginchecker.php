@@ -10,16 +10,21 @@ class Loginchecker
         
         $this->CI->load->helper('url');
         $this->CI->load->library('Acl');
-        
-        if (! isset($this->CI->session)) { // Check if session lib is loaded or not
-            $this->CI->load->library('session'); // If not loaded, then load it here
+        $this->CI->load->library('Auth');
+         
+        if (! isset($this->CI->session)) { 
+            $this->CI->load->library('session'); 
         }
+		if (! isset($this->CI->Users_model)) { 
+            $this->CI->load->model('Users_model'); 
+        }        
     }
 
     function loginCheck()
     {
         $controller = $this->CI->uri->rsegment(1);
         $action     = $this->CI->uri->rsegment(2);
+        
         
         if ($this->CI->session->userdata('user_id')) {
             // Check for ACL
@@ -30,7 +35,7 @@ class Loginchecker
             }
         } else {
             if ($controller != 'login' && ! in_array($controller . '/' . $action, $this->CI->acl->getGuestPages())) {
-               //return redirect('/login');
+               //return redirect('/Login');
             }
         }
     }

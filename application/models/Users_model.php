@@ -28,5 +28,9 @@ class Users_model extends Core_model{
 		}
 		return $datas;
 	}
+	
+	function verifyLogin($user, $password){
+		
+	}
 }
 ?>
