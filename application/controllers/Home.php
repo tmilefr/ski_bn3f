@@ -65,8 +65,8 @@ class Home extends MY_Controller {
 				}
 			}
 		}
-		$stats['color']['2020'] = '#ff9933';		
-		$stats['color']['2019'] = '#ff9933';	
+		$stats['color']['2020'] = '#2682C4';		
+		$stats['color']['2019'] = '#AACE3A';	
 		$stats['color']['2018'] = '#ff9933';
 		$stats['color']['2017'] = '#0099ff';
 		$stats['color']['2016'] = '#009933';
@@ -74,11 +74,10 @@ class Home extends MY_Controller {
 		
 		$this->Input_model->_set('group_by', ['user','YEAR(billing_date)']);
 		$this->Input_model->_set('order'   , ['SUM_TOUR'=>'DESC','YEAR(billing_date)'=>'DESC','MONTH(billing_date)'=>'DESC','user'=>'DESC']);
-		
-		$this->data_view['TOP'][2018] = $this->Input_model->get_stats_user(null,2018,null);
-		$this->data_view['TOP'][2017] = $this->Input_model->get_stats_user(null,2017,null);
-		$this->data_view['TOP'][2016] = $this->Input_model->get_stats_user(null,2016,null);
-			
+		//set params for this ?
+		for($year = 2016;$year <= 2020;$year++){
+			$this->data_view['TOP'][$year] = $this->Input_model->get_stats_user(null,$year,null);
+		}		
 		$datas = $this->Input_model->get_minutes_year();
 		
 		$tmp = array();
