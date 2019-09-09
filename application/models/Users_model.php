@@ -30,7 +30,12 @@ class Users_model extends Core_model{
 	}
 	
 	function verifyLogin($user, $password){
-		
+		$usercheck = new stdClass();
+		$usercheck->name = 'nico';
+		$usercheck->autorize = true;
+		$usercheck->id = 1;	
+		$usercheck->msg = 'test message';
+		return $usercheck;
 	}
 }
 ?>

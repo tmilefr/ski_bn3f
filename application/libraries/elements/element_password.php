@@ -1,5 +1,10 @@
 <?php
-/* * element_password.php * PASSWORD Object in page *  */require_once(APPPATH.'libraries/elements/element.php');
+/*
+ * element_password.php
+ * PASSWORD Object in page
+ * 
+ */
+require_once(APPPATH.'libraries/elements/element.php');
 
 class element_password extends element
 {
@@ -8,7 +13,7 @@ class element_password extends element
 	}
 	
 	public function Render(){
-		return '********';//$this->value;
+		return '********'.form_hidden($this->name , $this->value);	
 	}
 }
 

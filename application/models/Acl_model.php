@@ -2,18 +2,16 @@
 
 class Acl_model extends CI_Model {
 
-	// --------------------------------------------------------------------
-
 	/**
-	 * Get current user by session info
+	 * @brief Get current user by session info
 	 * @param   int $userId
 	 * @return  array
 	 */
 	public function getUserRoleId($userId = 0)
 	{
-	    $query = $this->db->select("u.{$this->acl->getAclConfig('acl_users_fields')['role_id']} as role_id")
-			->from($this->acl->getAclConfig('acl_table_users').' u')
-			->where("u.{$this->acl->getAclConfig('acl_users_fields')['id']}", $userId)
+	    $query = $this->db->select("u.role_id as role_id")
+			->from('users u')
+			->where("u.id", $userId)
 			->get();
         
 		// User was found
@@ -28,10 +26,8 @@ class Acl_model extends CI_Model {
 		return 0;
 	}
 
-	// --------------------------------------------------------------------
-
 	/**
-	 * Get permissions from database for  particular role
+	 * @brief Get permissions from database for  particular role
 	 *
 	 * @param   int $roleId
 	 * @return  array
@@ -39,13 +35,13 @@ class Acl_model extends CI_Model {
 	public function getRolePermissions($roleId = 0)
 	{
 	    $query = $this->db->select([
-    	        "p.{$this->acl->getAclConfig('acl_permissions_fields')['action']} as action",
-    	        "r.{$this->acl->getAclConfig('acl_resources_fields')['controller']} as controller"
+    	        "p.action as action",
+    	        "r.controller as controller"
             ])
-			->from($this->acl->getAclConfig('acl_table_permissions').' p')
-			->join($this->acl->getAclConfig('acl_table_resources').' r', "p.{$this->acl->getAclConfig('acl_permissions_fields')['resource_id']} = r.{$this->acl->getAclConfig('acl_resources_fields')['id']}")
-			->join($this->acl->getAclConfig('acl_table_role_permissions').' rp', "rp.{$this->acl->getAclConfig('acl_role_permissions_fields')['permission_id']} = p.{$this->acl->getAclConfig('acl_permissions_fields')['id']}")
-			->where("rp.{$this->acl->getAclConfig('acl_role_permissions_fields')['role_id']}", $roleId)
+			->from('permissions p')
+			->join('resources r', "p.resource_id = r.id")
+			->join('role_permissions rp', "rp.permission_id = p.id")
+			->where("rp.role_id", $roleId)
 			->get();
 
 		$permissions = array();
@@ -55,7 +51,7 @@ class Acl_model extends CI_Model {
 		{		    
 			$permissions[] = strtolower($row['controller'] . '/' . $row['action']);
 		}
-
+		
 		return $permissions;
 	}
 
