@@ -20,9 +20,9 @@ class Loginchecker
     {
         $controller = $this->CI->uri->rsegment(1);
         $action     = $this->CI->uri->rsegment(2);
+        $usercheck  = $this->CI->session->userdata('usercheck');
         
-        
-        if ($this->CI->session->userdata('usercheck')) {
+        if ( $usercheck && $usercheck->autorize) {
             // Check for ACL
             if (! $this->CI->acl->hasAccess()) {
                 if ($controller != 'dashboard' && in_array($controller . '/' . $action, $this->CI->acl->getGuestPages())) {

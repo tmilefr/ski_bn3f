@@ -34,6 +34,10 @@ $lang['Parameter'] = 'Paramètres';
 $lang['invoice'] = 'Facture';
 
 
+$lang['billed_NO'] = 'Non facturé';
+$lang['billed_1'] = 'facturé';
+
+
 $lang['Inputs'] = 'Saisies';
 $lang['Inputs_controller'] = 'Gestion des Tours';
 $lang['ADD_Inputs_controller'] = 'Ajouter';

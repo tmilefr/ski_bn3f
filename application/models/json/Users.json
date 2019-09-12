@@ -127,5 +127,17 @@
 			"type": "VARCHAR",
 			"constraint": "255"
 		}
+	},
+	"role_id": {
+		"type": "select_database",
+		"list": false,
+		"search": false,
+		"rules": null,
+		"since": 2,
+		"values": "distinct(roles,id:role_name)",
+		"dbforge": {
+			"type": "INT",
+			"constraint": "11"
+		}
 	}
 }

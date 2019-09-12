@@ -9,9 +9,9 @@ class Acl_model extends CI_Model {
 	 */
 	public function getUserRoleId($userId = 0)
 	{
-	    $query = $this->db->select("u.role_id as role_id")
+	    $query = $this->db->select("role_id")
 			->from('users u')
-			->where("u.id", $userId)
+			->where("id", $userId)
 			->get();
         
 		// User was found

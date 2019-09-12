@@ -2,7 +2,7 @@
 
 if (! defined('BASEPATH'))
     exit('No direct script access allowed');
-
+//ALTER TABLE `users` ADD `role_id` INT(11) NOT NULL AFTER `driver`;
 class Acl
 {
     protected $CI;
@@ -82,7 +82,7 @@ class Acl
     private function getUserId()
     {
         if ($this->userId == NULL) {
-            $this->userId = $this->CI->session->userdata($this->_config['acl_user_session_key']);
+            $this->userId = $this->CI->session->userdata('usercheck')->id;
             
             if ($this->userId === FALSE) {
                 $this->userId = NULL;

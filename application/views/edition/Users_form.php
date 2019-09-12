@@ -39,10 +39,18 @@ echo form_error('email', 	'<div class="alert alert-danger">', '</div>');
 	</div>
 	<div class="form-row">
 		<div class="form-group col-md-4">
+			<div class="form-group ">
 			<?php 
 				echo $this->render_object->label('family');
 				echo $this->render_object->RenderFormElement('family');
 			?>
+			</div>
+			<div class="form-group ">
+			<?php 
+				echo $this->render_object->label('role_id');
+				echo $this->render_object->RenderFormElement('role_id');
+			?>
+			</div>
 		</div>
 		<div class="form-group col-md-1"><span class="align-bottom text-success"><br/><br/><?php echo Lang('OU');?></span></div>
 		<div class="border border-success mx-auto col-md-7">
