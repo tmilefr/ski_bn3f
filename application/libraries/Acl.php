@@ -56,8 +56,7 @@ class Acl
      */
     public function hasAccess()
     {
-        if ($this->getUserId()) {
-            
+        if ($this->getUserId()) {            
             $permissions = $this->CI->acl_model->getRolePermissions($this->getUserRoleId());
             if (count($permissions) > 0) {
                 $currentPermission = $this->CI->uri->rsegment(1) . '/' . $this->CI->uri->rsegment(2);
@@ -65,8 +64,7 @@ class Acl
                     return TRUE;
                 }
             }
-        }
-        
+        }        
         return FALSE;
     }
     
@@ -83,12 +81,10 @@ class Acl
     {
         if ($this->userId == NULL) {
             $this->userId = $this->CI->session->userdata('usercheck')->id;
-            
             if ($this->userId === FALSE) {
                 $this->userId = NULL;
             }
-        }
-        
+        }        
         return $this->userId;
     }
     

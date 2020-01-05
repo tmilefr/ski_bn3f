@@ -24,14 +24,14 @@ class Loginchecker
         
         if ( $usercheck && $usercheck->autorize) {
             // Check for ACL
-            if (! $this->CI->acl->hasAccess()) {
+            if (!$this->CI->acl->hasAccess()) {
                 if ($controller != 'dashboard' && in_array($controller . '/' . $action, $this->CI->acl->getGuestPages())) {
-                    return redirect('/Home');
+                    //return redirect('/Home');
                 }
             }
         } else {
             if ($controller != 'login' && ! in_array($controller . '/' . $action, $this->CI->acl->getGuestPages())) {
-               return redirect('/Login');
+               return redirect('/login');
             }
         }
     }

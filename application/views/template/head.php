@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			?>
 		  </div>
 		</nav>	
-		
+		<?php // $usercheck  = $this->CI->session->userdata('usercheck'); ?>
 		<!-- Sidebar  -->
 		<div id="sidebar" class="bg-dark">
 			<nav class="navbar navbar-dark bg-dark">
